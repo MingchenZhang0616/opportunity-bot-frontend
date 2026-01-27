@@ -695,6 +695,7 @@
             max-width: 70%;
             line-height: 1.6;
             white-space: pre-wrap;
+            position: relative;
         }
 
         .message.user .message-content {
@@ -707,6 +708,46 @@
             background: #f5f5f5;
             color: var(--text-primary);
             border-radius: 12px 12px 12px 4px;
+        }
+
+        /* 消息操作按钮 */
+        .message-actions {
+            margin-left: 48px;
+            margin-top: 8px;
+            display: flex;
+            gap: 8px;
+            opacity: 0;
+            transition: opacity 0.2s ease;
+        }
+
+        .message:hover .message-actions {
+            opacity: 1;
+        }
+
+        .message-action-btn {
+            padding: 6px 12px;
+            background: transparent;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            font-size: 12px;
+            color: var(--text-secondary);
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .message-action-btn:hover {
+            background: rgba(46, 84, 161, 0.05);
+            border-color: var(--primary-color);
+            color: var(--primary-color);
+        }
+
+        .message-action-btn.copied {
+            background: var(--accent-green);
+            border-color: var(--accent-green);
+            color: white;
         }
 
         /* 加载动画 */
@@ -809,11 +850,89 @@
             transform: none;
         }
 
+        /* 终止按钮 */
+        .stop-btn {
+            width: 50px;
+            height: 50px;
+            background: #e53e3e;
+            color: white;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            font-size: 20px;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            flex-shrink: 0;
+            animation: pulse-red 2s infinite;
+        }
+
+        .stop-btn.visible {
+            display: flex;
+        }
+
+        .stop-btn:hover {
+            background: #c53030;
+            transform: scale(1.05);
+            box-shadow: var(--shadow-md);
+        }
+
+        .stop-btn:active {
+            transform: scale(0.95);
+        }
+
+        @keyframes pulse-red {
+            0%, 100% {
+                box-shadow: 0 0 0 0 rgba(229, 62, 62, 0.7);
+            }
+            50% {
+                box-shadow: 0 0 0 10px rgba(229, 62, 62, 0);
+            }
+        }
+
         .input-hint {
             margin-top: 12px;
             font-size: 12px;
             color: var(--text-secondary);
-            text-align: center;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .char-counter {
+            font-size: 12px;
+            color: var(--text-secondary);
+        }
+
+        .char-counter.warning {
+            color: #d97706;
+        }
+
+        .char-counter.error {
+            color: #e53e3e;
+        }
+
+        .keyboard-shortcuts {
+            display: flex;
+            gap: 16px;
+            font-size: 12px;
+            color: var(--text-secondary);
+        }
+
+        .shortcut {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .key {
+            padding: 2px 6px;
+            background: #f0f0f0;
+            border-radius: 4px;
+            border: 1px solid var(--border-color);
+            font-size: 11px;
+            font-weight: 500;
         }
 
         /* 返回主页按钮 */
@@ -846,6 +965,38 @@
             background: rgba(46, 84, 161, 0.05);
             transform: translateY(-2px);
             box-shadow: var(--shadow-sm);
+        }
+
+        /* 滚动到底部按钮 */
+        .scroll-to-bottom {
+            position: absolute;
+            bottom: 100px;
+            right: 32px;
+            width: 40px;
+            height: 40px;
+            background: var(--bg-card);
+            border: 2px solid var(--border-color);
+            border-radius: 50%;
+            color: var(--text-secondary);
+            font-size: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 10;
+            box-shadow: var(--shadow-md);
+        }
+
+        .scroll-to-bottom.visible {
+            display: flex;
+        }
+
+        .scroll-to-bottom:hover {
+            border-color: var(--primary-color);
+            color: var(--primary-color);
+            background: rgba(46, 84, 161, 0.05);
+            transform: translateY(-2px);
         }
 
         /* 自定义滚动条 - 始终可见但不突兀 */
@@ -1018,6 +1169,10 @@
                     <span>←</span>
                     <span>返回主页</span>
                 </button>
+                <!-- 滚动到底部按钮 -->
+                <button class="scroll-to-bottom" id="scroll-to-bottom">
+                    <span>↓</span>
+                </button>
                 <!-- 消息将动态加载 -->
             </div>
 
@@ -1030,14 +1185,30 @@
                             id="message-input" 
                             placeholder="输入您的消息..."
                             rows="1"
+                            maxlength="2000"
                         ></textarea>
                     </div>
+                    <button class="stop-btn" id="stop-btn">
+                        <span>■</span>
+                    </button>
                     <button class="send-btn" id="send-btn">
                         <span>➤</span>
                     </button>
                 </div>
                 <div class="input-hint">
-                    按 Enter 发送，Shift + Enter 换行
+                    <div class="keyboard-shortcuts">
+                        <span class="shortcut">
+                            <span class="key">Enter</span>
+                            <span>发送</span>
+                        </span>
+                        <span class="shortcut">
+                            <span class="key">Shift</span>
+                            <span>+</span>
+                            <span class="key">Enter</span>
+                            <span>换行</span>
+                        </span>
+                    </div>
+                    <span class="char-counter" id="char-counter">0 / 2000</span>
                 </div>
             </div>
         </div>
@@ -1084,10 +1255,14 @@
         const messagesContainer = document.getElementById('messages-container');
         const messageInput = document.getElementById('message-input');
         const sendBtn = document.getElementById('send-btn');
+        const stopBtn = document.getElementById('stop-btn');
         const backToHomeBtn = document.getElementById('back-to-home');
+        const scrollToBottomBtn = document.getElementById('scroll-to-bottom');
         const chatHistoryContainer = document.getElementById('chat-history');
+        const charCounter = document.getElementById('char-counter');
 
         let selectedRole = null;
+        let abortController = null;
 
         // 初始化
         async function init() {
@@ -1219,6 +1394,13 @@
             });
             document.querySelector(`[data-module="${module}"]`).classList.add('active');
             
+            // 更新输入框提示
+            const placeholders = {
+                opportunity: '输入您的商机信息，例如："录入新商机"、"查询我的商机"...',
+                ecosystem: '输入客户信息，例如："帮我分析华为"、"查看匹配规则"...'
+            };
+            messageInput.placeholder = placeholders[module];
+            
             // 更新历史会话列表
             renderChatHistory();
             
@@ -1288,9 +1470,9 @@
             // 重新渲染所有消息
             session.history.forEach((msg, index) => {
                 if (index % 2 === 0) {
-                    addMessage('user', msg.content, false);
+                    addMessage('user', msg.content, false, false);
                 } else {
-                    addMessage('ai', msg.content, false);
+                    addMessage('ai', msg.content, false, true);
                 }
             });
             
@@ -1402,6 +1584,21 @@
             });
         }
 
+        // 更新字符计数器
+        function updateCharCounter() {
+            const length = messageInput.value.length;
+            const maxLength = 2000;
+            charCounter.textContent = `${length} / ${maxLength}`;
+            
+            // 颜色警告
+            charCounter.classList.remove('warning', 'error');
+            if (length > maxLength * 0.9) {
+                charCounter.classList.add('error');
+            } else if (length > maxLength * 0.7) {
+                charCounter.classList.add('warning');
+            }
+        }
+
         // 绑定事件
         function bindEvents() {
             // 返回主页按钮
@@ -1466,10 +1663,41 @@
                 }
             });
 
-            // 自动调整输入框高度
+            // 自动调整输入框高度和字符计数
             messageInput.addEventListener('input', () => {
                 messageInput.style.height = 'auto';
                 messageInput.style.height = Math.min(messageInput.scrollHeight, 150) + 'px';
+                updateCharCounter();
+            });
+
+            // 终止按钮
+            stopBtn.addEventListener('click', () => {
+                if (abortController) {
+                    abortController.abort();
+                    abortController = null;
+                    stopBtn.classList.remove('visible');
+                    sendBtn.disabled = false;
+                    removeLoadingMessage();
+                    addMessage('ai', '已终止生成。', true, false);
+                }
+            });
+
+            // 滚动到底部按钮
+            scrollToBottomBtn.addEventListener('click', () => {
+                messagesContainer.scrollTo({
+                    top: messagesContainer.scrollHeight,
+                    behavior: 'smooth'
+                });
+            });
+
+            // 监听滚动事件，显示/隐藏滚动到底部按钮
+            messagesContainer.addEventListener('scroll', () => {
+                const isAtBottom = messagesContainer.scrollHeight - messagesContainer.scrollTop - messagesContainer.clientHeight < 100;
+                if (isAtBottom) {
+                    scrollToBottomBtn.classList.remove('visible');
+                } else {
+                    scrollToBottomBtn.classList.add('visible');
+                }
             });
         }
 
@@ -1610,12 +1838,17 @@
             addMessage('user', message);
             messageInput.value = '';
             messageInput.style.height = 'auto';
+            updateCharCounter();
 
             // 添加加载动画
             addLoadingMessage();
 
-            // 禁用发送按钮
+            // 禁用发送按钮，显示终止按钮
             sendBtn.disabled = true;
+            stopBtn.classList.add('visible');
+
+            // 创建 AbortController
+            abortController = new AbortController();
 
             try {
                 const currentHistory = state.conversationHistory[state.currentModule];
@@ -1630,7 +1863,8 @@
                         conversation_history: currentHistory,
                         user: state.user,
                         module: state.currentModule
-                    })
+                    }),
+                    signal: abortController.signal
                 });
 
                 const data = await response.json();
@@ -1638,8 +1872,8 @@
                 // 移除加载动画
                 removeLoadingMessage();
 
-                // 添加 AI 回复
-                addMessage('ai', data.response);
+                // 添加 AI 回复（带操作按钮）
+                addMessage('ai', data.response, true, true);
 
                 // 更新对话历史
                 state.conversationHistory[state.currentModule].push(
@@ -1678,16 +1912,22 @@
                 }
 
             } catch (error) {
-                console.error('发送消息失败:', error);
-                removeLoadingMessage();
-                addMessage('ai', '抱歉，发送消息失败，请稍后重试。');
+                if (error.name === 'AbortError') {
+                    console.log('请求已被用户终止');
+                } else {
+                    console.error('发送消息失败:', error);
+                    removeLoadingMessage();
+                    addMessage('ai', '抱歉，发送消息失败，请稍后重试。');
+                }
             } finally {
                 sendBtn.disabled = false;
+                stopBtn.classList.remove('visible');
+                abortController = null;
             }
         }
 
         // 添加消息
-        function addMessage(type, content, scroll = true) {
+        function addMessage(type, content, scroll = true, withActions = false) {
             // 确保有wrapper
             let wrapper = messagesContainer.querySelector('.messages-wrapper');
             if (!wrapper) {
@@ -1711,17 +1951,77 @@
 
             const sender = type === 'user' ? state.user.name : '智能助手';
 
+            let actionsHTML = '';
+            if (withActions && type === 'ai') {
+                actionsHTML = `
+                    <div class="message-actions">
+                        <button class="message-action-btn copy-btn" onclick="copyMessage(this)">
+                            <span>📋</span>
+                            <span>复制</span>
+                        </button>
+                        <button class="message-action-btn regenerate-btn" onclick="regenerateMessage(this)">
+                            <span>🔄</span>
+                            <span>重新生成</span>
+                        </button>
+                    </div>
+                `;
+            }
+
             message.innerHTML = `
                 <div class="message-header">
                     <div class="message-avatar">${avatar}</div>
                     <span class="message-sender">${sender}</span>
                 </div>
                 <div class="message-content">${content}</div>
+                ${actionsHTML}
             `;
 
             wrapper.appendChild(message);
             if (scroll) {
                 messagesContainer.scrollTop = messagesContainer.scrollHeight;
+            }
+        }
+
+        // 复制消息
+        function copyMessage(button) {
+            const messageContent = button.closest('.message').querySelector('.message-content').textContent;
+            navigator.clipboard.writeText(messageContent).then(() => {
+                const originalText = button.innerHTML;
+                button.innerHTML = '<span>✓</span><span>已复制</span>';
+                button.classList.add('copied');
+                
+                setTimeout(() => {
+                    button.innerHTML = originalText;
+                    button.classList.remove('copied');
+                }, 2000);
+            }).catch(err => {
+                console.error('复制失败:', err);
+                alert('复制失败，请手动复制');
+            });
+        }
+
+        // 重新生成消息
+        function regenerateMessage(button) {
+            const messageElement = button.closest('.message');
+            const messages = Array.from(messagesContainer.querySelectorAll('.message'));
+            const messageIndex = messages.indexOf(messageElement);
+            
+            if (messageIndex > 0) {
+                // 获取上一条用户消息
+                const previousMessage = messages[messageIndex - 1];
+                if (previousMessage.classList.contains('user')) {
+                    const userMessage = previousMessage.querySelector('.message-content').textContent;
+                    
+                    // 移除当前AI消息
+                    messageElement.remove();
+                    
+                    // 从对话历史中移除最后一对
+                    state.conversationHistory[state.currentModule].pop();
+                    state.conversationHistory[state.currentModule].pop();
+                    
+                    // 重新发送
+                    sendMessage(userMessage);
+                }
             }
         }
 
