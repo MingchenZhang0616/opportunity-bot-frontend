@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>智能商机助手 - Talkweb AI</title>
+    <title>拓维生态大脑 Eco-Brain</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+SC:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -910,8 +910,8 @@
         <div class="login-card">
             <div class="login-logo">
                 <div class="login-logo-icon">AI</div>
-                <h1 class="login-title">智能商机助手</h1>
-                <p class="login-subtitle">Talkweb AI - 让商机管理更智能</p>
+                <h1 class="login-title">拓维生态大脑</h1>
+                <p class="login-subtitle">Eco-Brain - 智能商机与生态资源管理</p>
             </div>
 
             <form class="login-form" id="login-form">
@@ -949,9 +949,9 @@
             <div class="sidebar-header">
                 <div class="logo">
                     <div class="logo-icon">AI</div>
-                    <span class="logo-text">智能商机助手</span>
+                    <span class="logo-text">拓维生态大脑</span>
                 </div>
-                <div class="logo-subtitle">Talkweb AI</div>
+                <div class="logo-subtitle">Eco-Brain</div>
                 <button class="new-chat-btn" id="new-chat-btn">
                     <span>+</span>
                     <span>新建对话</span>
@@ -971,7 +971,7 @@
         <div class="main-content">
             <div class="chat-header">
                 <div class="chat-header-top">
-                    <h2 class="chat-title">智能商机助手</h2>
+                    <h2 class="chat-title">生态大脑</h2>
                     <div class="ai-status">
                         <div class="status-dot"></div>
                         <span>AI 在线</span>
@@ -986,9 +986,9 @@
             <!-- 欢迎页 -->
             <div class="welcome-screen" id="welcome-screen">
                 <div class="welcome-icon">AI</div>
-                <h1 class="welcome-title">智能商机助手</h1>
+                <h1 class="welcome-title">商机管理</h1>
                 <p class="welcome-subtitle">
-                    我可以帮您录入、更新、查询商机信息，并进行智能质量评估。<br>
+                    帮您录入、更新、查询商机信息，并进行智能质量评估。<br>
                     选择下方快捷功能开始，或者直接输入您的需求。
                 </p>
                 <div class="quick-actions">
@@ -1106,57 +1106,102 @@
 
         // 提取飞书字段值（处理数组/对象格式）
         function extractFieldValue(fieldValue) {
-            if (!fieldValue) return '';
+            // 处理 null 或 undefined
+            if (fieldValue === null || fieldValue === undefined) return '';
+            
+            // 已经是字符串，直接返回
             if (typeof fieldValue === 'string') return fieldValue;
             
-            // 处理数组格式: [{"text": "值", "type": "text"}]
-            if (Array.isArray(fieldValue) && fieldValue.length > 0) {
+            // 处理数组格式: [{"text": "值", "type": "text"}] 或 ["值"]
+            if (Array.isArray(fieldValue)) {
+                if (fieldValue.length === 0) return '';
                 const firstItem = fieldValue[0];
-                if (typeof firstItem === 'object' && firstItem.text) {
-                    return firstItem.text;
+                
+                // 如果数组第一项是对象
+                if (typeof firstItem === 'object' && firstItem !== null) {
+                    // 优先取 text 字段
+                    if (firstItem.text) return String(firstItem.text);
+                    // 其次取 name 字段
+                    if (firstItem.name) return String(firstItem.name);
+                    // 否则转为字符串
+                    return String(firstItem);
                 }
+                
+                // 数组第一项是基本类型
                 return String(firstItem);
             }
             
             // 处理对象格式: {"text": "值"}
-            if (typeof fieldValue === 'object' && fieldValue.text) {
-                return fieldValue.text;
+            if (typeof fieldValue === 'object' && fieldValue !== null) {
+                if (fieldValue.text) return String(fieldValue.text);
+                if (fieldValue.name) return String(fieldValue.name);
+                return String(fieldValue);
             }
             
+            // 其他类型转为字符串
             return String(fieldValue);
         }
 
         // 加载用户列表
         async function loadUsers() {
             try {
+                console.log('正在加载用户列表...');
                 const response = await fetch(`${CONFIG.API_BASE_URL}/auth/users`);
-                if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status}`);
-                }
-                const data = await response.json();
                 
-                console.log('Loaded users:', data); // Debug log
+                if (!response.ok) {
+                    throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+                }
+                
+                const data = await response.json();
+                console.log('服务器返回数据:', data);
                 
                 if (!data.users || !Array.isArray(data.users)) {
-                    throw new Error('Invalid user data format');
+                    console.error('数据格式错误:', data);
+                    throw new Error('服务器返回的数据格式不正确');
+                }
+                
+                if (data.users.length === 0) {
+                    console.warn('用户列表为空');
+                    showError('系统中暂无用户，请联系管理员添加用户权限');
+                    return;
                 }
                 
                 state.users = data.users;
+                console.log('处理后的用户列表:', state.users);
 
                 // 填充下拉列表
                 userSelect.innerHTML = '<option value="">请选择...</option>';
-                data.users.forEach(user => {
+                
+                data.users.forEach((user, index) => {
+                    console.log(`处理用户 ${index}:`, user);
+                    
                     const option = document.createElement('option');
                     
-                    // 提取用户姓名和部门（处理可能是数组或对象的情况）
+                    // 提取用户姓名和部门
                     const userName = extractFieldValue(user.name);
                     const userDept = extractFieldValue(user.department);
+                    const userRole = extractFieldValue(user.role);
                     
-                    // Store just the name as value, we'll look it up from state.users later
+                    console.log(`  -> 姓名: ${userName}, 部门: ${userDept}, 角色: ${userRole}`);
+                    
+                    // 跳过没有姓名的用户
+                    if (!userName || userName.trim() === '') {
+                        console.warn(`跳过无效用户:`, user);
+                        return;
+                    }
+                    
                     option.value = userName;
                     option.textContent = `${userName} - ${userDept}`;
                     userSelect.appendChild(option);
                 });
+                
+                const optionCount = userSelect.options.length - 1; // 减去"请选择..."
+                console.log(`成功加载 ${optionCount} 个用户`);
+                
+                if (optionCount === 0) {
+                    showError('没有可用的用户，请检查飞书表格数据');
+                }
+                
             } catch (error) {
                 console.error('加载用户列表失败:', error);
                 showError(`加载用户列表失败: ${error.message}，请刷新页面重试`);
@@ -1312,8 +1357,8 @@
         function updateWelcomeScreen(module) {
             const welcomeScreens = {
                 opportunity: {
-                    title: '商机管理助手',
-                    subtitle: '我可以帮您录入、更新、查询商机信息，并进行智能质量评估。选择下方快捷功能开始，或者直接输入您的需求。',
+                    title: '商机管理',
+                    subtitle: '帮您录入、更新、查询商机信息，并进行智能质量评估。选择下方快捷功能开始，或者直接输入您的需求。',
                     cards: [
                         { icon: '+', title: '录入新商机', action: '录入新商机' },
                         { icon: '✎', title: '更新商机', action: '更新商机' },
