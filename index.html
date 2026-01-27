@@ -973,20 +973,31 @@
         async function loadUsers() {
             try {
                 const response = await fetch(`${CONFIG.API_BASE_URL}/auth/users`);
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
                 const data = await response.json();
+                
+                console.log('Loaded users:', data); // Debug log
+                
+                if (!data.users || !Array.isArray(data.users)) {
+                    throw new Error('Invalid user data format');
+                }
+                
                 state.users = data.users;
 
                 // 填充下拉列表
                 userSelect.innerHTML = '<option value="">请选择...</option>';
                 data.users.forEach(user => {
                     const option = document.createElement('option');
-                    option.value = JSON.stringify(user);
+                    // Store just the name as value, we'll look it up from state.users later
+                    option.value = user.name;
                     option.textContent = `${user.name} - ${user.department}`;
                     userSelect.appendChild(option);
                 });
             } catch (error) {
                 console.error('加载用户列表失败:', error);
-                showError('加载用户列表失败，请刷新页面重试');
+                showError(`加载用户列表失败: ${error.message}，请刷新页面重试`);
             }
         }
 
@@ -1059,13 +1070,18 @@
                 return;
             }
 
-            const userData = userSelect.value;
-            if (!userData) {
+            const userName = userSelect.value;
+            if (!userName) {
                 showError('请选择姓名');
                 return;
             }
 
-            const user = JSON.parse(userData);
+            // Find the user from state.users
+            const user = state.users.find(u => u.name === userName);
+            if (!user) {
+                showError('未找到用户信息');
+                return;
+            }
 
             // 验证角色是否匹配
             if (user.role !== selectedRole) {
