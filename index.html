@@ -1017,18 +1017,19 @@
             background: transparent;
             border: none;
             border-radius: 50%;
-            cursor: pointer;
+            cursor: not-allowed;
             font-size: 20px;
             display: flex;
             align-items: center;
             justify-content: center;
             transition: all 0.3s ease;
-            color: var(--text-secondary);
+            color: var(--text-light);
+            opacity: 0.5;
+            position: relative;
         }
 
         .voice-button:hover {
-            background: var(--primary-blue-light);
-            color: var(--primary-blue);
+            background: var(--bg-gray);
         }
 
         .voice-button.recording {
@@ -1040,6 +1041,29 @@
         @keyframes pulse-red {
             0%, 100% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.7); }
             50% { box-shadow: 0 0 0 10px rgba(239, 68, 68, 0); }
+        }
+
+        /* 语音按钮提示 */
+        .voice-button::after {
+            content: '即将上线';
+            position: absolute;
+            bottom: -35px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0, 0, 0, 0.8);
+            color: white;
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-size: 12px;
+            white-space: nowrap;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+            z-index: 1000;
+        }
+
+        .voice-button:hover::after {
+            opacity: 1;
         }
 
         .message-textarea {
@@ -1597,11 +1621,11 @@
             <div class="input-container">
                 <div class="input-wrapper">
                     <div class="input-box">
-                        <button class="voice-button" id="voiceButton" title="语音输入">🎙️</button>
+                        <button class="voice-button" id="voiceButton" title="语音输入（即将上线）" disabled>🎙️</button>
                         <textarea 
                             class="message-textarea" 
                             id="messageTextarea" 
-                            placeholder="输入您的消息，或点击麦克风使用语音..."
+                            placeholder="输入您的消息..."
                             rows="1"
                         ></textarea>
                         <button class="upload-button" id="uploadButton" title="上传文件">📎</button>
@@ -1997,7 +2021,7 @@
             // 显示AI开场白
             const openingMessages = {
                 ecosystem: '👋 嗨！我是你的资源军师。请告诉我客户的名字或者你想找哪类资源（比如：资金、招聘、政府关系）？我来帮你盘盘家底。',
-                opportunity: '🎙️ 收到！我是需求记录员。请直接告诉我客户是谁、想要什么、预算多少？我会帮你整理并打分。（支持语音输入哦）'
+                opportunity: '📝 收到！我是需求记录员。请直接告诉我客户是谁、想要什么、预算多少？我会帮你整理并打分。'
             };
             
             addAIMessage(openingMessages[module], '正在检索资源库...');
@@ -2166,32 +2190,14 @@
 
         document.getElementById('sendButton').addEventListener('click', sendMessage);
 
-        // ==================== 语音输入 ====================
-        document.getElementById('voiceButton').addEventListener('click', () => {
-            const voiceBtn = document.getElementById('voiceButton');
-            
-            if (!state.isRecording) {
-                // 开始录音
-                state.isRecording = true;
-                voiceBtn.classList.add('recording');
-                voiceBtn.textContent = '⏸️';
-                
-                // 这里应该集成真实的语音识别API
-                // 目前仅作演示
-                alert('语音输入功能需要集成语音识别API，如百度语音、讯飞等');
-                
-                setTimeout(() => {
-                    state.isRecording = false;
-                    voiceBtn.classList.remove('recording');
-                    voiceBtn.textContent = '🎙️';
-                }, 3000);
-            } else {
-                // 停止录音
-                state.isRecording = false;
-                voiceBtn.classList.remove('recording');
-                voiceBtn.textContent = '🎙️';
-            }
-        });
+        // ==================== 语音输入（暂未实现） ====================
+        // 语音识别需要集成第三方服务：
+        // 1. 浏览器Web Speech API（免费，仅Chrome支持，需在线）
+        // 2. 百度语音识别 (https://ai.baidu.com/tech/speech)
+        // 3. 讯飞语音识别 (https://www.xfyun.cn/)
+        // 4. 阿里云语音识别 (https://www.aliyun.com/product/nls)
+        // 
+        // 目前按钮已禁用，显示"即将上线"提示
 
         // ==================== 文件上传 ====================
         document.getElementById('uploadButton').addEventListener('click', () => {
