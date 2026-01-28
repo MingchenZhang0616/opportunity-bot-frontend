@@ -862,6 +862,31 @@
             color: var(--accent-purple);
         }
 
+        .clear-history-button {
+            width: 36px;
+            height: 36px;
+            background: var(--bg-gray);
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            color: var(--text-secondary);
+        }
+
+        .clear-history-button:hover {
+            background: rgba(239, 68, 68, 0.1);
+            color: #ef4444;
+            transform: scale(1.05);
+        }
+
+        .clear-history-button:active {
+            transform: scale(0.95);
+        }
+
         .ai-status {
             display: flex;
             align-items: center;
@@ -1646,9 +1671,14 @@
                     <span>💎</span>
                     <span>当前模式：生态资源挖掘</span>
                 </div>
-                <div class="ai-status">
-                    <div class="status-dot"></div>
-                    <span>AI 在线</span>
+                <div style="display: flex; align-items: center; gap: 16px;">
+                    <button class="clear-history-button" id="clearHistoryButton" title="清除对话历史">
+                        🧹
+                    </button>
+                    <div class="ai-status">
+                        <div class="status-dot"></div>
+                        <span>AI 在线</span>
+                    </div>
                 </div>
             </div>
 
@@ -2301,6 +2331,28 @@
             if (state.abortController) {
                 console.log('用户点击终止按钮');
                 state.abortController.abort();
+            }
+        });
+
+        // ==================== 清除对话历史 ====================
+        document.getElementById('clearHistoryButton').addEventListener('click', () => {
+            if (confirm('确定要清除当前对话历史吗？此操作无法撤销。')) {
+                // 清空对话历史数组
+                state.conversationHistory = [];
+                
+                // 清空消息显示区域
+                const messagesArea = document.getElementById('messagesArea');
+                messagesArea.innerHTML = '';
+                
+                // 重新显示AI开场白
+                const openingMessages = {
+                    ecosystem: '👋 嗨！我是你的资源军师。请告诉我客户的名字或者你想找哪类资源（比如：资金、招聘、政府关系）？我来帮你盘盘家底。',
+                    opportunity: '📝 收到！我是需求记录员。请直接告诉我客户是谁、想要什么、预算多少？我会帮你整理并打分。'
+                };
+                
+                addAIMessage(openingMessages[state.currentModule]);
+                
+                console.log('对话历史已清除');
             }
         });
 
