@@ -7,6 +7,8 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+SC:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Markdown 渲染库 -->
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     <style>
         :root {
             /* 主色调 - 白色为主,蓝色绿色为辅 */
@@ -976,6 +978,119 @@
             white-space: pre-wrap;
         }
 
+        /* Markdown 渲染样式 */
+        .message-text h1 {
+            font-size: 22px;
+            font-weight: 700;
+            margin: 20px 0 12px;
+            color: var(--text-primary);
+            border-bottom: 2px solid var(--border-color);
+            padding-bottom: 8px;
+        }
+
+        .message-text h2 {
+            font-size: 18px;
+            font-weight: 600;
+            margin: 16px 0 10px;
+            color: var(--text-primary);
+        }
+
+        .message-text h3 {
+            font-size: 16px;
+            font-weight: 600;
+            margin: 14px 0 8px;
+            color: var(--text-primary);
+        }
+
+        .message-text strong {
+            font-weight: 600;
+            color: var(--primary-blue);
+        }
+
+        .message-text em {
+            font-style: italic;
+            color: var(--text-secondary);
+        }
+
+        .message-text ul, .message-text ol {
+            margin: 12px 0;
+            padding-left: 24px;
+        }
+
+        .message-text li {
+            margin: 6px 0;
+            line-height: 1.8;
+        }
+
+        .message-text code {
+            background: var(--bg-gray);
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-family: 'Consolas', 'Monaco', monospace;
+            font-size: 14px;
+            color: #d63384;
+        }
+
+        .message-text pre {
+            background: var(--bg-gray);
+            padding: 16px;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin: 12px 0;
+        }
+
+        .message-text pre code {
+            background: none;
+            padding: 0;
+            color: var(--text-primary);
+        }
+
+        .message-text blockquote {
+            border-left: 4px solid var(--primary-blue);
+            padding-left: 16px;
+            margin: 12px 0;
+            color: var(--text-secondary);
+            font-style: italic;
+        }
+
+        .message-text a {
+            color: var(--primary-blue);
+            text-decoration: none;
+            border-bottom: 1px solid transparent;
+            transition: border-color 0.2s;
+        }
+
+        .message-text a:hover {
+            border-bottom-color: var(--primary-blue);
+        }
+
+        .message-text hr {
+            border: none;
+            border-top: 1px solid var(--border-color);
+            margin: 20px 0;
+        }
+
+        .message-text table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 12px 0;
+        }
+
+        .message-text th, .message-text td {
+            padding: 10px;
+            border: 1px solid var(--border-color);
+            text-align: left;
+        }
+
+        .message-text th {
+            background: var(--bg-gray);
+            font-weight: 600;
+        }
+
+        .message-text p {
+            margin: 8px 0;
+        }
+
         .message.user .message-text {
             background: var(--primary-blue);
             color: white;
@@ -1731,6 +1846,46 @@
         };
 
         // ==================== 工具函数 ====================
+        /**
+         * 渲染 Markdown 文本为 HTML
+         */
+        function renderMarkdown(text) {
+            if (typeof marked !== 'undefined' && marked.parse) {
+                try {
+                    // 配置 marked 选项
+                    marked.setOptions({
+                        breaks: true,  // 支持 GitHub 风格的换行
+                        gfm: true,     // 启用 GitHub Flavored Markdown
+                        headerIds: false,
+                        mangle: false
+                    });
+                    return marked.parse(text);
+                } catch (e) {
+                    console.error('Markdown 渲染失败:', e);
+                    // 降级：使用简单替换
+                    return simpleMarkdownRender(text);
+                }
+            } else {
+                // marked.js 未加载，使用简单替换
+                return simpleMarkdownRender(text);
+            }
+        }
+
+        /**
+         * 简单的 Markdown 渲染（降级方案）
+         */
+        function simpleMarkdownRender(text) {
+            return text
+                .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')  // 粗体
+                .replace(/\*(.*?)\*/g, '<em>$1</em>')              // 斜体
+                .replace(/^### (.*?)$/gm, '<h3>$1</h3>')           // h3
+                .replace(/^## (.*?)$/gm, '<h2>$1</h2>')            // h2
+                .replace(/^# (.*?)$/gm, '<h1>$1</h1>')             // h1
+                .replace(/^- (.*?)$/gm, '<li>$1</li>')             // 列表项
+                .replace(/(<li>.*<\/li>)/g, '<ul>$1</ul>')         // 包裹ul
+                .replace(/\n/g, '<br>');                            // 换行
+        }
+
         function extractFieldValue(fieldValue) {
             if (fieldValue === null || fieldValue === undefined) return '';
             if (typeof fieldValue === 'string') return fieldValue;
@@ -2151,7 +2306,7 @@
             if (text) {
                 setTimeout(() => {
                     const textDiv = messageDiv.querySelector('.message-text');
-                    textDiv.textContent = text;
+                    textDiv.innerHTML = renderMarkdown(text);  // 使用 innerHTML + Markdown 渲染
                     // 这是静态消息，立即移除 id
                     messageDiv.removeAttribute('id');
                 }, 300);
@@ -2162,7 +2317,7 @@
             const currentMsg = document.getElementById('current-ai-message');
             if (currentMsg) {
                 const textDiv = currentMsg.querySelector('.message-text');
-                textDiv.textContent = text;
+                textDiv.innerHTML = renderMarkdown(text);  // 使用 innerHTML + Markdown 渲染
                 // 只在明确指定时才移除 id（流式传输完成时）
                 if (!keepId) {
                     currentMsg.removeAttribute('id');
