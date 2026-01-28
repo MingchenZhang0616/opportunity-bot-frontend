@@ -163,6 +163,162 @@
             color: var(--text-primary);
         }
 
+        /* 通知下拉框 */
+        .notification-dropdown {
+            position: absolute;
+            top: 50px;
+            right: 80px;
+            width: 320px;
+            background: var(--bg-white);
+            border-radius: 12px;
+            box-shadow: var(--shadow-lg);
+            border: 1px solid var(--border-color);
+            display: none;
+            z-index: 1000;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+
+        .notification-dropdown.active {
+            display: block;
+            animation: fadeIn 0.2s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .notification-header {
+            padding: 16px 20px;
+            border-bottom: 1px solid var(--border-color);
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .notification-list {
+            padding: 8px 0;
+        }
+
+        .notification-item {
+            padding: 16px 20px;
+            border-bottom: 1px solid var(--border-color);
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .notification-item:last-child {
+            border-bottom: none;
+        }
+
+        .notification-item:hover {
+            background: var(--bg-gray);
+        }
+
+        .notification-item.unread {
+            background: rgba(46, 84, 161, 0.05);
+        }
+
+        .notification-title {
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--text-primary);
+            margin-bottom: 4px;
+        }
+
+        .notification-text {
+            font-size: 13px;
+            color: var(--text-secondary);
+            margin-bottom: 8px;
+        }
+
+        .notification-time {
+            font-size: 12px;
+            color: var(--text-light);
+        }
+
+        .notification-empty {
+            padding: 40px 20px;
+            text-align: center;
+            color: var(--text-secondary);
+            font-size: 14px;
+        }
+
+        /* 用户下拉菜单 */
+        .user-dropdown {
+            position: absolute;
+            top: 50px;
+            right: 48px;
+            width: 240px;
+            background: var(--bg-white);
+            border-radius: 12px;
+            box-shadow: var(--shadow-lg);
+            border: 1px solid var(--border-color);
+            display: none;
+            z-index: 1000;
+        }
+
+        .user-dropdown.active {
+            display: block;
+            animation: fadeIn 0.2s ease-out;
+        }
+
+        .user-dropdown-header {
+            padding: 20px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .user-dropdown-name {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 4px;
+        }
+
+        .user-dropdown-role {
+            font-size: 13px;
+            color: var(--text-secondary);
+            margin-bottom: 2px;
+        }
+
+        .user-dropdown-dept {
+            font-size: 13px;
+            color: var(--text-light);
+        }
+
+        .user-dropdown-actions {
+            padding: 8px;
+        }
+
+        .user-dropdown-btn {
+            width: 100%;
+            padding: 12px 16px;
+            background: transparent;
+            border: none;
+            border-radius: 8px;
+            text-align: left;
+            font-size: 14px;
+            color: var(--text-primary);
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .user-dropdown-btn:hover {
+            background: var(--bg-gray);
+        }
+
+        .user-dropdown-btn.logout {
+            color: #ef4444;
+        }
+
+        .user-dropdown-btn.logout:hover {
+            background: rgba(239, 68, 68, 0.1);
+        }
+
         /* 英雄区 - 欢迎语 */
         .hero-section {
             max-width: 1400px;
@@ -353,6 +509,7 @@
             padding: 48px;
             text-align: center;
             position: relative;
+            margin-bottom: 48px;
         }
 
         .guide-header.purple-theme {
@@ -394,12 +551,12 @@
         }
 
         .guide-content {
-            max-width: 1400px;
-            margin: -40px auto 60px;
-            padding: 0 48px;
+            max-width: 1200px;
+            margin: 0 auto 60px;
+            padding: 0 40px;
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 60px;
+            gap: 40px;
         }
 
         .guide-section {
@@ -413,7 +570,7 @@
             font-size: 24px;
             font-weight: 700;
             color: var(--text-primary);
-            margin-bottom: 24px;
+            margin-bottom: 16px;
             display: flex;
             align-items: center;
             gap: 12px;
@@ -425,6 +582,15 @@
             height: 24px;
             background: var(--primary-blue);
             border-radius: 2px;
+        }
+
+        .guide-section > p {
+            margin-bottom: 20px;
+        }
+
+        .guide-section h4 {
+            margin-top: 24px;
+            margin-bottom: 12px;
         }
 
         .guide-features {
@@ -944,7 +1110,7 @@
             justify-content: space-between;
         }
 
-        /* 登录页面 (保持原有逻辑) */
+        /* 登录页面 */
         .login-page {
             position: fixed;
             top: 0;
@@ -959,7 +1125,7 @@
         }
 
         .login-page.hidden {
-            display: none;
+            display: none !important;
         }
 
         .login-card {
@@ -1173,7 +1339,7 @@
             <div class="login-logo">
                 <div class="login-icon">🧠</div>
                 <h1 class="login-title">拓维生态大脑</h1>
-                <p class="login-subtitle">Talkweb House 数字化赋能平台</p>
+                <p class="login-subtitle">Eco-Brain - 智能商机与生态资源管理</p>
             </div>
 
             <form id="loginForm">
@@ -1214,13 +1380,35 @@
                 <span class="navbar-version">v1.0</span>
             </div>
             <div class="navbar-right">
-                <div class="notification-icon">
+                <div class="notification-icon" id="notificationIcon">
                     🔔
                     <span class="notification-badge">3</span>
                 </div>
-                <div class="user-menu">
+                <!-- 通知下拉框 -->
+                <div class="notification-dropdown" id="notificationDropdown">
+                    <div class="notification-header">通知中心</div>
+                    <div class="notification-list" id="notificationList">
+                        <!-- 通知项将动态加载 -->
+                    </div>
+                </div>
+                
+                <div class="user-menu" id="userMenu">
                     <div class="user-avatar-small" id="navUserAvatar">张</div>
                     <span class="user-name" id="navUserName">张鸣宸</span>
+                </div>
+                <!-- 用户下拉菜单 -->
+                <div class="user-dropdown" id="userDropdown">
+                    <div class="user-dropdown-header">
+                        <div class="user-dropdown-name" id="dropdownUserName">张鸣宸</div>
+                        <div class="user-dropdown-role" id="dropdownUserRole">销售</div>
+                        <div class="user-dropdown-dept" id="dropdownUserDept">销售部</div>
+                    </div>
+                    <div class="user-dropdown-actions">
+                        <button class="user-dropdown-btn logout" id="logoutBtn">
+                            <span>🚪</span>
+                            <span>退出登录</span>
+                        </button>
+                    </div>
                 </div>
             </div>
         </nav>
@@ -1231,7 +1419,7 @@
                 下午好，<span class="user-highlight" id="heroUserName">张鸣宸</span>。<br>
                 今天你是想<strong>"搞定客户"</strong>还是<strong>"呼唤炮火"</strong>？
             </h1>
-            <p class="hero-subtitle">拓维 Talkweb House 数字化赋能平台</p>
+            <p class="hero-subtitle">基于AI +高质量数据集的集团级生态链接与销售赋能智能体</p>
         </section>
 
         <!-- 双卡片区 -->
@@ -1603,13 +1791,114 @@
             document.getElementById('navUserName').textContent = state.user.name;
             document.getElementById('heroUserName').textContent = state.user.name;
             
+            // 更新下拉菜单中的用户信息
+            document.getElementById('dropdownUserName').textContent = state.user.name;
+            document.getElementById('dropdownUserRole').textContent = state.user.isAdmin ? '管理员' : '销售';
+            document.getElementById('dropdownUserDept').textContent = state.user.department || '销售部';
+            
             // 更新欢迎语
             const greeting = getGreeting();
             document.querySelector('.hero-greeting').innerHTML = `
                 ${greeting}，<span class="user-highlight">${state.user.name}</span>。<br>
                 今天你是想<strong>"搞定客户"</strong>还是<strong>"呼唤炮火"</strong>？
             `;
+            
+            // 加载通知
+            loadNotifications();
         }
+
+        // ==================== 通知和用户菜单 ====================
+        function loadNotifications() {
+            const notificationList = document.getElementById('notificationList');
+            
+            // 模拟通知数据（实际应该从后端API获取）
+            const notifications = [
+                {
+                    id: 1,
+                    title: '需求已通过',
+                    text: '您提交的"智慧校园"需求已通过初审，产品部正在评估中',
+                    time: '2小时前',
+                    unread: true
+                },
+                {
+                    id: 2,
+                    title: '商机打回',
+                    text: '华为项目需求信息不完整，请补充预算信息',
+                    time: '5小时前',
+                    unread: true
+                },
+                {
+                    id: 3,
+                    title: '系统通知',
+                    text: '拓维生态大脑v1.0已上线，欢迎使用！',
+                    time: '1天前',
+                    unread: false
+                }
+            ];
+            
+            if (notifications.length === 0) {
+                notificationList.innerHTML = '<div class="notification-empty">暂无通知</div>';
+            } else {
+                notificationList.innerHTML = notifications.map(notif => `
+                    <div class="notification-item ${notif.unread ? 'unread' : ''}">
+                        <div class="notification-title">${notif.title}</div>
+                        <div class="notification-text">${notif.text}</div>
+                        <div class="notification-time">${notif.time}</div>
+                    </div>
+                `).join('');
+            }
+        }
+
+        // 通知图标点击事件
+        document.getElementById('notificationIcon').addEventListener('click', (e) => {
+            e.stopPropagation();
+            const dropdown = document.getElementById('notificationDropdown');
+            const userDropdown = document.getElementById('userDropdown');
+            
+            // 关闭用户下拉菜单
+            userDropdown.classList.remove('active');
+            
+            // 切换通知下拉菜单
+            dropdown.classList.toggle('active');
+        });
+
+        // 用户菜单点击事件
+        document.getElementById('userMenu').addEventListener('click', (e) => {
+            e.stopPropagation();
+            const dropdown = document.getElementById('userDropdown');
+            const notifDropdown = document.getElementById('notificationDropdown');
+            
+            // 关闭通知下拉菜单
+            notifDropdown.classList.remove('active');
+            
+            // 切换用户下拉菜单
+            dropdown.classList.toggle('active');
+        });
+
+        // 点击页面其他地方关闭下拉菜单
+        document.addEventListener('click', () => {
+            document.getElementById('notificationDropdown').classList.remove('active');
+            document.getElementById('userDropdown').classList.remove('active');
+        });
+
+        // 退出登录
+        document.getElementById('logoutBtn').addEventListener('click', () => {
+            if (confirm('确定要退出登录吗？')) {
+                localStorage.removeItem('user');
+                state.user = null;
+                state.conversationHistory = [];
+                state.currentModule = null;
+                
+                // 隐藏所有页面
+                document.getElementById('homeDashboard').classList.add('hidden');
+                document.getElementById('ecoGuide').classList.remove('active');
+                document.getElementById('demandGuide').classList.remove('active');
+                document.getElementById('chatPage').classList.remove('active');
+                
+                // 显示登录页面
+                document.getElementById('loginPage').classList.remove('hidden');
+            }
+        });
 
         function goHome() {
             // 隐藏所有页面
@@ -1886,12 +2175,19 @@
             if (savedUser) {
                 try {
                     state.user = JSON.parse(savedUser);
+                    // 隐藏登录页，显示首页
+                    document.getElementById('loginPage').classList.add('hidden');
                     showHomeDashboard();
                 } catch (e) {
                     console.error('加载用户信息失败:', e);
                     localStorage.removeItem('user');
+                    // 显示登录页
+                    document.getElementById('loginPage').classList.remove('hidden');
+                    await loadUsers();
                 }
             } else {
+                // 显示登录页
+                document.getElementById('loginPage').classList.remove('hidden');
                 await loadUsers();
             }
         }
