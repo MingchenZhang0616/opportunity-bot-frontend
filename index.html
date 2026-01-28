@@ -1679,13 +1679,70 @@
         // ==================== 登录逻辑 ====================
         async function loadUsers() {
             try {
+                console.log('正在从服务器加载用户列表...');
+                console.log('API地址:', `${CONFIG.API_BASE_URL}/auth/users`);
+                
                 const response = await fetch(`${CONFIG.API_BASE_URL}/auth/users`);
-                if (!response.ok) throw new Error(`HTTP ${response.status}`);
+                console.log('服务器响应状态:', response.status);
+                
+                if (!response.ok) {
+                    throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+                }
                 
                 const data = await response.json();
+                console.log('服务器返回数据:', data);
+                
                 if (!data.users || !Array.isArray(data.users)) {
                     throw new Error('服务器返回的数据格式不正确');
                 }
+                
+                if (data.users.length === 0) {
+                    console.warn('用户列表为空');
+                    showError('系统中暂无用户，请联系管理员');
+                    return;
+                }
+                
+                state.users = data.users;
+                const userSelect = document.getElementById('userSelect');
+                
+                if (!userSelect) {
+                    console.error('找不到用户选择下拉框元素');
+                    return;
+                }
+                
+                userSelect.innerHTML = '<option value="">请选择...</option>';
+                console.log(`开始填充 ${data.users.length} 个用户到下拉列表...`);
+                
+                let addedCount = 0;
+                data.users.forEach((user, index) => {
+                    const userName = extractFieldValue(user.name);
+                    const userDept = extractFieldValue(user.department);
+                    
+                    console.log(`处理用户 ${index + 1}: 姓名=${userName}, 部门=${userDept}`);
+                    
+                    if (!userName || userName.trim() === '') {
+                        console.warn(`跳过无效用户 ${index + 1}:`, user);
+                        return;
+                    }
+                    
+                    const option = document.createElement('option');
+                    option.value = userName;
+                    option.textContent = `${userName} - ${userDept}`;
+                    userSelect.appendChild(option);
+                    addedCount++;
+                });
+                
+                console.log(`✓ 成功加载 ${addedCount} 个用户到下拉列表`);
+                
+                if (addedCount === 0) {
+                    showError('没有可用的用户，请检查飞书表格数据');
+                }
+                
+            } catch (error) {
+                console.error('加载用户列表失败:', error);
+                showError(`加载用户列表失败: ${error.message}。请检查网络连接或刷新页面重试`);
+            }
+        }
                 
                 state.users = data.users;
                 const userSelect = document.getElementById('userSelect');
@@ -1711,25 +1768,29 @@
         // 登录表单处理
         let selectedRole = null;
         
-        document.querySelectorAll('.role-button').forEach(btn => {
-            btn.addEventListener('click', () => {
-                document.querySelectorAll('.role-button').forEach(b => b.classList.remove('active'));
-                btn.classList.add('active');
-                selectedRole = btn.dataset.role;
-                
-                const adminGroup = document.getElementById('adminSecretGroup');
-                const adminSecret = document.getElementById('adminSecret');
-                if (selectedRole === '管理员') {
-                    adminGroup.classList.add('visible');
-                    adminSecret.required = true;
-                } else {
-                    adminGroup.classList.remove('visible');
-                    adminSecret.required = false;
-                }
+        function initLoginForm() {
+            document.querySelectorAll('.role-button').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    document.querySelectorAll('.role-button').forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+                    selectedRole = btn.dataset.role;
+                    
+                    const adminGroup = document.getElementById('adminSecretGroup');
+                    const adminSecret = document.getElementById('adminSecret');
+                    if (selectedRole === '管理员') {
+                        adminGroup.classList.add('visible');
+                        adminSecret.required = true;
+                    } else {
+                        adminGroup.classList.remove('visible');
+                        adminSecret.required = false;
+                    }
+                });
             });
-        });
 
-        document.getElementById('loginForm').addEventListener('submit', async (e) => {
+            document.getElementById('loginForm').addEventListener('submit', handleLoginSubmit);
+        }
+
+        async function handleLoginSubmit(e) {
             e.preventDefault();
             
             if (!selectedRole) {
@@ -1778,7 +1839,7 @@
                 console.error('登录失败:', error);
                 showError('登录失败，请检查网络连接');
             }
-        });
+        }
 
         // ==================== 页面导航 ====================
         function showHomeDashboard() {
@@ -2170,6 +2231,9 @@
 
         // ==================== 初始化 ====================
         async function init() {
+            // 初始化登录表单事件监听
+            initLoginForm();
+            
             // 检查是否已登录
             const savedUser = localStorage.getItem('user');
             if (savedUser) {
@@ -2181,19 +2245,25 @@
                 } catch (e) {
                     console.error('加载用户信息失败:', e);
                     localStorage.removeItem('user');
-                    // 显示登录页
+                    // 显示登录页，加载用户列表
                     document.getElementById('loginPage').classList.remove('hidden');
                     await loadUsers();
                 }
             } else {
-                // 显示登录页
+                // 未登录，显示登录页并加载用户列表
                 document.getElementById('loginPage').classList.remove('hidden');
+                console.log('开始加载用户列表...');
                 await loadUsers();
+                console.log('用户列表加载完成');
             }
         }
 
-        // 启动应用
-        init();
+        // 页面加载完成后启动应用
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', init);
+        } else {
+            init();
+        }
     </script>
 </body>
 </html>
