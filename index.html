@@ -1743,27 +1743,6 @@
                 showError(`加载用户列表失败: ${error.message}。请检查网络连接或刷新页面重试`);
             }
         }
-                
-                state.users = data.users;
-                const userSelect = document.getElementById('userSelect');
-                userSelect.innerHTML = '<option value="">请选择...</option>';
-                
-                data.users.forEach(user => {
-                    const userName = extractFieldValue(user.name);
-                    const userDept = extractFieldValue(user.department);
-                    
-                    if (!userName || userName.trim() === '') return;
-                    
-                    const option = document.createElement('option');
-                    option.value = userName;
-                    option.textContent = `${userName} - ${userDept}`;
-                    userSelect.appendChild(option);
-                });
-            } catch (error) {
-                console.error('加载用户列表失败:', error);
-                showError('加载用户列表失败，请刷新页面重试');
-            }
-        }
 
         // 登录表单处理
         let selectedRole = null;
