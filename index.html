@@ -2152,16 +2152,29 @@
                 setTimeout(() => {
                     const textDiv = messageDiv.querySelector('.message-text');
                     textDiv.textContent = text;
+                    // 这是静态消息，立即移除 id
                     messageDiv.removeAttribute('id');
                 }, 300);
             }
         }
 
-        function updateAIMessage(text) {
+        function updateAIMessage(text, keepId = true) {
             const currentMsg = document.getElementById('current-ai-message');
             if (currentMsg) {
                 const textDiv = currentMsg.querySelector('.message-text');
                 textDiv.textContent = text;
+                // 只在明确指定时才移除 id（流式传输完成时）
+                if (!keepId) {
+                    currentMsg.removeAttribute('id');
+                }
+            } else {
+                console.warn('[updateAIMessage] 找不到消息元素 current-ai-message');
+            }
+        }
+        
+        function finalizeAIMessage() {
+            const currentMsg = document.getElementById('current-ai-message');
+            if (currentMsg) {
                 currentMsg.removeAttribute('id');
             }
         }
@@ -2233,29 +2246,39 @@
                         try {
                             event = JSON.parse(line.slice(6)); // 去掉 "data: " 前缀
                         } catch (e) {
-                            console.warn('解析 SSE 事件失败:', line, e);
+                            console.warn('[SSE] 解析事件失败:', line, e);
                             continue;
                         }
+
+                        console.log('[SSE] 收到事件:', event.type, event);
 
                         switch (event.type) {
                             case 'status':
                                 // 中间状态提示（如"正在检索资源库..."）
+                                console.log('[SSE] 状态更新:', event.text);
                                 updateAIMessage(event.text);
                                 break;
 
                             case 'text':
                                 // 流式文本片段，追加到消息
+                                console.log('[SSE] 收到文本片段:', event.text);
                                 fullText += event.text;
+                                console.log('[SSE] 当前完整内容长度:', fullText.length, '字符');
                                 updateAIMessage(fullText);
+                                // 自动滚动到底部
+                                const messagesArea = document.getElementById('messagesArea');
+                                messagesArea.scrollTop = messagesArea.scrollHeight;
                                 break;
 
                             case 'error':
-                                updateAIMessage('❌ ' + event.text);
+                                console.error('[SSE] 错误:', event.text);
+                                updateAIMessage('❌ ' + event.text, false);
                                 break;
 
                             case 'done':
                                 // 后端发出 done 信号，表示生成结束
-                                console.log('[SSE] 生成完成');
+                                console.log('[SSE] 生成完成，总字符数:', fullText.length);
+                                finalizeAIMessage();
                                 break;
                         }
                     }
@@ -2273,23 +2296,28 @@
                 if (error.name === 'AbortError') {
                     // 用户点击终止按钮
                     wasAborted = true;
-                    console.log('[SSE] 用户已终止生成');
+                    console.log('[SSE] 用户已终止生成，当前内容长度:', fullText.length);
                     // 如果已经有部分内容，在末尾加上终止标记
                     if (fullText) {
-                        updateAIMessage(fullText + '\n\n---\n*已终止生成*');
+                        updateAIMessage(fullText + '\n\n---\n*已终止生成*', false);
                     } else {
-                        updateAIMessage('已终止生成。');
+                        updateAIMessage('已终止生成。', false);
                     }
                 } else {
-                    console.error('发送消息失败:', error);
-                    updateAIMessage('抱歉，发送消息失败，请稍后重试。');
+                    console.error('[sendMessage] 发送消息失败:', error);
+                    updateAIMessage('抱歉，发送消息失败，请稍后重试。', false);
                 }
             } finally {
+                // 确保消息已完成
+                finalizeAIMessage();
+                
                 // 恢复发送按钮，隐藏终止按钮
                 sendBtn.disabled = false;
                 sendBtn.style.display = 'flex';
                 stopBtn.classList.remove('visible');
                 state.abortController = null;
+                
+                console.log('[sendMessage] 流式响应结束，最终内容长度:', fullText.length);
             }
         }
 
