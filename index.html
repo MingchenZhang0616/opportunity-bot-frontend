@@ -2494,33 +2494,115 @@
             return '晚上好';
         }
 
+        // ==================== 硬编码用户数据（基于拓维最新组织架构） ====================
+        const HARDCODED_USERS = {
+            // 用户组织结构
+            groups: [
+                {
+                    name: "董事会/总裁办",
+                    users: [
+                        { name: "李新宇", role: "管理员", department: "董事会", position: "董事长", roleType: "超级管理员" },
+                        { name: "张鸣宸", role: "管理员", department: "总裁办", position: "董事长助理", roleType: "超级管理员" }
+                    ]
+                },
+                {
+                    name: "集团高管",
+                    users: [
+                        { name: "胡晓棣", role: "管理员", department: "集团", position: "高级副总裁、COO", roleType: "VP管理员" },
+                        { name: "廖秋林", role: "管理员", department: "开鸿事业群", position: "副总裁、开鸿总裁", roleType: "VP管理员" },
+                        { name: "杨征", role: "管理员", department: "交通行业部", position: "副总裁", roleType: "VP管理员" },
+                        { name: "柏丙军", role: "管理员", department: "交付服务中心", position: "副总裁", roleType: "VP管理员" },
+                        { name: "李曙光", role: "管理员", department: "中央研究院", position: "副总裁、CTO、院长", roleType: "VP管理员" },
+                        { name: "汪卓", role: "管理员", department: "区域平台", position: "副总裁", roleType: "VP管理员" }
+                    ]
+                },
+                {
+                    name: "中央研究院",
+                    users: [
+                        { name: "冯冰凛", role: "技术专家", department: "中研院-开鸿产研", position: "副院长", roleType: "技术专家" },
+                        { name: "蒋真", role: "技术专家", department: "中研院-产品销售", position: "产品销售负责人", roleType: "技术专家" },
+                        { name: "凯铎", role: "技术专家", department: "中研院-AI平台", position: "AI工程师", roleType: "技术专家" }
+                    ]
+                },
+                {
+                    name: "行业部",
+                    users: [
+                        { name: "欧阳晓强", role: "业务专家", department: "运营商行业部", position: "总经理", roleType: "行业负责人" },
+                        { name: "赵帅", role: "业务专家", department: "工业行业部", position: "总经理", roleType: "行业负责人" },
+                        { name: "曾春江", role: "业务专家", department: "交通行业部", position: "总经理", roleType: "行业负责人" },
+                        { name: "刘斐", role: "业务专家", department: "智能政府行业部", position: "总经理", roleType: "行业负责人" },
+                        { name: "海云天-张总", role: "管理员", department: "教育考试行业部", position: "总经理", roleType: "行业负责人" },
+                        { name: "云创-李总", role: "业务专家", department: "云创行业部", position: "总经理", roleType: "行业负责人" },
+                        { name: "游戏-小强", role: "业务专家", department: "游戏行业部", position: "总经理", roleType: "行业负责人" }
+                    ]
+                },
+                {
+                    name: "产品线",
+                    users: [
+                        { name: "梁栋", role: "管理员", department: "开鸿营销中心", position: "总经理", roleType: "平台负责人" },
+                        { name: "王敏", role: "业务专家", department: "计算产品线", position: "副总经理", roleType: "业务专家" }
+                    ]
+                },
+                {
+                    name: "区域平台",
+                    users: [
+                        // 注意：赵帅、杨征、蒋真、汪卓、梁栋 在其他组已有，此处仅作为平台标识
+                    ]
+                },
+                {
+                    name: "交付服务中心",
+                    users: [
+                        { name: "唐晓东", role: "管理员", department: "交付服务中心", position: "总经理", roleType: "平台负责人" }
+                    ]
+                },
+                {
+                    name: "一线销售",
+                    users: [
+                        { name: "王磊", role: "销售", department: "销售一部", position: "客户经理", roleType: "销售" },
+                        { name: "陈晓峰", role: "销售", department: "销售一部", position: "客户经理", roleType: "销售" },
+                        { name: "刘婷", role: "销售", department: "销售二部", position: "客户经理", roleType: "销售" },
+                        { name: "赵阳", role: "销售", department: "销售二部", position: "客户经理", roleType: "销售" }
+                    ]
+                }
+            ],
+            
+            // 获取所有用户的扁平列表
+            getAllUsers: function() {
+                const allUsers = [];
+                const seenNames = new Set();
+                this.groups.forEach(group => {
+                    group.users.forEach(user => {
+                        if (!seenNames.has(user.name)) {
+                            seenNames.add(user.name);
+                            allUsers.push(user);
+                        }
+                    });
+                });
+                return allUsers;
+            },
+            
+            // 根据姓名查找用户
+            findUser: function(name) {
+                return this.getAllUsers().find(u => u.name === name);
+            },
+            
+            // 验证用户角色
+            verifyRole: function(name, role) {
+                const user = this.findUser(name);
+                if (!user) return false;
+                return user.role === role;
+            }
+        };
+
         // ==================== 登录逻辑 ====================
         async function loadUsers() {
             try {
-                console.log('正在从服务器加载用户列表...');
-                console.log('API地址:', `${CONFIG.API_BASE_URL}/auth/users`);
+                console.log('使用硬编码用户数据...');
                 
-                const response = await fetch(`${CONFIG.API_BASE_URL}/auth/users`);
-                console.log('服务器响应状态:', response.status);
+                // 直接使用硬编码数据，不调用API
+                const allUsers = HARDCODED_USERS.getAllUsers();
+                state.users = allUsers;
                 
-                if (!response.ok) {
-                    throw new Error(`HTTP ${response.status}: ${response.statusText}`);
-                }
-                
-                const data = await response.json();
-                console.log('服务器返回数据:', data);
-                
-                if (!data.users || !Array.isArray(data.users)) {
-                    throw new Error('服务器返回的数据格式不正确');
-                }
-                
-                if (data.users.length === 0) {
-                    console.warn('用户列表为空');
-                    showError('系统中暂无用户，请联系管理员');
-                    return;
-                }
-                
-                state.users = data.users;
                 const userSelect = document.getElementById('userSelect');
                 
                 if (!userSelect) {
@@ -2529,36 +2611,32 @@
                 }
                 
                 userSelect.innerHTML = '<option value="">请选择...</option>';
-                console.log(`开始填充 ${data.users.length} 个用户到下拉列表...`);
                 
+                // 按组分类显示用户
                 let addedCount = 0;
-                data.users.forEach((user, index) => {
-                    const userName = extractFieldValue(user.name);
-                    const userDept = extractFieldValue(user.department);
+                HARDCODED_USERS.groups.forEach(group => {
+                    if (group.users.length === 0) return;
                     
-                    console.log(`处理用户 ${index + 1}: 姓名=${userName}, 部门=${userDept}`);
+                    // 添加组标题（optgroup）
+                    const optgroup = document.createElement('optgroup');
+                    optgroup.label = group.name;
                     
-                    if (!userName || userName.trim() === '') {
-                        console.warn(`跳过无效用户 ${index + 1}:`, user);
-                        return;
-                    }
+                    group.users.forEach(user => {
+                        const option = document.createElement('option');
+                        option.value = user.name;
+                        option.textContent = `${user.name} - ${user.department}`;
+                        optgroup.appendChild(option);
+                        addedCount++;
+                    });
                     
-                    const option = document.createElement('option');
-                    option.value = userName;
-                    option.textContent = `${userName} - ${userDept}`;
-                    userSelect.appendChild(option);
-                    addedCount++;
+                    userSelect.appendChild(optgroup);
                 });
                 
-                console.log(`✓ 成功加载 ${addedCount} 个用户到下拉列表`);
-                
-                if (addedCount === 0) {
-                    showError('没有可用的用户，请检查飞书表格数据');
-                }
+                console.log(`✓ 成功加载 ${addedCount} 个用户到下拉列表（硬编码数据）`);
                 
             } catch (error) {
                 console.error('加载用户列表失败:', error);
-                showError(`加载用户列表失败: ${error.message}。请检查网络连接或刷新页面重试`);
+                showError(`加载用户列表失败: ${error.message}`);
             }
         }
 
@@ -2601,41 +2679,49 @@
                 return;
             }
             
-            const user = state.users.find(u => extractFieldValue(u.name) === userName);
+            // 使用硬编码数据查找用户
+            const user = HARDCODED_USERS.findUser(userName);
             if (!user) {
                 showError('未找到用户信息');
                 return;
             }
             
-            const userRole = extractFieldValue(user.role);
+            // 验证角色是否匹配
+            const userRole = user.role;
             if (userRole !== selectedRole) {
                 showError(`该用户的角色是"${userRole}"，请选择正确的身份`);
                 return;
             }
             
-            try {
-                const response = await fetch(`${CONFIG.API_BASE_URL}/auth/login`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        name: userName,
-                        role: selectedRole,
-                        secret: selectedRole === '管理员' ? document.getElementById('adminSecret').value : null
-                    })
-                });
-                
-                const data = await response.json();
-                if (data.success) {
-                    state.user = data.user;
-                    localStorage.setItem('user', JSON.stringify(data.user));
-                    showHomeDashboard();
-                } else {
-                    showError(data.error);
+            // 本地验证管理员密钥
+            const ADMIN_SECRET = 'Talkweb4Ever#2026#';
+            let isAdmin = false;
+            
+            if (selectedRole === '管理员') {
+                const inputSecret = document.getElementById('adminSecret').value;
+                if (inputSecret !== ADMIN_SECRET) {
+                    showError('管理员密钥错误');
+                    return;
                 }
-            } catch (error) {
-                console.error('登录失败:', error);
-                showError('登录失败，请检查网络连接');
+                isAdmin = true;
             }
+            
+            // 构建用户信息对象
+            const userInfo = {
+                name: user.name,
+                role: user.role,
+                department: user.department,
+                position: user.position,
+                roleType: user.roleType,
+                isAdmin: isAdmin
+            };
+            
+            // 登录成功
+            state.user = userInfo;
+            localStorage.setItem('user', JSON.stringify(userInfo));
+            showHomeDashboard();
+            
+            console.log('登录成功:', userInfo);
         }
 
         // ==================== 页面导航 ====================
