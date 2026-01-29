@@ -1838,8 +1838,10 @@
         
         .opportunity-table-section {
             width: 450px;
+            min-width: 300px;
+            max-width: 800px;
             background: var(--bg-white);
-            border-left: 1px solid var(--border-color);
+            border-left: none;  /* 分隔条代替边框 */
             display: none;
             flex-direction: column;
         }
@@ -2007,15 +2009,71 @@
             margin: 4px 0;
         }
 
+        /* =========================
+           可拖拽分隔条样式
+        ========================= */
+        .resizer {
+            width: 6px;
+            background: var(--border-color);
+            cursor: col-resize;
+            flex-shrink: 0;
+            transition: background 0.2s ease;
+            position: relative;
+            display: none;  /* 默认隐藏，表格显示时才显示 */
+        }
+
+        .resizer.visible {
+            display: block;
+        }
+
+        .resizer:hover,
+        .resizer.dragging {
+            background: var(--primary-blue);
+        }
+
+        .resizer::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 2px;
+            height: 30px;
+            background: var(--text-light);
+            border-radius: 1px;
+            opacity: 0.5;
+            transition: opacity 0.2s ease;
+        }
+
+        .resizer:hover::before,
+        .resizer.dragging::before {
+            opacity: 1;
+            background: white;
+        }
+
+        /* 拖拽时禁止选中文本 */
+        body.resizing {
+            user-select: none;
+            cursor: col-resize !important;
+        }
+
+        body.resizing * {
+            cursor: col-resize !important;
+        }
+
         /* 响应式调整 */
         @media (max-width: 1400px) {
             .opportunity-table-section {
                 width: 380px;
+                min-width: 300px;
             }
         }
 
         @media (max-width: 1200px) {
             .opportunity-table-section {
+                display: none !important;
+            }
+            .resizer {
                 display: none !important;
             }
         }
@@ -2313,6 +2371,9 @@
                 </div>
             </div>
         </main>
+
+        <!-- 可拖拽分隔条 -->
+        <div class="resizer" id="resizer"></div>
 
         <!-- 商机表格展示区域 -->
         <aside class="opportunity-table-section" id="opportunityTableSection">
@@ -2733,12 +2794,15 @@
             
             // 控制商机表格显示（只在商机管理模块显示）
             const tableSection = document.getElementById('opportunityTableSection');
+            const resizer = document.getElementById('resizer');
             if (module === 'opportunity') {
                 tableSection.classList.add('visible');
+                resizer.classList.add('visible');
                 // 加载用户的商机列表
                 loadUserOpportunities();
             } else {
                 tableSection.classList.remove('visible');
+                resizer.classList.remove('visible');
             }
             
             // 更新侧边栏用户信息
@@ -3156,11 +3220,15 @@
                 const scoreClass = score >= 80 ? 'high' : score >= 60 ? 'medium' : 'low';
                 const status = opp.current_status || '草稿';
                 
+                const customerName = extractFieldValue(opp.customer_name);
+                const projectSummary = extractFieldValue(opp.project_summary);
+                const opportunityId = extractFieldValue(opp.opportunity_id);
+                
                 html += `
-                    <tr class="${isHighlighted ? 'highlighted' : ''}" data-opportunity-id="${opp.opportunity_id}">
-                        <td>${opp.opportunity_id || '-'}</td>
-                        <td title="${opp.customer_name || ''}">${opp.customer_name || '-'}</td>
-                        <td title="${opp.project_summary || ''}">${opp.project_summary || '-'}</td>
+                    <tr class="${isHighlighted ? 'highlighted' : ''}" data-opportunity-id="${opportunityId}">
+                        <td title="${opportunityId}">${opportunityId || '-'}</td>
+                        <td title="${customerName}">${customerName || '-'}</td>
+                        <td title="${projectSummary}">${projectSummary || '-'}</td>
                         <td><span class="status-badge status-${status}">${status}</span></td>
                         <td><span class="score-badge ${scoreClass}">${score}分</span></td>
                     </tr>
@@ -3201,10 +3269,66 @@
             }, 2000);
         }
 
+        // ==================== 分隔条拖拽功能 ====================
+        function initResizer() {
+            const resizer = document.getElementById('resizer');
+            const tableSection = document.getElementById('opportunityTableSection');
+            const chatMain = document.querySelector('.chat-main');
+            
+            if (!resizer || !tableSection) return;
+            
+            let isResizing = false;
+            let startX = 0;
+            let startWidth = 0;
+            
+            const MIN_TABLE_WIDTH = 300;  // 最小宽度
+            const MAX_TABLE_WIDTH = 800;  // 最大宽度
+            
+            resizer.addEventListener('mousedown', (e) => {
+                isResizing = true;
+                startX = e.clientX;
+                startWidth = tableSection.offsetWidth;
+                
+                resizer.classList.add('dragging');
+                document.body.classList.add('resizing');
+                
+                e.preventDefault();
+            });
+            
+            document.addEventListener('mousemove', (e) => {
+                if (!isResizing) return;
+                
+                // 向左拖动增加宽度，向右拖动减少宽度
+                const deltaX = startX - e.clientX;
+                let newWidth = startWidth + deltaX;
+                
+                // 限制宽度范围
+                newWidth = Math.max(MIN_TABLE_WIDTH, Math.min(MAX_TABLE_WIDTH, newWidth));
+                
+                tableSection.style.width = newWidth + 'px';
+            });
+            
+            document.addEventListener('mouseup', () => {
+                if (isResizing) {
+                    isResizing = false;
+                    resizer.classList.remove('dragging');
+                    document.body.classList.remove('resizing');
+                }
+            });
+            
+            // 双击重置宽度
+            resizer.addEventListener('dblclick', () => {
+                tableSection.style.width = '450px';
+            });
+        }
+
         // ==================== 初始化 ====================
         async function init() {
             // 初始化登录表单事件监听
             initLoginForm();
+            
+            // 初始化分隔条拖拽功能
+            initResizer();
             
             // 检查是否已登录
             const savedUser = localStorage.getItem('user');
