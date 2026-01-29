@@ -2133,6 +2133,342 @@
         }
 
         /* =========================
+           需求孵化直通车引导页样式
+        ========================= */
+        .demand-guide-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px;
+        }
+
+        .business-types-section {
+            margin-bottom: 40px;
+        }
+
+        .section-header {
+            font-size: 22px;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 24px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .business-type-cards {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 24px;
+        }
+
+        @media (max-width: 1100px) {
+            .business-type-cards {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .business-type-card {
+            background: var(--bg-white);
+            border-radius: 16px;
+            padding: 28px;
+            box-shadow: var(--shadow-md);
+            border: 1px solid var(--border-light);
+            transition: all 0.3s ease;
+        }
+
+        .business-type-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .business-type-card.ai-enhance {
+            border-top: 4px solid #3b82f6;
+        }
+
+        .business-type-card.ai-native {
+            border-top: 4px solid #8b5cf6;
+        }
+
+        .business-type-card.data-monetize {
+            border-top: 4px solid #f59e0b;
+        }
+
+        .business-type-icon {
+            font-size: 32px;
+            margin-bottom: 12px;
+        }
+
+        .business-type-title {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 8px;
+        }
+
+        .business-type-desc {
+            font-size: 14px;
+            color: var(--text-secondary);
+            margin-bottom: 12px;
+            line-height: 1.6;
+        }
+
+        .business-type-goal {
+            font-size: 13px;
+            color: var(--accent-purple);
+            font-weight: 600;
+            margin-bottom: 12px;
+            padding: 8px 12px;
+            background: rgba(139, 92, 246, 0.08);
+            border-radius: 8px;
+        }
+
+        .business-type-card.ai-enhance .business-type-goal {
+            color: #3b82f6;
+            background: rgba(59, 130, 246, 0.08);
+        }
+
+        .business-type-card.data-monetize .business-type-goal {
+            color: #f59e0b;
+            background: rgba(245, 158, 11, 0.08);
+        }
+
+        .business-type-example {
+            font-size: 13px;
+            color: var(--text-light);
+            font-style: italic;
+        }
+
+        .business-type-flow {
+            font-size: 12px;
+            color: var(--text-secondary);
+            margin-top: 12px;
+            padding-top: 12px;
+            border-top: 1px solid var(--border-light);
+        }
+
+        .rules-section {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 32px;
+            margin-bottom: 40px;
+        }
+
+        @media (max-width: 900px) {
+            .rules-section {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .rules-card {
+            background: var(--bg-white);
+            border-radius: 16px;
+            padding: 28px;
+            box-shadow: var(--shadow-md);
+            border: 1px solid var(--border-light);
+        }
+
+        .rules-card h4 {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .rule-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            margin-bottom: 16px;
+        }
+
+        .rule-check {
+            color: #10b981;
+            font-size: 18px;
+            flex-shrink: 0;
+            margin-top: 2px;
+        }
+
+        .rule-content {
+            flex: 1;
+        }
+
+        .rule-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 4px;
+        }
+
+        .rule-desc {
+            font-size: 13px;
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+
+        .rule-sub-items {
+            margin-top: 8px;
+            padding-left: 4px;
+        }
+
+        .rule-sub-item {
+            font-size: 12px;
+            color: var(--text-light);
+            margin-bottom: 4px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .tags-section {
+            background: linear-gradient(135deg, #faf5ff 0%, #f3e8ff 100%);
+            border-radius: 16px;
+            padding: 28px;
+            margin-bottom: 40px;
+            border: 1px solid rgba(139, 92, 246, 0.2);
+        }
+
+        .tags-section h4 {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 20px;
+        }
+
+        .tags-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .tag-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 16px;
+            background: var(--bg-white);
+            border-radius: 12px;
+            font-size: 13px;
+            color: var(--text-secondary);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .tag-icon {
+            font-size: 16px;
+        }
+
+        .tag-name {
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .examples-section {
+            background: var(--bg-white);
+            border-radius: 16px;
+            padding: 28px;
+            box-shadow: var(--shadow-md);
+            border: 1px solid var(--border-light);
+            margin-bottom: 40px;
+        }
+
+        .examples-section h4 {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 24px;
+        }
+
+        .example-item {
+            background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 16px;
+            border-left: 4px solid var(--accent-purple);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .example-item:hover {
+            transform: translateX(4px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .example-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .example-label {
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--accent-purple);
+            margin-bottom: 8px;
+            text-transform: uppercase;
+        }
+
+        .example-text {
+            font-size: 14px;
+            color: var(--text-primary);
+            margin-bottom: 12px;
+            line-height: 1.6;
+        }
+
+        .example-result {
+            font-size: 13px;
+            color: var(--text-secondary);
+            padding-top: 12px;
+            border-top: 1px dashed var(--border-color);
+        }
+
+        .example-result span {
+            display: block;
+            margin-bottom: 4px;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 16px;
+            justify-content: center;
+            padding-top: 20px;
+        }
+
+        .action-button-primary {
+            padding: 16px 40px;
+            background: var(--accent-purple-gradient);
+            color: white;
+            border: none;
+            border-radius: 14px;
+            font-size: 17px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 16px rgba(139, 92, 246, 0.3);
+        }
+
+        .action-button-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 24px rgba(139, 92, 246, 0.4);
+        }
+
+        .action-button-secondary {
+            padding: 16px 40px;
+            background: var(--bg-white);
+            color: var(--accent-purple);
+            border: 2px solid var(--accent-purple);
+            border-radius: 14px;
+            font-size: 17px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .action-button-secondary:hover {
+            background: rgba(139, 92, 246, 0.08);
+            transform: translateY(-3px);
+        }
+
+        /* =========================
            管理者仪表盘样式
         ========================= */
         .admin-dashboard {
@@ -2863,48 +3199,196 @@
     <div class="guide-page" id="demandGuide">
         <div class="guide-header purple-theme">
             <button class="back-button" onclick="goHome()">← 返回首页</button>
-            <h1 class="guide-title">🚀 市场-产研直通车</h1>
-            <p class="guide-subtitle">你的随身产品经理，负责把一线声音变成公司产品</p>
+            <h1 class="guide-title">🚀 需求孵化直通车</h1>
+            <p class="guide-subtitle">AI×鸿蒙+行业，把一线需求孵化成公司产品</p>
         </div>
         
-        <div class="guide-content">
-            <div class="guide-section">
-                <h3 class="guide-section-title">游戏规则</h3>
+        <div class="demand-guide-content">
+            <!-- 三大业务类型 -->
+            <div class="business-types-section">
+                <h3 class="section-header">🎯 三大业务类型</h3>
+                <p style="color: var(--text-secondary); margin-bottom: 24px; font-size: 14px;">系统会自动识别需求类型并分流：</p>
                 
-                <ul class="guide-features">
-                    <li><strong>🎙️ 随便说：</strong>支持语音/口语，不用填表</li>
-                    <li><strong>💯 凑学分：</strong>AI 实时打分，≥70分才会推送给后台</li>
-                    <li><strong>🚦 双轨制：</strong>商业需求 → 蓝卡（产品部）；技术需求 → 紫卡（研究院）</li>
-                </ul>
-                
-                <div style="margin-top: 24px; padding: 20px; background: var(--bg-gray); border-radius: 12px; border-left: 4px solid var(--accent-purple);">
-                    <p style="font-size: 14px; color: var(--text-secondary); line-height: 1.7;">
-                        <strong>什么是完整度评分？</strong><br>
-                        AI会从6个维度评估你的需求：客户画像、需求明确度、预算可信度、决策链路、时间合理性、技术可评估性。<strong>得分≥75分</strong>时，系统会自动通知产品销售部和中央研究院联合评估。
-                    </p>
+                <div class="business-type-cards">
+                    <div class="business-type-card ai-enhance">
+                        <div class="business-type-icon">🔧</div>
+                        <div class="business-type-title">AI增强</div>
+                        <div class="business-type-desc">原有产品/系统的AI能力升级</div>
+                        <div class="business-type-goal">🎯 守住存量市场，提升竞争力</div>
+                        <div class="business-type-example">示例：给现有考试系统加AI阅卷、给现有OA加智能问答</div>
+                        <div class="business-type-flow">📍 分流：行业部主导 + 中研院支撑</div>
+                    </div>
+                    
+                    <div class="business-type-card ai-native">
+                        <div class="business-type-icon">🚀</div>
+                        <div class="business-type-title">AI原生</div>
+                        <div class="business-type-desc">从零打造的AI原生产品，颠覆传统做法</div>
+                        <div class="business-type-goal">🎯 创造新物种，颠覆行业</div>
+                        <div class="business-type-example">示例：重庆智能政务（以数据为核心重构）、工业AI质检机器人</div>
+                        <div class="business-type-flow">📍 分流：中研院主导 + 行业部配合，VP关注</div>
+                    </div>
+                    
+                    <div class="business-type-card data-monetize">
+                        <div class="business-type-icon">💎</div>
+                        <div class="business-type-title">数据变现</div>
+                        <div class="business-type-desc">以高质量数据集为核心的平台性产品</div>
+                        <div class="business-type-goal">🎯 积累数据壁垒，走向全球</div>
+                        <div class="business-type-example">示例：考试数据集（全国最大）、轮胎质检60万张图像数据集</div>
+                        <div class="business-type-flow">📍 分流：中研院-数据集平台主导，战略级孵化</div>
+                    </div>
                 </div>
             </div>
 
-            <div class="guide-section">
-                <h3 class="guide-section-title">你可以这样"吐槽"...</h3>
+            <!-- 游戏规则和能力匹配 -->
+            <div class="rules-section">
+                <div class="rules-card">
+                    <h4>📋 游戏规则</h4>
+                    
+                    <div class="rule-item">
+                        <span class="rule-check">✅</span>
+                        <div class="rule-content">
+                            <div class="rule-title">随便说</div>
+                            <div class="rule-desc">支持语音/口语，不用填表</div>
+                        </div>
+                    </div>
+                    
+                    <div class="rule-item">
+                        <span class="rule-check">✅</span>
+                        <div class="rule-content">
+                            <div class="rule-title">战略评分</div>
+                            <div class="rule-desc">AI从3大维度实时评估（满分100分）</div>
+                            <div class="rule-sub-items">
+                                <div class="rule-sub-item">• 字段完整度（15分）</div>
+                                <div class="rule-sub-item">• 内容质量（25分）</div>
+                                <div class="rule-sub-item">• 战略价值（60分）：产品化潜力 + 数据价值 + 战略匹配度</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="rule-item">
+                        <span class="rule-check">✅</span>
+                        <div class="rule-content">
+                            <div class="rule-title">智能分流</div>
+                            <div class="rule-desc">根据评分+业务类型自动分配</div>
+                            <div class="rule-sub-items">
+                                <div class="rule-sub-item">🔥 S级（≥85分）→ VP + 中研院 + 行业部联合孵化</div>
+                                <div class="rule-sub-item">⭐ A级（75-84分）→ 中研院支撑 + 行业部主导</div>
+                                <div class="rule-sub-item">✅ B级（65-74分）→ 行业部 + 交付中心</div>
+                                <div class="rule-sub-item">📝 C/D级 → 待补充或暂存</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="rules-card">
+                    <h4>🤖 能力匹配</h4>
+                    <p style="font-size: 13px; color: var(--text-secondary); margin-bottom: 20px;">自动匹配中研院四大平台：</p>
+                    
+                    <div class="rule-item">
+                        <span class="rule-check">🤖</span>
+                        <div class="rule-content">
+                            <div class="rule-title">智能体平台</div>
+                            <div class="rule-desc">Agent/大模型/智能问答</div>
+                        </div>
+                    </div>
+                    
+                    <div class="rule-item">
+                        <span class="rule-check">👁️</span>
+                        <div class="rule-content">
+                            <div class="rule-title">CV视觉平台</div>
+                            <div class="rule-desc">图像识别/视觉检测/质检</div>
+                        </div>
+                    </div>
+                    
+                    <div class="rule-item">
+                        <span class="rule-check">📊</span>
+                        <div class="rule-content">
+                            <div class="rule-title">数据集平台</div>
+                            <div class="rule-desc">数据治理/标注/高质量数据集</div>
+                        </div>
+                    </div>
+                    
+                    <div class="rule-item">
+                        <span class="rule-check">📱</span>
+                        <div class="rule-content">
+                            <div class="rule-title">鸿蒙OS平台</div>
+                            <div class="rule-desc">边端/IoT/智能终端</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 特殊标签识别 -->
+            <div class="tags-section">
+                <h4>🏷️ 特殊标签识别</h4>
+                <p style="font-size: 13px; color: var(--text-secondary); margin-bottom: 16px;">系统会自动打标签，帮助识别战略机会：</p>
+                <div class="tags-grid">
+                    <div class="tag-item">
+                        <span class="tag-icon">🏆</span>
+                        <span class="tag-name">重庆模式</span>
+                        <span>- 以数据为核心重构行业的战略级机会</span>
+                    </div>
+                    <div class="tag-item">
+                        <span class="tag-icon">💎</span>
+                        <span class="tag-name">数据金矿</span>
+                        <span>- 可积累百万级高价值数据</span>
+                    </div>
+                    <div class="tag-item">
+                        <span class="tag-icon">🚀</span>
+                        <span class="tag-name">产品孵化</span>
+                        <span>- 高产品化潜力，可复制到全行业</span>
+                    </div>
+                    <div class="tag-item">
+                        <span class="tag-icon">🤖</span>
+                        <span class="tag-name">AI原生</span>
+                        <span>- 颠覆性AI新产品</span>
+                    </div>
+                    <div class="tag-item">
+                        <span class="tag-icon">📱</span>
+                        <span class="tag-name">鸿蒙相关</span>
+                        <span>- 涉及边端/鸿蒙OS</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 示例区域 -->
+            <div class="examples-section">
+                <h4>💬 你可以这样"吐槽"...</h4>
                 
-                <div class="preset-bubbles">
-                    <div class="bubble" onclick="startChat('opportunity', '新建一个需求。客户是腾讯云，想做一套智能客服系统，预算大概200万，决策人是他们CTO老王。')">
-                        新建一个需求。客户是腾讯云，想做一套智能客服系统，预算大概200万，决策人是他们CTO老王。
-                    </div>
-                    
-                    <div class="bubble" onclick="startChat('opportunity', '更新一下【智慧校园】那个项目，客户说预算砍半了，但是对我们的鸿蒙一体机很感兴趣。')">
-                        更新一下【智慧校园】那个项目，客户说预算砍半了，但是对我们的鸿蒙一体机很感兴趣。
-                    </div>
-                    
-                    <div class="bubble" onclick="startChat('opportunity', '查询一下我上周提的【AI质检】需求，现在谁在处理？')">
-                        查询一下我上周提的【AI质检】需求，现在谁在处理？
+                <div class="example-item" onclick="startChat('opportunity', '重庆大数据局，想做智能政务，整个市的数据治理统一建设，预算一个亿')">
+                    <div class="example-label">AI原生示例</div>
+                    <div class="example-text">"重庆大数据局，想做智能政务，整个市的数据治理统一建设，预算一个亿"</div>
+                    <div class="example-result">
+                        <span>→ 识别为：AI原生 + 数据变现</span>
+                        <span>→ 标签：🏆重庆模式 💎数据金矿</span>
+                        <span>→ 分流：S级，通知VP + 中研院院长</span>
                     </div>
                 </div>
                 
-                <button class="start-button purple" onclick="startChat('opportunity', '')">
-                    <span>开始提报需求</span>
-                    <span>→</span>
+                <div class="example-item" onclick="startChat('opportunity', '老客户海云天，想给现有阅卷系统升级AI能力，预算50万')">
+                    <div class="example-label">AI增强示例</div>
+                    <div class="example-text">"老客户海云天，想给现有阅卷系统升级AI能力，预算50万"</div>
+                    <div class="example-result">
+                        <span>→ 识别为：AI增强</span>
+                        <span>→ 分流：A级，行业部主导 + 中研院支撑</span>
+                    </div>
+                </div>
+                
+                <div class="example-item" onclick="startChat('opportunity', '华为工业质检，日检5万件，要积累百万级质检图像数据')">
+                    <div class="example-label">数据变现示例</div>
+                    <div class="example-text">"华为工业质检，日检5万件，要积累百万级质检图像数据"</div>
+                    <div class="example-result">
+                        <span>→ 识别为：数据变现</span>
+                        <span>→ 标签：💎数据金矿 🚀产品孵化</span>
+                        <span>→ 分流：S级，中研院-数据集平台主导</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 操作按钮 -->
+            <div class="action-buttons" id="demandActionButtons">
+                <button class="action-button-primary" id="demandPrimaryBtn" onclick="startChat('opportunity', '')">
+                    开始录入需求 →
                 </button>
             </div>
         </div>
@@ -3619,8 +4103,76 @@
                 const target = card.dataset.target;
                 document.getElementById('homeDashboard').classList.add('hidden');
                 document.getElementById(target).classList.add('active');
+                
+                // 如果是需求孵化直通车，根据角色更新按钮
+                if (target === 'demandGuide') {
+                    updateDemandGuideButtons();
+                }
             });
         });
+        
+        // 更新需求孵化直通车引导页按钮（根据角色）
+        function updateDemandGuideButtons() {
+            const roleType = state.user.roleType || state.user.role || '销售';
+            const isManager = isManagerRole(roleType);
+            const buttonContainer = document.getElementById('demandActionButtons');
+            
+            if (isManager) {
+                // 管理者显示两个按钮
+                buttonContainer.innerHTML = `
+                    <button class="action-button-primary" onclick="startChat('opportunity', '')">
+                        进入管理后台 →
+                    </button>
+                    <button class="action-button-secondary" onclick="startChatAsSales()">
+                        切换到录入视图
+                    </button>
+                `;
+            } else {
+                // 销售只显示录入按钮
+                buttonContainer.innerHTML = `
+                    <button class="action-button-primary" onclick="startChat('opportunity', '')">
+                        开始录入需求 →
+                    </button>
+                `;
+            }
+        }
+        
+        // 管理者以销售视角进入（跳过管理仪表盘）
+        function startChatAsSales() {
+            state.currentModule = 'opportunity';
+            state.isAdminView = false;
+            
+            // 隐藏引导页
+            document.getElementById('demandGuide').classList.remove('active');
+            document.getElementById('homeDashboard').classList.add('hidden');
+            document.getElementById('adminDashboard').classList.remove('active');
+            
+            // 显示聊天页
+            document.getElementById('chatPage').classList.add('active');
+            
+            // 显示商机表格
+            const tableSection = document.getElementById('opportunityTableSection');
+            const resizer = document.getElementById('resizer');
+            tableSection.classList.add('visible');
+            resizer.classList.add('visible');
+            loadUserOpportunities();
+            
+            // 更新侧边栏
+            const firstName = state.user.name.charAt(0);
+            document.getElementById('sidebarAvatar').textContent = firstName;
+            document.getElementById('sidebarName').textContent = state.user.name;
+            document.getElementById('sidebarRole').textContent = state.user.department || '销售部';
+            
+            // 更新模式标识
+            const modeBadge = document.getElementById('modeBadge');
+            modeBadge.innerHTML = '<span>🚀</span><span>当前模式：需求孵化直通车</span>';
+            modeBadge.classList.add('purple');
+            
+            // 清空消息区域并显示开场白
+            const messagesArea = document.getElementById('messagesArea');
+            messagesArea.innerHTML = '';
+            addAIMessage('📝 收到！我是需求记录员。请直接告诉我客户是谁、想要什么、预算多少？我会帮你整理并打分。', '正在检索资源库...');
+        }
 
         // ==================== 聊天功能 ====================
         function startChat(module, presetMessage) {
