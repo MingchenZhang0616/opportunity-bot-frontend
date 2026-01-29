@@ -3254,20 +3254,28 @@
         // ==================== 商机表格功能 ====================
         
         /**
-         * 加载用户的所有商机
+         * 加载用户可查看的所有商机（根据角色权限）
          */
         async function loadUserOpportunities() {
             if (!state.user || state.currentModule !== 'opportunity') return;
             
             try {
-                console.log('[表格] 加载用户商机:', state.user.name);
-                const response = await fetch(`${CONFIG.API_BASE_URL}/opportunities/user/${encodeURIComponent(state.user.name)}`);
+                console.log('[表格] 加载商机 - 用户:', state.user.name, '角色:', state.user.roleType);
+                
+                // 使用新的按权限获取商机接口
+                const response = await fetch(`${CONFIG.API_BASE_URL}/opportunities/list`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        user: state.user
+                    })
+                });
                 const data = await response.json();
                 
                 if (data.success) {
                     state.opportunities = data.opportunities;
                     renderOpportunityTable(state.opportunities, []);
-                    console.log('[表格] 加载完成:', state.opportunities.length, '条商机');
+                    console.log('[表格] 加载完成:', state.opportunities.length, '条商机 (角色:', data.role_type, ')');
                 } else {
                     console.error('[表格] 加载失败:', data);
                 }
