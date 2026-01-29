@@ -2131,6 +2131,562 @@
                 display: none !important;
             }
         }
+
+        /* =========================
+           管理者仪表盘样式
+        ========================= */
+        .admin-dashboard {
+            display: none;
+            flex-direction: column;
+            height: 100vh;
+            background: var(--bg-gradient);
+        }
+
+        .admin-dashboard.active {
+            display: flex;
+        }
+
+        .admin-header {
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--glass-border);
+            padding: 16px 32px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .admin-header-left {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .admin-back-btn {
+            padding: 8px 16px;
+            background: var(--bg-gray);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .admin-back-btn:hover {
+            background: var(--primary-blue-light);
+            border-color: var(--primary-blue);
+            color: var(--primary-blue);
+        }
+
+        .admin-title {
+            font-size: 20px;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .admin-header-right {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .view-switch-btn {
+            padding: 8px 16px;
+            background: var(--accent-purple-light);
+            color: var(--accent-purple);
+            border: 1px solid var(--accent-purple);
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .view-switch-btn:hover {
+            background: var(--accent-purple);
+            color: white;
+        }
+
+        .admin-user-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 8px 16px;
+            background: var(--bg-gray);
+            border-radius: 12px;
+        }
+
+        .admin-user-avatar {
+            width: 32px;
+            height: 32px;
+            background: var(--accent-green-gradient);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .admin-user-name {
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        /* 统计卡片区域 */
+        .stats-section {
+            padding: 24px 32px;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+        }
+
+        .stat-card {
+            background: var(--bg-white);
+            border-radius: 16px;
+            padding: 24px;
+            box-shadow: var(--shadow-sm);
+            border: 1px solid var(--border-light);
+            transition: all 0.3s ease;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .stat-card.highlight {
+            border-left: 4px solid var(--primary-blue);
+        }
+
+        .stat-card.warning {
+            border-left: 4px solid #f59e0b;
+        }
+
+        .stat-card.success {
+            border-left: 4px solid var(--accent-green);
+        }
+
+        .stat-card.info {
+            border-left: 4px solid var(--accent-purple);
+        }
+
+        .stat-label {
+            font-size: 14px;
+            color: var(--text-secondary);
+            margin-bottom: 8px;
+        }
+
+        .stat-value {
+            font-size: 36px;
+            font-weight: 700;
+            color: var(--text-primary);
+            line-height: 1.2;
+        }
+
+        .stat-card.highlight .stat-value {
+            color: var(--primary-blue);
+        }
+
+        .stat-card.warning .stat-value {
+            color: #f59e0b;
+        }
+
+        .stat-card.success .stat-value {
+            color: var(--accent-green);
+        }
+
+        .stat-card.info .stat-value {
+            color: var(--accent-purple);
+        }
+
+        /* 主内容区域 */
+        .admin-main {
+            flex: 1;
+            display: flex;
+            gap: 24px;
+            padding: 0 32px 24px;
+            overflow: hidden;
+        }
+
+        /* 待审批列表区域 */
+        .pending-section {
+            flex: 2;
+            background: var(--bg-white);
+            border-radius: 16px;
+            box-shadow: var(--shadow-sm);
+            border: 1px solid var(--border-light);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .pending-header {
+            padding: 20px 24px;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .pending-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .pending-title::before {
+            content: '';
+            width: 4px;
+            height: 20px;
+            background: var(--primary-blue);
+            border-radius: 2px;
+        }
+
+        .pending-count {
+            font-size: 13px;
+            color: var(--text-light);
+            background: var(--bg-gray);
+            padding: 4px 12px;
+            border-radius: 12px;
+        }
+
+        .pending-list {
+            flex: 1;
+            overflow-y: auto;
+            padding: 16px;
+        }
+
+        .pending-item {
+            background: var(--bg-gray);
+            border-radius: 12px;
+            padding: 16px 20px;
+            margin-bottom: 12px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            border: 1px solid transparent;
+        }
+
+        .pending-item:hover {
+            background: var(--primary-blue-light);
+            border-color: rgba(37, 99, 235, 0.2);
+        }
+
+        .pending-item.expanded {
+            background: var(--bg-white);
+            border-color: var(--primary-blue);
+            box-shadow: var(--shadow-md);
+        }
+
+        .pending-item-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 8px;
+        }
+
+        .pending-item-title {
+            font-size: 15px;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .pending-item-id {
+            font-size: 12px;
+            color: var(--text-light);
+            font-family: 'Consolas', monospace;
+        }
+
+        .pending-item-meta {
+            display: flex;
+            gap: 16px;
+            font-size: 13px;
+            color: var(--text-secondary);
+        }
+
+        .pending-item-summary {
+            font-size: 14px;
+            color: var(--text-secondary);
+            margin: 12px 0;
+            line-height: 1.5;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .pending-item.expanded .pending-item-summary {
+            -webkit-line-clamp: unset;
+            display: block;
+        }
+
+        .pending-item-actions {
+            display: flex;
+            gap: 8px;
+            margin-top: 12px;
+            padding-top: 12px;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .pending-item:not(.expanded) .pending-item-actions {
+            display: none;
+        }
+
+        .action-btn {
+            padding: 8px 16px;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            border: none;
+        }
+
+        .action-btn.approve {
+            background: var(--accent-green);
+            color: white;
+        }
+
+        .action-btn.approve:hover {
+            background: #059669;
+        }
+
+        .action-btn.reject {
+            background: #ef4444;
+            color: white;
+        }
+
+        .action-btn.reject:hover {
+            background: #dc2626;
+        }
+
+        .action-btn.detail {
+            background: var(--bg-gray);
+            color: var(--text-secondary);
+            border: 1px solid var(--border-color);
+        }
+
+        .action-btn.detail:hover {
+            background: var(--primary-blue-light);
+            color: var(--primary-blue);
+            border-color: var(--primary-blue);
+        }
+
+        /* 右侧区域 */
+        .admin-sidebar {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            min-width: 320px;
+            max-width: 400px;
+        }
+
+        /* 迷你对话框 */
+        .mini-chat {
+            background: var(--bg-white);
+            border-radius: 16px;
+            box-shadow: var(--shadow-sm);
+            border: 1px solid var(--border-light);
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .mini-chat-header {
+            padding: 16px 20px;
+            border-bottom: 1px solid var(--border-color);
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .mini-chat-messages {
+            flex: 1;
+            overflow-y: auto;
+            padding: 16px;
+            font-size: 13px;
+        }
+
+        .mini-chat-input {
+            padding: 12px 16px;
+            border-top: 1px solid var(--border-color);
+            display: flex;
+            gap: 8px;
+        }
+
+        .mini-chat-input input {
+            flex: 1;
+            padding: 10px 14px;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            font-size: 13px;
+            outline: none;
+        }
+
+        .mini-chat-input input:focus {
+            border-color: var(--primary-blue);
+        }
+
+        .mini-chat-input button {
+            padding: 10px 16px;
+            background: var(--primary-blue);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 13px;
+        }
+
+        /* 概览区域 */
+        .overview-section {
+            background: var(--bg-white);
+            border-radius: 16px;
+            box-shadow: var(--shadow-sm);
+            border: 1px solid var(--border-light);
+            padding: 20px;
+        }
+
+        .overview-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 16px;
+        }
+
+        .overview-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0;
+            border-bottom: 1px solid var(--border-light);
+            font-size: 13px;
+        }
+
+        .overview-item:last-child {
+            border-bottom: none;
+        }
+
+        .overview-label {
+            color: var(--text-secondary);
+        }
+
+        .overview-value {
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        /* 打回弹窗 */
+        .reject-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 10000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .reject-modal.active {
+            display: flex;
+        }
+
+        .reject-modal-content {
+            background: white;
+            border-radius: 16px;
+            padding: 24px;
+            width: 90%;
+            max-width: 480px;
+            box-shadow: var(--shadow-lg);
+        }
+
+        .reject-modal-title {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 16px;
+        }
+
+        .reject-modal textarea {
+            width: 100%;
+            height: 120px;
+            padding: 12px;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            resize: none;
+            font-family: inherit;
+            font-size: 14px;
+            margin-bottom: 16px;
+        }
+
+        .reject-modal-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 12px;
+        }
+
+        .reject-modal-btn {
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-size: 14px;
+            cursor: pointer;
+            border: none;
+        }
+
+        .reject-modal-btn.cancel {
+            background: var(--bg-gray);
+            color: var(--text-secondary);
+        }
+
+        .reject-modal-btn.confirm {
+            background: #ef4444;
+            color: white;
+        }
+
+        /* 响应式 */
+        @media (max-width: 1200px) {
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .admin-main {
+                flex-direction: column;
+            }
+            
+            .admin-sidebar {
+                flex-direction: row;
+                max-width: none;
+            }
+            
+            .mini-chat, .overview-section {
+                flex: 1;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .admin-sidebar {
+                flex-direction: column;
+            }
+        }
     </style>
 </head>
 <body>
@@ -2454,6 +3010,126 @@
         </aside>
     </div>
 
+    <!-- 管理者仪表盘页面（仅需求孵化直通车模块） -->
+    <div class="admin-dashboard" id="adminDashboard">
+        <header class="admin-header">
+            <div class="admin-header-left">
+                <button class="admin-back-btn" onclick="goHome()">
+                    <span>←</span>
+                    <span>返回首页</span>
+                </button>
+                <h1 class="admin-title">需求管理仪表盘</h1>
+            </div>
+            <div class="admin-header-right">
+                <button class="view-switch-btn" onclick="switchToSalesView()">
+                    切换到录入视图
+                </button>
+                <div class="admin-user-info">
+                    <div class="admin-user-avatar" id="adminUserAvatar">张</div>
+                    <span class="admin-user-name" id="adminUserName">张鸣宸</span>
+                </div>
+            </div>
+        </header>
+
+        <!-- 统计卡片区域 -->
+        <section class="stats-section">
+            <div class="stats-grid">
+                <div class="stat-card highlight">
+                    <div class="stat-label">待评估</div>
+                    <div class="stat-value" id="statPending">0</div>
+                </div>
+                <div class="stat-card warning">
+                    <div class="stat-label">本周新增</div>
+                    <div class="stat-value" id="statWeekly">0</div>
+                </div>
+                <div class="stat-card success">
+                    <div class="stat-label">S级商机 (≥85分)</div>
+                    <div class="stat-value" id="statSLevel">0</div>
+                </div>
+                <div class="stat-card info">
+                    <div class="stat-label">待我审批</div>
+                    <div class="stat-value" id="statMyReview">0</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 主内容区域 -->
+        <main class="admin-main">
+            <!-- 待审批商机列表 -->
+            <section class="pending-section">
+                <div class="pending-header">
+                    <h2 class="pending-title">待审批商机</h2>
+                    <span class="pending-count" id="pendingCount">共 0 条</span>
+                </div>
+                <div class="pending-list" id="pendingList">
+                    <div class="table-empty-state">
+                        <p>暂无待审批商机</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 右侧边栏 -->
+            <aside class="admin-sidebar">
+                <!-- 迷你智能助手 -->
+                <div class="mini-chat">
+                    <div class="mini-chat-header">
+                        <span>🤖</span>
+                        <span>快捷查询</span>
+                    </div>
+                    <div class="mini-chat-messages" id="miniChatMessages">
+                        <p style="color: var(--text-light); text-align: center; padding: 20px;">
+                            输入关键词快速查询商机信息
+                        </p>
+                    </div>
+                    <div class="mini-chat-input">
+                        <input type="text" placeholder="输入关键词查询..." id="miniChatInput" 
+                               onkeypress="if(event.key==='Enter')miniChatSearch()">
+                        <button onclick="miniChatSearch()">查询</button>
+                    </div>
+                </div>
+
+                <!-- 概览统计 -->
+                <div class="overview-section">
+                    <h3 class="overview-title">商机概览</h3>
+                    <div id="overviewContent">
+                        <div class="overview-item">
+                            <span class="overview-label">草稿</span>
+                            <span class="overview-value" id="overviewDraft">0</span>
+                        </div>
+                        <div class="overview-item">
+                            <span class="overview-label">待补充</span>
+                            <span class="overview-value" id="overviewPending">0</span>
+                        </div>
+                        <div class="overview-item">
+                            <span class="overview-label">待评估</span>
+                            <span class="overview-value" id="overviewEvaluating">0</span>
+                        </div>
+                        <div class="overview-item">
+                            <span class="overview-label">跟进中</span>
+                            <span class="overview-value" id="overviewFollowing">0</span>
+                        </div>
+                        <div class="overview-item">
+                            <span class="overview-label">已打回</span>
+                            <span class="overview-value" id="overviewRejected">0</span>
+                        </div>
+                    </div>
+                </div>
+            </aside>
+        </main>
+    </div>
+
+    <!-- 打回原因弹窗 -->
+    <div class="reject-modal" id="rejectModal">
+        <div class="reject-modal-content">
+            <h3 class="reject-modal-title">打回商机</h3>
+            <textarea id="rejectReason" placeholder="请输入打回原因..."></textarea>
+            <div class="reject-modal-actions">
+                <button class="reject-modal-btn cancel" onclick="closeRejectModal()">取消</button>
+                <button class="reject-modal-btn confirm" onclick="confirmReject()">确认打回</button>
+            </div>
+        </div>
+    </div>
+
     <script>
         // ==================== 配置和状态管理 ====================
         const CONFIG = {
@@ -2470,8 +3146,16 @@
             isRecording: false,
             abortController: null,
             opportunities: [], // 用户商机列表
-            highlightedOpportunityIds: [] // 需要高亮的商机ID
+            highlightedOpportunityIds: [], // 需要高亮的商机ID
+            isAdminView: false, // 是否显示管理视图
+            pendingOpportunities: [], // 待审批商机列表
+            currentRejectRecordId: null // 当前打回的商机记录ID
         };
+
+        // 判断是否为管理者角色
+        function isManagerRole(roleType) {
+            return roleType && roleType !== '销售';
+        }
 
         // ==================== 工具函数 ====================
         /**
@@ -2918,13 +3602,15 @@
             document.getElementById('ecoGuide').classList.remove('active');
             document.getElementById('demandGuide').classList.remove('active');
             document.getElementById('chatPage').classList.remove('active');
+            document.getElementById('adminDashboard').classList.remove('active');
             
             // 显示首页
             document.getElementById('homeDashboard').classList.remove('hidden');
             
-            // 清空对话历史
+            // 清空对话历史和状态
             state.conversationHistory = [];
             state.currentModule = null;
+            state.isAdminView = false;
         }
 
         // 卡片点击事件
@@ -2943,8 +3629,31 @@
             // 隐藏引导页
             document.getElementById('ecoGuide').classList.remove('active');
             document.getElementById('demandGuide').classList.remove('active');
+            document.getElementById('homeDashboard').classList.add('hidden');
             
-            // 显示聊天页
+            // 判断是否显示管理视图（仅商机管理模块 + 管理者角色）
+            const roleType = state.user.roleType || state.user.role || '销售';
+            const shouldShowAdminView = module === 'opportunity' && isManagerRole(roleType);
+            
+            if (shouldShowAdminView && !presetMessage) {
+                // 管理者进入商机管理模块，显示管理仪表盘
+                state.isAdminView = true;
+                document.getElementById('chatPage').classList.remove('active');
+                document.getElementById('adminDashboard').classList.add('active');
+                
+                // 更新管理仪表盘用户信息
+                const firstName = state.user.name.charAt(0);
+                document.getElementById('adminUserAvatar').textContent = firstName;
+                document.getElementById('adminUserName').textContent = state.user.name;
+                
+                // 加载仪表盘数据
+                loadDashboardData();
+                return;
+            }
+            
+            // 销售视图或生态模式
+            state.isAdminView = false;
+            document.getElementById('adminDashboard').classList.remove('active');
             document.getElementById('chatPage').classList.add('active');
             
             // 控制商机表格显示（只在商机管理模块显示）
@@ -2995,6 +3704,40 @@
                     sendMessage();
                 }, 500);
             }
+        }
+        
+        // 切换到销售录入视图
+        function switchToSalesView() {
+            state.isAdminView = false;
+            document.getElementById('adminDashboard').classList.remove('active');
+            
+            // 进入聊天页
+            document.getElementById('chatPage').classList.add('active');
+            
+            // 显示商机表格
+            const tableSection = document.getElementById('opportunityTableSection');
+            const resizer = document.getElementById('resizer');
+            tableSection.classList.add('visible');
+            resizer.classList.add('visible');
+            
+            // 更新侧边栏用户信息
+            const firstName = state.user.name.charAt(0);
+            document.getElementById('sidebarAvatar').textContent = firstName;
+            document.getElementById('sidebarName').textContent = state.user.name;
+            document.getElementById('sidebarRole').textContent = state.user.department || '销售部';
+            
+            // 更新模式标识
+            const modeBadge = document.getElementById('modeBadge');
+            modeBadge.innerHTML = '<span>🚀</span><span>当前模式：需求孵化直通车</span>';
+            modeBadge.classList.add('purple');
+            
+            // 清空消息区域并显示开场白
+            const messagesArea = document.getElementById('messagesArea');
+            messagesArea.innerHTML = '';
+            addAIMessage('📝 收到！我是需求记录员。请直接告诉我客户是谁、想要什么、预算多少？我会帮你整理并打分。', '');
+            
+            // 加载商机列表
+            loadUserOpportunities();
         }
 
         function addUserMessage(text) {
@@ -3542,6 +4285,333 @@
             resizer.addEventListener('dblclick', () => {
                 tableSection.style.width = '450px';
             });
+        }
+
+        // ==================== 管理仪表盘功能 ====================
+        
+        /**
+         * 加载仪表盘数据（统计 + 待审批列表）
+         */
+        async function loadDashboardData() {
+            try {
+                console.log('[Dashboard] 加载数据...');
+                
+                // 并行加载统计数据和待审批列表
+                const [statsRes, pendingRes] = await Promise.all([
+                    fetch(`${CONFIG.API_BASE_URL}/api/dashboard/stats`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ user: state.user })
+                    }),
+                    fetch(`${CONFIG.API_BASE_URL}/api/dashboard/pending`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ user: state.user })
+                    })
+                ]);
+                
+                const statsData = await statsRes.json();
+                const pendingData = await pendingRes.json();
+                
+                console.log('[Dashboard] 统计数据:', statsData);
+                console.log('[Dashboard] 待审批数据:', pendingData);
+                
+                // 更新统计卡片
+                if (statsData.success) {
+                    document.getElementById('statPending').textContent = statsData.pending_count || 0;
+                    document.getElementById('statWeekly').textContent = statsData.weekly_new_count || 0;
+                    document.getElementById('statSLevel').textContent = statsData.s_level_count || 0;
+                    document.getElementById('statMyReview').textContent = statsData.my_review_count || 0;
+                }
+                
+                // 更新待审批列表
+                if (pendingData.success) {
+                    state.pendingOpportunities = pendingData.opportunities || [];
+                    renderPendingList(state.pendingOpportunities);
+                    document.getElementById('pendingCount').textContent = `共 ${state.pendingOpportunities.length} 条`;
+                    
+                    // 计算概览数据
+                    updateOverview(state.pendingOpportunities);
+                }
+                
+            } catch (error) {
+                console.error('[Dashboard] 加载数据失败:', error);
+            }
+        }
+        
+        /**
+         * 渲染待审批商机列表
+         */
+        function renderPendingList(opportunities) {
+            const container = document.getElementById('pendingList');
+            
+            if (!opportunities || opportunities.length === 0) {
+                container.innerHTML = `
+                    <div class="table-empty-state">
+                        <p>暂无待审批商机</p>
+                        <p style="font-size: 12px; margin-top: 8px; color: var(--text-light);">
+                            所有商机状态正常
+                        </p>
+                    </div>
+                `;
+                return;
+            }
+            
+            container.innerHTML = opportunities.map(opp => {
+                const fields = opp.fields || {};
+                const opportunityId = opp.opportunity_id || extractFieldValue(fields['商机ID']) || '';
+                const customerName = opp.customer_name || extractFieldValue(fields['客户名称']) || '未知客户';
+                const projectSummary = opp.project_summary || extractFieldValue(fields['项目摘要']) || '';
+                const status = opp.current_status || extractFieldValue(fields['当前状态']) || '草稿';
+                const score = opp.completeness_score || extractFieldValue(fields['完整度评分']) || 0;
+                const salesName = opp.sales_name || extractFieldValue(fields['销售姓名']) || '';
+                const recordId = opp.record_id || '';
+                
+                const scoreClass = score >= 85 ? 'success' : score >= 75 ? 'highlight' : score >= 60 ? 'warning' : 'low';
+                
+                return `
+                    <div class="pending-item" data-record-id="${recordId}" onclick="togglePendingItem(this)">
+                        <div class="pending-item-header">
+                            <div>
+                                <div class="pending-item-title">${customerName}</div>
+                                <div class="pending-item-id">${opportunityId}</div>
+                            </div>
+                            <div class="pending-item-meta">
+                                <span class="status-badge status-${status}">${status}</span>
+                                <span class="score-badge ${scoreClass}">${score}分</span>
+                            </div>
+                        </div>
+                        <div class="pending-item-summary">${projectSummary}</div>
+                        <div class="pending-item-meta">
+                            <span>销售: ${salesName}</span>
+                        </div>
+                        <div class="pending-item-actions">
+                            <button class="action-btn approve" onclick="event.stopPropagation(); approveOpportunity('${recordId}')">
+                                通过
+                            </button>
+                            <button class="action-btn reject" onclick="event.stopPropagation(); openRejectModal('${recordId}')">
+                                打回
+                            </button>
+                            <button class="action-btn detail" onclick="event.stopPropagation(); viewOpportunityDetail('${opportunityId}')">
+                                查看详情
+                            </button>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+        
+        /**
+         * 展开/收起待审批项
+         */
+        function togglePendingItem(element) {
+            // 如果点击的是按钮，不处理
+            if (event.target.tagName === 'BUTTON') return;
+            
+            // 移除其他项的展开状态
+            document.querySelectorAll('.pending-item.expanded').forEach(item => {
+                if (item !== element) {
+                    item.classList.remove('expanded');
+                }
+            });
+            
+            // 切换当前项
+            element.classList.toggle('expanded');
+        }
+        
+        /**
+         * 更新概览统计
+         */
+        function updateOverview(opportunities) {
+            const counts = {
+                '草稿': 0,
+                '待补充': 0,
+                '待评估': 0,
+                '跟进中': 0,
+                '已打回': 0
+            };
+            
+            opportunities.forEach(opp => {
+                const status = opp.current_status || extractFieldValue(opp.fields?.['当前状态']) || '草稿';
+                if (counts.hasOwnProperty(status)) {
+                    counts[status]++;
+                }
+            });
+            
+            document.getElementById('overviewDraft').textContent = counts['草稿'];
+            document.getElementById('overviewPending').textContent = counts['待补充'];
+            document.getElementById('overviewEvaluating').textContent = counts['待评估'];
+            document.getElementById('overviewFollowing').textContent = counts['跟进中'];
+            document.getElementById('overviewRejected').textContent = counts['已打回'];
+        }
+        
+        /**
+         * 通过商机审批
+         */
+        async function approveOpportunity(recordId) {
+            if (!confirm('确定通过该商机审批吗？')) return;
+            
+            try {
+                const response = await fetch(`${CONFIG.API_BASE_URL}/api/opportunity/${recordId}/approve`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        user: state.user,
+                        approval_note: ''
+                    })
+                });
+                
+                const result = await response.json();
+                
+                if (result.success) {
+                    alert('审批通过！商机状态已更新为"跟进中"');
+                    // 刷新列表
+                    loadDashboardData();
+                } else {
+                    alert('审批失败: ' + result.message);
+                }
+            } catch (error) {
+                console.error('审批失败:', error);
+                alert('审批失败: ' + error.message);
+            }
+        }
+        
+        /**
+         * 打开打回弹窗
+         */
+        function openRejectModal(recordId) {
+            state.currentRejectRecordId = recordId;
+            document.getElementById('rejectReason').value = '';
+            document.getElementById('rejectModal').classList.add('active');
+        }
+        
+        /**
+         * 关闭打回弹窗
+         */
+        function closeRejectModal() {
+            state.currentRejectRecordId = null;
+            document.getElementById('rejectModal').classList.remove('active');
+        }
+        
+        /**
+         * 确认打回商机
+         */
+        async function confirmReject() {
+            const reason = document.getElementById('rejectReason').value.trim();
+            if (!reason) {
+                alert('请输入打回原因');
+                return;
+            }
+            
+            if (!state.currentRejectRecordId) {
+                alert('未选择商机');
+                closeRejectModal();
+                return;
+            }
+            
+            try {
+                const response = await fetch(`${CONFIG.API_BASE_URL}/api/opportunity/${state.currentRejectRecordId}/reject`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        user: state.user,
+                        reject_reason: reason
+                    })
+                });
+                
+                const result = await response.json();
+                
+                if (result.success) {
+                    alert('商机已打回');
+                    closeRejectModal();
+                    // 刷新列表
+                    loadDashboardData();
+                } else {
+                    alert('打回失败: ' + result.message);
+                }
+            } catch (error) {
+                console.error('打回失败:', error);
+                alert('打回失败: ' + error.message);
+            }
+        }
+        
+        /**
+         * 查看商机详情
+         */
+        function viewOpportunityDetail(opportunityId) {
+            // 切换到销售视图并搜索该商机
+            switchToSalesView();
+            
+            // 在对话框中输入查询
+            setTimeout(() => {
+                document.getElementById('messageTextarea').value = `查询商机 ${opportunityId}`;
+                sendMessage();
+            }, 500);
+        }
+        
+        /**
+         * 迷你对话框搜索
+         */
+        async function miniChatSearch() {
+            const input = document.getElementById('miniChatInput');
+            const keyword = input.value.trim();
+            if (!keyword) return;
+            
+            const messagesContainer = document.getElementById('miniChatMessages');
+            
+            // 显示搜索中
+            messagesContainer.innerHTML = `
+                <p style="color: var(--text-light); text-align: center; padding: 20px;">
+                    搜索中...
+                </p>
+            `;
+            
+            try {
+                const response = await fetch(`${CONFIG.API_BASE_URL}/opportunities/list`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ user: state.user })
+                });
+                
+                const data = await response.json();
+                
+                if (data.success) {
+                    // 过滤匹配关键词的商机
+                    const matched = data.opportunities.filter(opp => {
+                        const customerName = opp.customer_name || '';
+                        const projectSummary = opp.project_summary || '';
+                        const opportunityId = opp.opportunity_id || '';
+                        return customerName.includes(keyword) || 
+                               projectSummary.includes(keyword) || 
+                               opportunityId.includes(keyword);
+                    });
+                    
+                    if (matched.length === 0) {
+                        messagesContainer.innerHTML = `
+                            <p style="color: var(--text-light); text-align: center; padding: 20px;">
+                                未找到匹配"${keyword}"的商机
+                            </p>
+                        `;
+                    } else {
+                        messagesContainer.innerHTML = matched.slice(0, 5).map(opp => `
+                            <div style="padding: 10px; border-bottom: 1px solid var(--border-light); cursor: pointer;"
+                                 onclick="viewOpportunityDetail('${opp.opportunity_id}')">
+                                <div style="font-weight: 500; color: var(--text-primary);">${opp.customer_name}</div>
+                                <div style="font-size: 12px; color: var(--text-light);">${opp.opportunity_id}</div>
+                                <div style="font-size: 12px; color: var(--text-secondary); margin-top: 4px;">${opp.project_summary?.substring(0, 50)}...</div>
+                            </div>
+                        `).join('') + (matched.length > 5 ? `<p style="text-align: center; color: var(--text-light); padding: 10px;">还有 ${matched.length - 5} 条结果...</p>` : '');
+                    }
+                }
+            } catch (error) {
+                messagesContainer.innerHTML = `
+                    <p style="color: #ef4444; text-align: center; padding: 20px;">
+                        搜索失败: ${error.message}
+                    </p>
+                `;
+            }
+            
+            input.value = '';
         }
 
         // ==================== 初始化 ====================
