@@ -1914,10 +1914,64 @@
             padding: 12px 16px;
             border-bottom: 1px solid var(--border-light);
             color: var(--text-secondary);
-            max-width: 120px;
+            max-width: 150px;
             overflow: hidden;
             text-overflow: ellipsis;
             white-space: nowrap;
+            position: relative;
+        }
+
+        /* 项目摘要列特殊处理 - 允许更宽 */
+        .opportunity-table td.summary-cell {
+            max-width: 200px;
+            cursor: pointer;
+        }
+
+        /* 悬停时显示完整内容的 tooltip */
+        .opportunity-table td[data-tooltip]:hover::after {
+            content: attr(data-tooltip);
+            position: absolute;
+            left: 0;
+            top: 100%;
+            background: rgba(15, 23, 42, 0.95);
+            color: white;
+            padding: 10px 14px;
+            border-radius: 8px;
+            font-size: 13px;
+            line-height: 1.5;
+            max-width: 350px;
+            width: max-content;
+            white-space: normal;
+            word-wrap: break-word;
+            z-index: 1000;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+            animation: tooltipFadeIn 0.2s ease;
+        }
+
+        @keyframes tooltipFadeIn {
+            from { opacity: 0; transform: translateY(-5px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* 商机ID列 - 较窄 */
+        .opportunity-table td.id-cell {
+            max-width: 130px;
+            font-family: 'Consolas', monospace;
+            font-size: 12px;
+        }
+
+        /* 客户名称列 */
+        .opportunity-table td.customer-cell {
+            max-width: 120px;
+            font-weight: 500;
+            color: var(--text-primary);
+        }
+
+        /* 状态和评分列 - 较窄 */
+        .opportunity-table td.status-cell,
+        .opportunity-table td.score-cell {
+            max-width: 80px;
+            text-align: center;
         }
 
         .opportunity-table tr:hover {
@@ -2384,7 +2438,7 @@
         <!-- 商机表格展示区域 -->
         <aside class="opportunity-table-section" id="opportunityTableSection">
             <div class="table-header">
-                <h3>我的商机列表</h3>
+                <h3 id="tableTitle">我的商机列表</h3>
                 <span class="opportunity-count" id="opportunityCount">共 0 条</span>
             </div>
             <div class="table-container" id="tableContainer">
@@ -3254,13 +3308,60 @@
         // ==================== 商机表格功能 ====================
         
         /**
+         * 根据角色获取表格标题
+         */
+        function getTableTitleByRole(roleType, department) {
+            switch (roleType) {
+                case '超级管理员':
+                case 'VP管理员':
+                case '技术专家':
+                    return '全集团商机列表';
+                
+                case '行业负责人':
+                case '业务专家':
+                    // 从部门名称提取行业
+                    const industryMatch = department.match(/行业部[-.·]?(.+)|(.+)行业部/);
+                    if (industryMatch) {
+                        const industry = industryMatch[1] || industryMatch[2];
+                        return `${industry}行业商机列表`;
+                    }
+                    // 中研院等特殊部门
+                    if (department.includes('中研院') || department.includes('中央研究院')) {
+                        return '全集团商机列表';
+                    }
+                    return `${department}商机列表`;
+                
+                case '平台负责人':
+                    if (department.includes('开鸿')) {
+                        return '开鸿营销中心商机列表';
+                    } else if (department.includes('交付')) {
+                        return '交付服务中心商机列表';
+                    }
+                    return '区域商机列表';
+                
+                case '销售':
+                default:
+                    return '我的商机列表';
+            }
+        }
+
+        /**
          * 加载用户可查看的所有商机（根据角色权限）
          */
         async function loadUserOpportunities() {
             if (!state.user || state.currentModule !== 'opportunity') return;
             
             try {
-                console.log('[表格] 加载商机 - 用户:', state.user.name, '角色:', state.user.roleType);
+                const roleType = state.user.roleType || state.user.role || '销售';
+                const department = state.user.department || '';
+                
+                console.log('[表格] 加载商机 - 用户:', state.user.name, '角色:', roleType);
+                
+                // 动态更新表格标题
+                const titleEl = document.getElementById('tableTitle');
+                if (titleEl) {
+                    titleEl.textContent = getTableTitleByRole(roleType, department);
+                }
                 
                 // 使用新的按权限获取商机接口
                 const response = await fetch(`${CONFIG.API_BASE_URL}/opportunities/list`, {
@@ -3333,13 +3434,25 @@
                 const projectSummary = extractFieldValue(opp.project_summary);
                 const opportunityId = extractFieldValue(opp.opportunity_id);
                 
+                // 转义HTML特殊字符，防止XSS
+                const escapeHtml = (str) => {
+                    return str.replace(/&/g, '&amp;')
+                              .replace(/</g, '&lt;')
+                              .replace(/>/g, '&gt;')
+                              .replace(/"/g, '&quot;')
+                              .replace(/'/g, '&#039;');
+                };
+                
+                const escapedSummary = escapeHtml(projectSummary || '');
+                const escapedCustomer = escapeHtml(customerName || '');
+                
                 html += `
                     <tr class="${isHighlighted ? 'highlighted' : ''}" data-opportunity-id="${opportunityId}">
-                        <td title="${opportunityId}">${opportunityId || '-'}</td>
-                        <td title="${customerName}">${customerName || '-'}</td>
-                        <td title="${projectSummary}">${projectSummary || '-'}</td>
-                        <td><span class="status-badge status-${status}">${status}</span></td>
-                        <td><span class="score-badge ${scoreClass}">${score}分</span></td>
+                        <td class="id-cell" data-tooltip="${opportunityId || ''}">${opportunityId || '-'}</td>
+                        <td class="customer-cell" data-tooltip="${escapedCustomer}">${customerName || '-'}</td>
+                        <td class="summary-cell" data-tooltip="${escapedSummary}">${projectSummary || '-'}</td>
+                        <td class="status-cell"><span class="status-badge status-${status}">${status}</span></td>
+                        <td class="score-cell"><span class="score-badge ${scoreClass}">${score}分</span></td>
                     </tr>
                 `;
             });
