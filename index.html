@@ -2092,16 +2092,22 @@
             <form id="loginForm">
                 <div class="form-group">
                     <label class="form-label">选择身份</label>
-                    <div class="role-buttons">
-                        <div class="role-button" data-role="销售">我是销售</div>
-                        <div class="role-button" data-role="管理员">我是管理员</div>
-                    </div>
+                    <select class="form-select" id="roleSelect" required>
+                        <option value="">请选择角色...</option>
+                        <option value="超级管理员">超级管理员（董事会/总裁办）</option>
+                        <option value="VP管理员">VP管理员（集团高管）</option>
+                        <option value="行业负责人">行业负责人</option>
+                        <option value="平台负责人">平台负责人</option>
+                        <option value="技术专家">技术专家（中研院）</option>
+                        <option value="业务专家">业务专家</option>
+                        <option value="销售">一线销售</option>
+                    </select>
                 </div>
 
                 <div class="form-group">
                     <label class="form-label">选择姓名</label>
-                    <select class="form-select" id="userSelect" required>
-                        <option value="">请选择...</option>
+                    <select class="form-select" id="userSelect" required disabled>
+                        <option value="">请先选择角色...</option>
                     </select>
                 </div>
 
@@ -2581,6 +2587,21 @@
                 return allUsers;
             },
             
+            // 根据角色类型获取用户列表
+            getUsersByRole: function(roleType) {
+                const users = [];
+                const seenNames = new Set();
+                this.groups.forEach(group => {
+                    group.users.forEach(user => {
+                        if (user.roleType === roleType && !seenNames.has(user.name)) {
+                            seenNames.add(user.name);
+                            users.push(user);
+                        }
+                    });
+                });
+                return users;
+            },
+            
             // 根据姓名查找用户
             findUser: function(name) {
                 return this.getAllUsers().find(u => u.name === name);
@@ -2603,36 +2624,8 @@
                 const allUsers = HARDCODED_USERS.getAllUsers();
                 state.users = allUsers;
                 
-                const userSelect = document.getElementById('userSelect');
-                
-                if (!userSelect) {
-                    console.error('找不到用户选择下拉框元素');
-                    return;
-                }
-                
-                userSelect.innerHTML = '<option value="">请选择...</option>';
-                
-                // 按组分类显示用户
-                let addedCount = 0;
-                HARDCODED_USERS.groups.forEach(group => {
-                    if (group.users.length === 0) return;
-                    
-                    // 添加组标题（optgroup）
-                    const optgroup = document.createElement('optgroup');
-                    optgroup.label = group.name;
-                    
-                    group.users.forEach(user => {
-                        const option = document.createElement('option');
-                        option.value = user.name;
-                        option.textContent = `${user.name} - ${user.department}`;
-                        optgroup.appendChild(option);
-                        addedCount++;
-                    });
-                    
-                    userSelect.appendChild(optgroup);
-                });
-                
-                console.log(`✓ 成功加载 ${addedCount} 个用户到下拉列表（硬编码数据）`);
+                console.log(`✓ 硬编码用户数据已加载，共 ${allUsers.length} 个用户`);
+                console.log('用户将根据选择的角色动态加载到下拉列表');
                 
             } catch (error) {
                 console.error('加载用户列表失败:', error);
@@ -2641,25 +2634,47 @@
         }
 
         // 登录表单处理
-        let selectedRole = null;
+        // 需要管理员密钥验证的角色
+        const ADMIN_ROLES = ['超级管理员', 'VP管理员', '行业负责人', '平台负责人'];
         
         function initLoginForm() {
-            document.querySelectorAll('.role-button').forEach(btn => {
-                btn.addEventListener('click', () => {
-                    document.querySelectorAll('.role-button').forEach(b => b.classList.remove('active'));
-                    btn.classList.add('active');
-                    selectedRole = btn.dataset.role;
-                    
-                    const adminGroup = document.getElementById('adminSecretGroup');
-                    const adminSecret = document.getElementById('adminSecret');
-                    if (selectedRole === '管理员') {
-                        adminGroup.classList.add('visible');
-                        adminSecret.required = true;
-                    } else {
-                        adminGroup.classList.remove('visible');
-                        adminSecret.required = false;
-                    }
+            const roleSelect = document.getElementById('roleSelect');
+            const userSelect = document.getElementById('userSelect');
+            const adminGroup = document.getElementById('adminSecretGroup');
+            const adminSecret = document.getElementById('adminSecret');
+            
+            // 角色选择变化时，过滤并显示对应用户
+            roleSelect.addEventListener('change', () => {
+                const selectedRole = roleSelect.value;
+                
+                if (!selectedRole) {
+                    userSelect.innerHTML = '<option value="">请先选择角色...</option>';
+                    userSelect.disabled = true;
+                    adminGroup.classList.remove('visible');
+                    adminSecret.required = false;
+                    return;
+                }
+                
+                // 根据角色过滤用户
+                const filteredUsers = HARDCODED_USERS.getUsersByRole(selectedRole);
+                
+                userSelect.innerHTML = '<option value="">请选择...</option>';
+                filteredUsers.forEach(user => {
+                    const option = document.createElement('option');
+                    option.value = user.name;
+                    option.textContent = `${user.name} - ${user.department}`;
+                    userSelect.appendChild(option);
                 });
+                userSelect.disabled = false;
+                
+                // 显示/隐藏管理员密钥输入框
+                if (ADMIN_ROLES.includes(selectedRole)) {
+                    adminGroup.classList.add('visible');
+                    adminSecret.required = true;
+                } else {
+                    adminGroup.classList.remove('visible');
+                    adminSecret.required = false;
+                }
             });
 
             document.getElementById('loginForm').addEventListener('submit', handleLoginSubmit);
@@ -2668,6 +2683,7 @@
         async function handleLoginSubmit(e) {
             e.preventDefault();
             
+            const selectedRole = document.getElementById('roleSelect').value;
             if (!selectedRole) {
                 showError('请选择身份');
                 return;
@@ -2687,9 +2703,8 @@
             }
             
             // 验证角色是否匹配
-            const userRole = user.role;
-            if (userRole !== selectedRole) {
-                showError(`该用户的角色是"${userRole}"，请选择正确的身份`);
+            if (user.roleType !== selectedRole) {
+                showError(`该用户的角色是"${user.roleType}"，请选择正确的身份`);
                 return;
             }
             
@@ -2697,7 +2712,7 @@
             const ADMIN_SECRET = 'Talkweb4Ever#2026#';
             let isAdmin = false;
             
-            if (selectedRole === '管理员') {
+            if (ADMIN_ROLES.includes(selectedRole)) {
                 const inputSecret = document.getElementById('adminSecret').value;
                 if (inputSecret !== ADMIN_SECRET) {
                     showError('管理员密钥错误');
@@ -2737,7 +2752,7 @@
             
             // 更新下拉菜单中的用户信息
             document.getElementById('dropdownUserName').textContent = state.user.name;
-            document.getElementById('dropdownUserRole').textContent = state.user.isAdmin ? '管理员' : '销售';
+            document.getElementById('dropdownUserRole').textContent = state.user.roleType || state.user.role;
             document.getElementById('dropdownUserDept').textContent = state.user.department || '销售部';
             
             // 更新欢迎语
