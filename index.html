@@ -2264,7 +2264,7 @@
                 <div style="margin-top: 24px; padding: 20px; background: var(--bg-gray); border-radius: 12px; border-left: 4px solid var(--accent-purple);">
                     <p style="font-size: 14px; color: var(--text-secondary); line-height: 1.7;">
                         <strong>什么是完整度评分？</strong><br>
-                        AI会从6个维度评估你的需求：客户画像、需求明确度、预算可信度、决策链路、时间合理性、技术可评估性。<strong>得分≥80分</strong>时，系统会自动通知产品销售部和中央研究院联合评估。
+                        AI会从6个维度评估你的需求：客户画像、需求明确度、预算可信度、决策链路、时间合理性、技术可评估性。<strong>得分≥75分</strong>时，系统会自动通知产品销售部和中央研究院联合评估。
                     </p>
                 </div>
             </div>
@@ -3217,7 +3217,7 @@
             opportunities.forEach(opp => {
                 const isHighlighted = highlightIds.includes(opp.opportunity_id);
                 const score = opp.completeness_score || 0;
-                const scoreClass = score >= 80 ? 'high' : score >= 60 ? 'medium' : 'low';
+                const scoreClass = score >= 75 ? 'high' : score >= 60 ? 'medium' : 'low';
                 const status = opp.current_status || '草稿';
                 
                 const customerName = extractFieldValue(opp.customer_name);
