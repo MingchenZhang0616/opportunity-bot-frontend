@@ -895,6 +895,10 @@
             display: flex;
         }
 
+        .chat-page.with-table .chat-main {
+            flex: 1;
+        }
+
         /* 侧边栏 */
         .sidebar {
             width: 280px;
@@ -1827,6 +1831,194 @@
                 padding: 20px;
             }
         }
+
+        /* =========================
+           商机表格展示区域样式
+        ========================= */
+        
+        .opportunity-table-section {
+            width: 450px;
+            background: var(--bg-white);
+            border-left: 1px solid var(--border-color);
+            display: none;
+            flex-direction: column;
+        }
+
+        .opportunity-table-section.visible {
+            display: flex;
+        }
+
+        .table-header {
+            padding: 16px 20px;
+            border-bottom: 1px solid var(--border-color);
+            background: var(--bg-gray);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .table-header h3 {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .table-header h3::before {
+            content: '';
+            width: 4px;
+            height: 16px;
+            background: var(--primary-blue);
+            border-radius: 2px;
+        }
+
+        .opportunity-count {
+            font-size: 13px;
+            color: var(--text-light);
+            background: var(--bg-white);
+            padding: 4px 12px;
+            border-radius: 12px;
+            border: 1px solid var(--border-color);
+        }
+
+        .table-container {
+            flex: 1;
+            overflow: auto;
+            padding: 0;
+        }
+
+        .opportunity-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 13px;
+        }
+
+        .opportunity-table th {
+            position: sticky;
+            top: 0;
+            background: var(--bg-gray);
+            padding: 12px 16px;
+            text-align: left;
+            font-weight: 600;
+            color: var(--text-primary);
+            border-bottom: 1px solid var(--border-color);
+            white-space: nowrap;
+            z-index: 10;
+        }
+
+        .opportunity-table td {
+            padding: 12px 16px;
+            border-bottom: 1px solid var(--border-light);
+            color: var(--text-secondary);
+            max-width: 120px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .opportunity-table tr:hover {
+            background: var(--primary-blue-light);
+        }
+
+        .opportunity-table tr.highlighted {
+            background: rgba(37, 99, 235, 0.12) !important;
+            animation: highlightPulse 2s ease;
+        }
+
+        @keyframes highlightPulse {
+            0%, 100% { background: rgba(37, 99, 235, 0.12); }
+            50% { background: rgba(37, 99, 235, 0.25); }
+        }
+
+        .opportunity-table tr.highlighted td {
+            color: var(--primary-blue);
+            font-weight: 500;
+        }
+
+        .status-badge {
+            display: inline-block;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+
+        .status-badge.status-待评估 {
+            background: rgba(37, 99, 235, 0.1);
+            color: var(--primary-blue);
+        }
+
+        .status-badge.status-待补充 {
+            background: rgba(245, 158, 11, 0.1);
+            color: #f59e0b;
+        }
+
+        .status-badge.status-草稿 {
+            background: var(--bg-gray);
+            color: var(--text-light);
+        }
+
+        .status-badge.status-已打回 {
+            background: rgba(239, 68, 68, 0.1);
+            color: #ef4444;
+        }
+
+        .score-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            font-weight: 600;
+        }
+
+        .score-badge.high {
+            color: var(--accent-green);
+        }
+
+        .score-badge.medium {
+            color: #f59e0b;
+        }
+
+        .score-badge.low {
+            color: #ef4444;
+        }
+
+        .table-empty-state {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 60px 20px;
+            color: var(--text-light);
+            text-align: center;
+        }
+
+        .table-empty-state svg {
+            width: 64px;
+            height: 64px;
+            margin-bottom: 16px;
+            opacity: 0.3;
+            stroke: var(--text-light);
+        }
+
+        .table-empty-state p {
+            font-size: 14px;
+            margin: 4px 0;
+        }
+
+        /* 响应式调整 */
+        @media (max-width: 1400px) {
+            .opportunity-table-section {
+                width: 380px;
+            }
+        }
+
+        @media (max-width: 1200px) {
+            .opportunity-table-section {
+                display: none !important;
+            }
+        }
     </style>
 </head>
 <body>
@@ -2121,6 +2313,24 @@
                 </div>
             </div>
         </main>
+
+        <!-- 商机表格展示区域 -->
+        <aside class="opportunity-table-section" id="opportunityTableSection">
+            <div class="table-header">
+                <h3>我的商机列表</h3>
+                <span class="opportunity-count" id="opportunityCount">共 0 条</span>
+            </div>
+            <div class="table-container" id="tableContainer">
+                <div class="table-empty-state">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                        <path d="M9 17v-2H4.5A2.5 2.5 0 0 1 2 12.5v-9A2.5 2.5 0 0 1 4.5 1h9A2.5 2.5 0 0 1 16 3.5V9h-2V3.5a.5.5 0 0 0-.5-.5h-9a.5.5 0 0 0-.5.5v9a.5.5 0 0 0 .5.5H9zm9.5 7h-9a2.5 2.5 0 0 1-2.5-2.5v-9a2.5 2.5 0 0 1 2.5-2.5h9a2.5 2.5 0 0 1 2.5 2.5v9a2.5 2.5 0 0 1-2.5 2.5z"/>
+                        <path d="M9 11h6v2H9z"/>
+                    </svg>
+                    <p>暂无商机数据</p>
+                    <p style="font-size: 12px; margin-top: 8px;">在左侧对话中录入或查询商机</p>
+                </div>
+            </div>
+        </aside>
     </div>
 
     <script>
@@ -2137,7 +2347,9 @@
             currentSessionId: null,
             users: [],
             isRecording: false,
-            abortController: null
+            abortController: null,
+            opportunities: [], // 用户商机列表
+            highlightedOpportunityIds: [] // 需要高亮的商机ID
         };
 
         // ==================== 工具函数 ====================
@@ -2519,6 +2731,16 @@
             // 显示聊天页
             document.getElementById('chatPage').classList.add('active');
             
+            // 控制商机表格显示（只在商机管理模块显示）
+            const tableSection = document.getElementById('opportunityTableSection');
+            if (module === 'opportunity') {
+                tableSection.classList.add('visible');
+                // 加载用户的商机列表
+                loadUserOpportunities();
+            } else {
+                tableSection.classList.remove('visible');
+            }
+            
             // 更新侧边栏用户信息
             const firstName = state.user.name.charAt(0);
             document.getElementById('sidebarAvatar').textContent = firstName;
@@ -2720,6 +2942,12 @@
                                 messagesArea.scrollTop = messagesArea.scrollHeight;
                                 break;
 
+                            case 'table_data':
+                                // 表格数据更新（商机列表）
+                                console.log('[SSE] 收到表格数据:', event.opportunities?.length, '条商机');
+                                updateOpportunityTable(event.opportunities || [], event.highlight_ids || []);
+                                break;
+
                             case 'error':
                                 console.error('[SSE] 错误:', event.text);
                                 updateAIMessage('❌ ' + event.text, false);
@@ -2857,6 +3085,121 @@
             };
             fileInput.click();
         });
+
+        // ==================== 商机表格功能 ====================
+        
+        /**
+         * 加载用户的所有商机
+         */
+        async function loadUserOpportunities() {
+            if (!state.user || state.currentModule !== 'opportunity') return;
+            
+            try {
+                console.log('[表格] 加载用户商机:', state.user.name);
+                const response = await fetch(`${CONFIG.API_BASE_URL}/opportunities/user/${encodeURIComponent(state.user.name)}`);
+                const data = await response.json();
+                
+                if (data.success) {
+                    state.opportunities = data.opportunities;
+                    renderOpportunityTable(state.opportunities, []);
+                    console.log('[表格] 加载完成:', state.opportunities.length, '条商机');
+                } else {
+                    console.error('[表格] 加载失败:', data);
+                }
+            } catch (error) {
+                console.error('[表格] 加载商机列表失败:', error);
+            }
+        }
+
+        /**
+         * 渲染商机表格
+         * @param {Array} opportunities - 商机列表
+         * @param {Array} highlightIds - 需要高亮的商机ID列表
+         */
+        function renderOpportunityTable(opportunities, highlightIds = []) {
+            const container = document.getElementById('tableContainer');
+            const countEl = document.getElementById('opportunityCount');
+            
+            countEl.textContent = `共 ${opportunities.length} 条`;
+            
+            if (opportunities.length === 0) {
+                container.innerHTML = `
+                    <div class="table-empty-state">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                            <path d="M9 17v-2H4.5A2.5 2.5 0 0 1 2 12.5v-9A2.5 2.5 0 0 1 4.5 1h9A2.5 2.5 0 0 1 16 3.5V9h-2V3.5a.5.5 0 0 0-.5-.5h-9a.5.5 0 0 0-.5.5v9a.5.5 0 0 0 .5.5H9zm9.5 7h-9a2.5 2.5 0 0 1-2.5-2.5v-9a2.5 2.5 0 0 1 2.5-2.5h9a2.5 2.5 0 0 1 2.5 2.5v9a2.5 2.5 0 0 1-2.5 2.5z"/>
+                            <path d="M9 11h6v2H9z"/>
+                        </svg>
+                        <p>暂无商机数据</p>
+                        <p style="font-size: 12px; margin-top: 8px;">在左侧对话中录入或查询商机</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            let html = `
+                <table class="opportunity-table">
+                    <thead>
+                        <tr>
+                            <th>商机ID</th>
+                            <th>客户名称</th>
+                            <th>项目摘要</th>
+                            <th>状态</th>
+                            <th>评分</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+            `;
+            
+            opportunities.forEach(opp => {
+                const isHighlighted = highlightIds.includes(opp.opportunity_id);
+                const score = opp.completeness_score || 0;
+                const scoreClass = score >= 80 ? 'high' : score >= 60 ? 'medium' : 'low';
+                const status = opp.current_status || '草稿';
+                
+                html += `
+                    <tr class="${isHighlighted ? 'highlighted' : ''}" data-opportunity-id="${opp.opportunity_id}">
+                        <td>${opp.opportunity_id || '-'}</td>
+                        <td title="${opp.customer_name || ''}">${opp.customer_name || '-'}</td>
+                        <td title="${opp.project_summary || ''}">${opp.project_summary || '-'}</td>
+                        <td><span class="status-badge status-${status}">${status}</span></td>
+                        <td><span class="score-badge ${scoreClass}">${score}分</span></td>
+                    </tr>
+                `;
+            });
+            
+            html += '</tbody></table>';
+            container.innerHTML = html;
+            
+            // 如果有高亮的行，滚动到第一个高亮行
+            if (highlightIds.length > 0) {
+                setTimeout(() => {
+                    const firstHighlighted = container.querySelector('tr.highlighted');
+                    if (firstHighlighted) {
+                        firstHighlighted.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    }
+                }, 100);
+            }
+        }
+
+        /**
+         * 更新商机表格（在操作后调用）
+         * @param {Array} opportunities - 商机列表
+         * @param {Array} highlightIds - 需要高亮的商机ID列表
+         */
+        function updateOpportunityTable(opportunities, highlightIds) {
+            state.opportunities = opportunities;
+            state.highlightedOpportunityIds = highlightIds;
+            renderOpportunityTable(opportunities, highlightIds);
+            
+            console.log('[表格] 已更新:', opportunities.length, '条商机，高亮:', highlightIds.length, '条');
+            
+            // 3秒后移除高亮动画（保留背景色）
+            setTimeout(() => {
+                document.querySelectorAll('tr.highlighted').forEach(row => {
+                    row.style.animation = 'none';
+                });
+            }, 2000);
+        }
 
         // ==================== 初始化 ====================
         async function init() {
