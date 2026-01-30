@@ -1496,18 +1496,42 @@
             background: transparent;
             border: none;
             border-radius: 8px;
-            cursor: pointer;
+            cursor: not-allowed;
             font-size: 18px;
             display: flex;
             align-items: center;
             justify-content: center;
             transition: all 0.3s ease;
-            color: var(--text-secondary);
+            color: var(--text-light);
+            opacity: 0.5;
+            position: relative;
         }
 
         .upload-button:hover {
-            background: var(--primary-blue-light);
-            color: var(--primary-blue);
+            background: var(--bg-gray);
+        }
+
+        /* 上传按钮提示 */
+        .upload-button::after {
+            content: '即将上线';
+            position: absolute;
+            bottom: -35px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0, 0, 0, 0.8);
+            color: white;
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-size: 12px;
+            white-space: nowrap;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+            z-index: 1000;
+        }
+
+        .upload-button:hover::after {
+            opacity: 1;
         }
 
         .send-button {
@@ -3415,7 +3439,8 @@
             <div class="navbar-right">
                 <div class="notification-icon" id="notificationIcon">
                     🔔
-                    <span class="notification-badge">3</span>
+                    <!-- 通知功能即将上线，暂时隐藏红点数字 -->
+                    <!-- <span class="notification-badge">3</span> -->
                 </div>
                 <!-- 通知下拉框 -->
                 <div class="notification-dropdown" id="notificationDropdown">
@@ -3449,8 +3474,7 @@
         <!-- 英雄区 -->
         <section class="hero-section">
             <h1 class="hero-greeting">
-                下午好，<span class="user-highlight" id="heroUserName">张鸣宸</span>。<br>
-                今天你是想<strong>"搞定客户"</strong>还是<strong>"呼唤炮火"</strong>？
+                下午好，<span class="user-highlight" id="heroUserName">张鸣宸</span>
             </h1>
             <p class="hero-subtitle">基于AI +高质量数据集的集团级生态链接与销售赋能智能体</p>
         </section>
@@ -3895,7 +3919,7 @@
                             placeholder="输入您的消息..."
                             rows="1"
                         ></textarea>
-                        <button class="upload-button" id="uploadButton" title="上传文件">📎</button>
+                        <button class="upload-button" id="uploadButton" title="上传文件（即将上线）" disabled>📎</button>
                     </div>
                     <button class="stop-button" id="stopButton" title="终止生成">
                         ⏹
@@ -4508,8 +4532,7 @@
             // 更新欢迎语
             const greeting = getGreeting();
             document.querySelector('.hero-greeting').innerHTML = `
-                ${greeting}，<span class="user-highlight">${state.user.name}</span>。<br>
-                今天你是想<strong>"搞定客户"</strong>还是<strong>"呼唤炮火"</strong>？
+                ${greeting}，<span class="user-highlight">${state.user.name}</span>
             `;
             
             // 根据角色更新需求孵化卡片
@@ -4540,42 +4563,16 @@
         function loadNotifications() {
             const notificationList = document.getElementById('notificationList');
             
-            // 模拟通知数据（实际应该从后端API获取）
-            const notifications = [
-                {
-                    id: 1,
-                    title: '需求已通过',
-                    text: '您提交的"智慧校园"需求已通过初审，产品部正在评估中',
-                    time: '2小时前',
-                    unread: true
-                },
-                {
-                    id: 2,
-                    title: '商机打回',
-                    text: '华为项目需求信息不完整，请补充预算信息',
-                    time: '5小时前',
-                    unread: true
-                },
-                {
-                    id: 3,
-                    title: '系统通知',
-                    text: '拓维生态大脑v1.0已上线，欢迎使用！',
-                    time: '1天前',
-                    unread: false
-                }
-            ];
-            
-            if (notifications.length === 0) {
-                notificationList.innerHTML = '<div class="notification-empty">暂无通知</div>';
-            } else {
-                notificationList.innerHTML = notifications.map(notif => `
-                    <div class="notification-item ${notif.unread ? 'unread' : ''}">
-                        <div class="notification-title">${notif.title}</div>
-                        <div class="notification-text">${notif.text}</div>
-                        <div class="notification-time">${notif.time}</div>
+            // 通知功能即将上线
+            notificationList.innerHTML = `
+                <div class="notification-empty" style="text-align: center; padding: 30px 20px;">
+                    <div style="font-size: 32px; margin-bottom: 12px;">🔔</div>
+                    <div style="font-weight: 600; margin-bottom: 8px;">通知功能即将上线</div>
+                    <div style="color: var(--text-tertiary); font-size: 13px;">
+                        商机审批、打回提醒等通知将在此显示
                     </div>
-                `).join('');
-            }
+                </div>
+            `;
         }
 
         // 通知图标点击事件
@@ -5152,20 +5149,12 @@
         // 
         // 目前按钮已禁用，显示"即将上线"提示
 
-        // ==================== 文件上传 ====================
-        document.getElementById('uploadButton').addEventListener('click', () => {
-            // 创建隐藏的file input
-            const fileInput = document.createElement('input');
-            fileInput.type = 'file';
-            fileInput.accept = 'image/*,.pdf,.doc,.docx';
-            fileInput.onchange = (e) => {
-                const file = e.target.files[0];
-                if (file) {
-                    alert(`已选择文件: ${file.name}\n文件上传功能需要后端API支持`);
-                }
-            };
-            fileInput.click();
-        });
+        // ==================== 文件上传（暂未实现） ====================
+        // 
+        // 目前按钮已禁用，显示"即将上线"提示
+        // 后续实现文件上传功能需要：
+        // 1. 后端添加文件上传API
+        // 2. 前端集成文件选择和上传逻辑
 
         // ==================== 商机表格功能 ====================
         
