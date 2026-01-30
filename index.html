@@ -3473,10 +3473,10 @@
                 <div class="card-icon">🚀</div>
                 <h2 class="card-main-title">提需求 / 孵化</h2>
                 <p class="card-subtitle">市场-产研双向直通车 Demand Funnel</p>
-                <div class="card-slogan">
+                <div class="card-slogan" id="demandCardSlogan">
                     拒绝繁琐，语音'吐槽'一线炮火，AI 自动评分直达研发中枢
                 </div>
-                <button class="card-action">开始提报 →</button>
+                <button class="card-action" id="demandCardAction">开始提报 →</button>
             </div>
 
             <!-- 右卡片：生态价值挖掘 -->
@@ -4512,8 +4512,28 @@
                 今天你是想<strong>"搞定客户"</strong>还是<strong>"呼唤炮火"</strong>？
             `;
             
+            // 根据角色更新需求孵化卡片
+            updateDemandCard();
+            
             // 加载通知
             loadNotifications();
+        }
+        
+        // 根据角色更新需求孵化卡片显示
+        function updateDemandCard() {
+            const roleType = state.user.roleType || state.user.role || '销售';
+            const isManager = isManagerRole(roleType);
+            
+            const cardSlogan = document.getElementById('demandCardSlogan');
+            const cardAction = document.getElementById('demandCardAction');
+            
+            if (isManager) {
+                cardSlogan.textContent = '管理者视角：审批商机、查看全局、智能分流';
+                cardAction.textContent = '进入管理 →';
+            } else {
+                cardSlogan.textContent = "拒绝繁琐，语音'吐槽'一线炮火，AI 自动评分直达研发中枢";
+                cardAction.textContent = '开始提报 →';
+            }
         }
 
         // ==================== 通知和用户菜单 ====================
