@@ -418,14 +418,14 @@
             margin: 0 auto;
         }
 
-        /* 双卡片区域 */
+        /* 三卡片区域 */
         .twin-cards {
-            max-width: 1400px;
+            max-width: 1600px;
             margin: 0 auto;
             padding: 40px 48px;
             display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 48px;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 32px;
         }
 
         .feature-card {
@@ -492,6 +492,15 @@
             box-shadow: var(--shadow-hover), 0 0 20px rgba(139, 92, 246, 0.15);
         }
 
+        .feature-card.resource-collector {
+            border-color: var(--border-light);
+        }
+
+        .feature-card.resource-collector:hover {
+            border-color: rgba(16, 185, 129, 0.3);
+            box-shadow: var(--shadow-hover), 0 0 20px rgba(16, 185, 129, 0.15);
+        }
+
         .card-icon {
             width: 88px;
             height: 88px;
@@ -514,6 +523,11 @@
         .feature-card.demand-funnel .card-icon {
             background: linear-gradient(135deg, #e9d5ff 0%, #ddd6fe 50%, #c4b5fd 100%);
             box-shadow: 0 8px 24px rgba(139, 92, 246, 0.2);
+        }
+
+        .feature-card.resource-collector .card-icon {
+            background: linear-gradient(135deg, #d1fae5 0%, #a7f3d0 50%, #6ee7b7 100%);
+            box-shadow: 0 8px 24px rgba(16, 185, 129, 0.2);
         }
 
         .feature-card:hover .card-icon {
@@ -573,6 +587,14 @@
             background: linear-gradient(135deg, #faf5ff 0%, #f3e8ff 100%);
         }
 
+        .feature-card.resource-collector .card-slogan {
+            border-left-color: var(--accent-green);
+        }
+
+        .feature-card.resource-collector:hover .card-slogan {
+            background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%);
+        }
+
         .card-action {
             display: inline-flex;
             align-items: center;
@@ -627,6 +649,15 @@
 
         .feature-card.demand-funnel .card-action:hover {
             box-shadow: 0 8px 24px rgba(139, 92, 246, 0.4);
+        }
+
+        .feature-card.resource-collector .card-action {
+            background: var(--accent-green-gradient);
+            box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+        }
+
+        .feature-card.resource-collector .card-action:hover {
+            box-shadow: 0 8px 24px rgba(16, 185, 129, 0.4);
         }
 
         /* =========================
@@ -3121,20 +3152,20 @@
             <p class="hero-subtitle">基于AI +高质量数据集的集团级生态链接与销售赋能智能体</p>
         </section>
 
-        <!-- 双卡片区 -->
+        <!-- 三卡片区 -->
         <section class="twin-cards">
-            <!-- 左卡片：生态价值挖掘 -->
-            <div class="feature-card eco-bluff" data-target="ecoGuide">
-                <div class="card-icon">💎</div>
-                <h2 class="card-main-title">找筹码 / 组局</h2>
-                <p class="card-subtitle">生态价值网挖掘 Eco-Bluff</p>
+            <!-- 左卡片：录入生态资源 -->
+            <div class="feature-card resource-collector" data-target="resourceGuide">
+                <div class="card-icon">📝</div>
+                <h2 class="card-main-title">录入资源</h2>
+                <p class="card-subtitle">生态资源录入 Resource Collector</p>
                 <div class="card-slogan">
-                    "不卷价格。帮客户找资金、找人才、找资源，用'利他'降维成交。"
+                    录入大咖、企业、政府关系等新资源，自动整理到集团生态库
                 </div>
-                <button class="card-action">进入挖掘 →</button>
+                <button class="card-action">开始录入 →</button>
             </div>
 
-            <!-- 右卡片：需求孵化直通车 -->
+            <!-- 中卡片：需求孵化直通车 -->
             <div class="feature-card demand-funnel" data-target="demandGuide">
                 <div class="card-icon">🚀</div>
                 <h2 class="card-main-title">提需求 / 孵化</h2>
@@ -3144,7 +3175,105 @@
                 </div>
                 <button class="card-action">开始提报 →</button>
             </div>
+
+            <!-- 右卡片：生态价值挖掘 -->
+            <div class="feature-card eco-bluff" data-target="ecoGuide">
+                <div class="card-icon">💎</div>
+                <h2 class="card-main-title">找筹码 / 组局</h2>
+                <p class="card-subtitle">生态价值网挖掘 Eco-Bluff</p>
+                <div class="card-slogan">
+                    "不卷价格。帮客户找资金、找人才、找资源，用'利他'降维成交。"
+                </div>
+                <button class="card-action">进入挖掘 →</button>
+            </div>
         </section>
+    </div>
+
+    <!-- 第二层：录入生态资源引导页 -->
+    <div class="guide-page" id="resourceGuide">
+        <div class="guide-header" style="background: linear-gradient(135deg, #10b981 0%, #059669 50%, #047857 100%);">
+            <button class="back-button" onclick="goHome()">← 返回首页</button>
+            <h1 class="guide-title">📝 录入生态资源</h1>
+            <p class="guide-subtitle">把新梳理的资源录入集团生态库，共建生态网络</p>
+        </div>
+        
+        <div class="guide-content">
+            <div class="guide-section">
+                <h3 class="guide-section-title">这是什么</h3>
+                <p style="color: var(--text-secondary); margin-bottom: 20px;">
+                    一个帮你快速录入新认识的生态资源（大咖、企业、政府关系等）到飞书表格的工具。
+                </p>
+                
+                <h4 style="font-size: 18px; font-weight: 600; margin: 24px 0 12px;">能帮你做什么</h4>
+                <ul class="guide-features">
+                    <li><strong>AI自动提取：</strong>从自然语言描述中提取6个标准字段</li>
+                    <li><strong>智能校验：</strong>自动匹配17个标准组织归属，不匹配归入"其他"</li>
+                    <li><strong>一键录入：</strong>自动写入飞书多维表格，共建集团级生态库</li>
+                </ul>
+            </div>
+
+            <div class="guide-section">
+                <h3 class="guide-section-title">试试这样录入...</h3>
+                
+                <div class="preset-bubbles">
+                    <div class="bubble" onclick="startChat('resource', '录入新资源：今天在省侨联活动上认识了华为的张三，他是云计算部门的总经理，由李四负责对接，聊到了数字化转型的合作意向')">
+                        录入新资源：今天在省侨联活动上认识了华为的张三，他是云计算部门的总经理...
+                    </div>
+                    
+                    <div class="bubble" onclick="startChat('resource', '添加资源：湖湘汇会员王五，三一重工副总裁，智能制造领域的专家')">
+                        添加资源：湖湘汇会员王五，三一重工副总裁...
+                    </div>
+                    
+                    <div class="bubble" onclick="startChat('resource', '记录一下：在520司庆活动上遇到了投资部的赵六，专注于AI领域的投资')">
+                        记录一下：在520司庆活动上遇到了投资部的赵六...
+                    </div>
+                </div>
+                
+                <button class="start-button" style="background: linear-gradient(135deg, #10b981 0%, #059669 50%, #047857 100%);" onclick="startChat('resource', '')">
+                    <span>开始录入资源</span>
+                    <span>→</span>
+                </button>
+            </div>
+
+            <div class="guide-section">
+                <h3 class="guide-section-title">支持的17个组织归属</h3>
+                <div style="display: flex; flex-wrap: wrap; gap: 8px; margin-top: 16px;">
+                    <span style="background: var(--bg-gray); padding: 6px 12px; border-radius: 6px; font-size: 13px;">湖湘汇</span>
+                    <span style="background: var(--bg-gray); padding: 6px 12px; border-radius: 6px; font-size: 13px;">省侨联</span>
+                    <span style="background: var(--bg-gray); padding: 6px 12px; border-radius: 6px; font-size: 13px;">软促会</span>
+                    <span style="background: var(--bg-gray); padding: 6px 12px; border-radius: 6px; font-size: 13px;">长江湖南校友会</span>
+                    <span style="background: var(--bg-gray); padding: 6px 12px; border-radius: 6px; font-size: 13px;">新湘会</span>
+                    <span style="background: var(--bg-gray); padding: 6px 12px; border-radius: 6px; font-size: 13px;">青商会</span>
+                    <span style="background: var(--bg-gray); padding: 6px 12px; border-radius: 6px; font-size: 13px;">520司庆</span>
+                    <span style="background: var(--bg-gray); padding: 6px 12px; border-radius: 6px; font-size: 13px;">投资部</span>
+                    <span style="background: var(--bg-gray); padding: 6px 12px; border-radius: 6px; font-size: 13px;">+9个其他...</span>
+                </div>
+            </div>
+
+            <div class="guide-section">
+                <h3 class="guide-section-title">📦 批量录入</h3>
+                <p style="color: var(--text-secondary); margin-bottom: 16px;">
+                    支持一次性录入多条记录，单次最多500条。系统会自动分割并批量处理。
+                </p>
+                
+                <h4 style="font-size: 16px; font-weight: 600; margin: 20px 0 12px;">支持的分隔方式：</h4>
+                <ul style="color: var(--text-secondary); margin-left: 20px; margin-bottom: 20px; line-height: 2;">
+                    <li><strong>换行分隔：</strong>每条记录占一行</li>
+                    <li><strong>序号分隔：</strong>1. xxx 2. xxx 或 1、xxx 2、xxx</li>
+                    <li><strong>分号分隔：</strong>xxx; xxx;</li>
+                </ul>
+                
+                <div class="preset-bubbles">
+                    <div class="bubble" onclick="startChat('resource', '批量录入：\n1. 省侨联活动认识华为张三，云计算总经理，李四对接\n2. 湖湘汇会员王五，三一重工副总裁\n3. 520司庆遇到投资部赵六，专注AI投资')">
+                        批量录入3条：序号分隔格式...
+                    </div>
+                    
+                    <div class="bubble" onclick="startChat('resource', '录入多条资源：\n今天在省侨联活动上认识了华为的张三，云计算部门总经理，由李四负责对接；\n还遇到了湖湘汇的王五，他是三一重工副总裁；\n另外投资部的赵六也在场，专注于AI领域的投资。')">
+                        批量录入3条：分号分隔格式...
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 
     <!-- 第二层：生态价值挖掘引导页 -->
@@ -4085,6 +4214,7 @@
             // 隐藏所有页面
             document.getElementById('ecoGuide').classList.remove('active');
             document.getElementById('demandGuide').classList.remove('active');
+            document.getElementById('resourceGuide').classList.remove('active');
             document.getElementById('chatPage').classList.remove('active');
             document.getElementById('adminDashboard').classList.remove('active');
             
@@ -4181,6 +4311,7 @@
             // 隐藏引导页
             document.getElementById('ecoGuide').classList.remove('active');
             document.getElementById('demandGuide').classList.remove('active');
+            document.getElementById('resourceGuide').classList.remove('active');
             document.getElementById('homeDashboard').classList.add('hidden');
             
             // 判断是否显示管理视图（仅商机管理模块 + 管理者角色）
@@ -4232,6 +4363,9 @@
             if (module === 'ecosystem') {
                 modeBadge.innerHTML = '<span>💎</span><span>当前模式：生态资源挖掘</span>';
                 modeBadge.classList.remove('purple');
+            } else if (module === 'resource') {
+                modeBadge.innerHTML = '<span>📝</span><span>当前模式：录入生态资源</span>';
+                modeBadge.classList.remove('purple');
             } else {
                 modeBadge.innerHTML = '<span>🚀</span><span>当前模式：需求孵化直通车</span>';
                 modeBadge.classList.add('purple');
@@ -4244,10 +4378,11 @@
             // 显示AI开场白
             const openingMessages = {
                 ecosystem: '👋 嗨！我是你的资源军师。请告诉我客户的名字或者你想找哪类资源（比如：资金、招聘、政府关系）？我来帮你盘盘家底。',
-                opportunity: '📝 收到！我是需求记录员。请直接告诉我客户是谁、想要什么、预算多少？我会帮你整理并打分。'
+                opportunity: '📝 收到！我是需求记录员。请直接告诉我客户是谁、想要什么、预算多少？我会帮你整理并打分。',
+                resource: '📝 你好！我是资源录入助手。请描述你要录入的资源信息，包括：姓名、单位、职位、组织归属、对接人、交流内容等。我会自动提取并录入系统。'
             };
             
-            addAIMessage(openingMessages[module], '正在检索资源库...');
+            addAIMessage(openingMessages[module], module === 'resource' ? '准备录入...' : '正在检索资源库...');
             
             // 如果有预设消息，直接发送
             if (presetMessage) {
