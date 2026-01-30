@@ -3054,9 +3054,312 @@
                 flex-direction: column;
             }
         }
+        
+        /* =========================
+           Toast 通知系统
+        ========================= */
+        .toast-container {
+            position: fixed;
+            top: 24px;
+            right: 24px;
+            z-index: 10001;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            pointer-events: none;
+        }
+        
+        .toast {
+            background: white;
+            border-radius: 12px;
+            padding: 16px 20px;
+            box-shadow: var(--shadow-lg), 0 4px 20px rgba(0, 0, 0, 0.1);
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            min-width: 300px;
+            max-width: 400px;
+            pointer-events: all;
+            transform: translateX(120%);
+            opacity: 0;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            border-left: 4px solid;
+        }
+        
+        .toast.show {
+            transform: translateX(0);
+            opacity: 1;
+        }
+        
+        .toast.success { border-left-color: var(--accent-green); }
+        .toast.error { border-left-color: #ef4444; }
+        .toast.warning { border-left-color: #f59e0b; }
+        .toast.info { border-left-color: var(--primary-blue); }
+        
+        .toast-icon {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            font-size: 14px;
+        }
+        
+        .toast.success .toast-icon { background: var(--accent-green-light); color: var(--accent-green); }
+        .toast.error .toast-icon { background: rgba(239, 68, 68, 0.1); color: #ef4444; }
+        .toast.warning .toast-icon { background: rgba(245, 158, 11, 0.1); color: #f59e0b; }
+        .toast.info .toast-icon { background: var(--primary-blue-light); color: var(--primary-blue); }
+        
+        .toast-content {
+            flex: 1;
+        }
+        
+        .toast-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 2px;
+        }
+        
+        .toast-message {
+            font-size: 13px;
+            color: var(--text-secondary);
+            line-height: 1.5;
+        }
+        
+        .toast-close {
+            width: 20px;
+            height: 20px;
+            border: none;
+            background: transparent;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-light);
+            transition: all 0.15s ease;
+            border-radius: 4px;
+            flex-shrink: 0;
+        }
+        
+        .toast-close:hover {
+            background: var(--bg-gray);
+            color: var(--text-primary);
+        }
+        
+        /* =========================
+           确认弹窗
+        ========================= */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(4px);
+            z-index: 10000;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        
+        .modal-overlay.active {
+            display: flex;
+        }
+        
+        .modal-overlay.show {
+            opacity: 1;
+        }
+        
+        .modal-content {
+            background: white;
+            border-radius: 20px;
+            padding: 32px;
+            width: 90%;
+            max-width: 420px;
+            box-shadow: var(--shadow-lg);
+            transform: scale(0.9) translateY(20px);
+            opacity: 0;
+            transition: all 0.3s ease;
+        }
+        
+        .modal-overlay.show .modal-content {
+            transform: scale(1) translateY(0);
+            opacity: 1;
+        }
+        
+        .modal-icon {
+            width: 64px;
+            height: 64px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            margin: 0 auto 20px;
+        }
+        
+        .modal-icon.warning {
+            background: rgba(245, 158, 11, 0.1);
+            color: #f59e0b;
+        }
+        
+        .modal-icon.danger {
+            background: rgba(239, 68, 68, 0.1);
+            color: #ef4444;
+        }
+        
+        .modal-icon.info {
+            background: var(--primary-blue-light);
+            color: var(--primary-blue);
+        }
+        
+        .modal-title {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--text-primary);
+            text-align: center;
+            margin-bottom: 8px;
+        }
+        
+        .modal-message {
+            font-size: 15px;
+            color: var(--text-secondary);
+            text-align: center;
+            line-height: 1.6;
+            margin-bottom: 24px;
+        }
+        
+        .modal-actions {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+        }
+        
+        .modal-btn {
+            padding: 12px 24px;
+            border-radius: 10px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.15s ease;
+            border: none;
+            min-width: 100px;
+        }
+        
+        .modal-btn-secondary {
+            background: var(--bg-gray);
+            color: var(--text-secondary);
+            border: 1px solid var(--border-color);
+        }
+        
+        .modal-btn-secondary:hover {
+            background: var(--border-color);
+        }
+        
+        .modal-btn-primary {
+            background: var(--primary-blue-gradient);
+            color: white;
+        }
+        
+        .modal-btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
+        }
+        
+        .modal-btn-danger {
+            background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+            color: white;
+        }
+        
+        .modal-btn-danger:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);
+        }
+        
+        /* =========================
+           面包屑导航
+        ========================= */
+        .guide-nav {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            margin-bottom: 24px;
+            padding: 0 48px;
+            max-width: 1200px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        .guide-breadcrumb {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 14px;
+            color: rgba(255, 255, 255, 0.8);
+        }
+        
+        .guide-breadcrumb a {
+            color: rgba(255, 255, 255, 0.9);
+            text-decoration: none;
+            transition: all 0.15s ease;
+            cursor: pointer;
+        }
+        
+        .guide-breadcrumb a:hover {
+            color: white;
+            text-decoration: underline;
+        }
+        
+        .guide-breadcrumb-separator {
+            opacity: 0.5;
+        }
+        
+        .guide-breadcrumb-current {
+            color: white;
+            font-weight: 600;
+        }
+        
+        @media (max-width: 768px) {
+            .toast-container {
+                left: 20px;
+                right: 20px;
+                top: auto;
+                bottom: 20px;
+            }
+            
+            .toast {
+                min-width: auto;
+                max-width: none;
+            }
+            
+            .guide-nav {
+                padding: 0 20px;
+            }
+        }
     </style>
 </head>
 <body>
+    <!-- Toast 通知容器 -->
+    <div class="toast-container" id="toastContainer"></div>
+    
+    <!-- 确认弹窗 -->
+    <div class="modal-overlay" id="confirmModal">
+        <div class="modal-content">
+            <div class="modal-icon warning" id="modalIcon">⚠️</div>
+            <h3 class="modal-title" id="modalTitle">确认操作</h3>
+            <p class="modal-message" id="modalMessage">您确定要执行此操作吗？</p>
+            <div class="modal-actions">
+                <button class="modal-btn modal-btn-secondary" id="modalCancel">取消</button>
+                <button class="modal-btn modal-btn-primary" id="modalConfirm">确认</button>
+            </div>
+        </div>
+    </div>
     <!-- 登录页面 -->
     <div class="login-page" id="loginPage">
         <div class="login-card">
@@ -3327,7 +3630,14 @@
     <!-- 第二层：需求孵化直通车引导页 -->
     <div class="guide-page" id="demandGuide">
         <div class="guide-header purple-theme">
-            <button class="back-button" onclick="goHome()">← 返回首页</button>
+            <div class="guide-nav">
+                <button class="back-button" onclick="goHome()">← 返回首页</button>
+                <div class="guide-breadcrumb">
+                    <a onclick="goHome()">首页</a>
+                    <span class="guide-breadcrumb-separator">/</span>
+                    <span class="guide-breadcrumb-current">提需求/孵化</span>
+                </div>
+            </div>
             <h1 class="guide-title">🚀 需求孵化直通车</h1>
             <p class="guide-subtitle">AI×鸿蒙+行业，把一线需求孵化成公司产品</p>
         </div>
@@ -3770,6 +4080,93 @@
             return roleType && roleType !== '销售';
         }
 
+        // ==================== Toast 通知系统 ====================
+        function showToast({ type = 'info', title, message, duration = 5000 }) {
+            const container = document.getElementById('toastContainer');
+            if (!container) return;
+            
+            const toast = document.createElement('div');
+            toast.className = `toast ${type}`;
+            
+            const icons = {
+                success: '✓',
+                error: '✕',
+                warning: '⚠',
+                info: 'ℹ'
+            };
+            
+            toast.innerHTML = `
+                <div class="toast-icon">${icons[type]}</div>
+                <div class="toast-content">
+                    <div class="toast-title">${title}</div>
+                    <div class="toast-message">${message}</div>
+                </div>
+                <button class="toast-close" onclick="this.parentElement.remove()">✕</button>
+            `;
+            
+            container.appendChild(toast);
+            toast.offsetHeight;
+            toast.classList.add('show');
+            
+            setTimeout(() => {
+                toast.classList.remove('show');
+                setTimeout(() => toast.remove(), 300);
+            }, duration);
+        }
+
+        // ==================== 确认弹窗 ====================
+        function showConfirmModal({ title, message, icon = '⚠️', type = 'warning', onConfirm, onCancel }) {
+            const modal = document.getElementById('confirmModal');
+            const modalIcon = document.getElementById('modalIcon');
+            const modalTitle = document.getElementById('modalTitle');
+            const modalMessage = document.getElementById('modalMessage');
+            const confirmBtn = document.getElementById('modalConfirm');
+            const cancelBtn = document.getElementById('modalCancel');
+            
+            if (!modal) return;
+            
+            modalIcon.textContent = icon;
+            modalIcon.className = `modal-icon ${type}`;
+            modalTitle.textContent = title;
+            modalMessage.textContent = message;
+            
+            confirmBtn.className = `modal-btn ${type === 'danger' ? 'modal-btn-danger' : 'modal-btn-primary'}`;
+            
+            modal.classList.add('active');
+            setTimeout(() => modal.classList.add('show'), 10);
+            
+            const handleConfirm = () => {
+                closeConfirmModal();
+                if (onConfirm) onConfirm();
+            };
+            
+            const handleCancel = () => {
+                closeConfirmModal();
+                if (onCancel) onCancel();
+            };
+            
+            confirmBtn.onclick = handleConfirm;
+            cancelBtn.onclick = handleCancel;
+            
+            const handleKeydown = (e) => {
+                if (e.key === 'Escape') {
+                    handleCancel();
+                    document.removeEventListener('keydown', handleKeydown);
+                } else if (e.key === 'Enter') {
+                    handleConfirm();
+                    document.removeEventListener('keydown', handleKeydown);
+                }
+            };
+            document.addEventListener('keydown', handleKeydown);
+        }
+
+        function closeConfirmModal() {
+            const modal = document.getElementById('confirmModal');
+            if (!modal) return;
+            modal.classList.remove('show');
+            setTimeout(() => modal.classList.remove('active'), 300);
+        }
+
         // ==================== 工具函数 ====================
         /**
          * 渲染 Markdown 文本为 HTML
@@ -4195,21 +4592,34 @@
 
         // 退出登录
         document.getElementById('logoutBtn').addEventListener('click', () => {
-            if (confirm('确定要退出登录吗？')) {
-                localStorage.removeItem('user');
-                state.user = null;
-                state.conversationHistory = [];
-                state.currentModule = null;
-                
-                // 隐藏所有页面
-                document.getElementById('homeDashboard').classList.add('hidden');
-                document.getElementById('ecoGuide').classList.remove('active');
-                document.getElementById('demandGuide').classList.remove('active');
-                document.getElementById('chatPage').classList.remove('active');
-                
-                // 显示登录页面
-                document.getElementById('loginPage').classList.remove('hidden');
-            }
+            showConfirmModal({
+                title: '退出确认',
+                message: '确定要退出登录吗？',
+                icon: '🚪',
+                type: 'warning',
+                onConfirm: () => {
+                    localStorage.removeItem('user');
+                    state.user = null;
+                    state.conversationHistory = [];
+                    state.currentModule = null;
+                    
+                    // 隐藏所有页面
+                    document.getElementById('homeDashboard').classList.add('hidden');
+                    document.getElementById('ecoGuide').classList.remove('active');
+                    document.getElementById('demandGuide').classList.remove('active');
+                    document.getElementById('chatPage').classList.remove('active');
+                    
+                    // 显示登录页面
+                    document.getElementById('loginPage').classList.remove('hidden');
+                    
+                    // 显示Toast通知
+                    showToast({
+                        type: 'info',
+                        title: '已退出',
+                        message: '期待您的再次访问'
+                    });
+                }
+            });
         });
 
         function goHome() {
