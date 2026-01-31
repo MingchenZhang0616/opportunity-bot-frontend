@@ -2104,6 +2104,42 @@
             color: #ef4444;
         }
 
+        /* 业务模式标签样式 */
+        .mode-badge {
+            display: inline-block;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+
+        .mode-badge.mode-ai-native {
+            background: rgba(147, 51, 234, 0.1);
+            color: #9333ea;
+        }
+
+        .mode-badge.mode-data {
+            background: rgba(234, 179, 8, 0.1);
+            color: #ca8a04;
+        }
+
+        .mode-badge.mode-ai-enhance {
+            background: rgba(59, 130, 246, 0.1);
+            color: #2563eb;
+        }
+
+        .mode-badge.mode-pending {
+            background: rgba(107, 114, 128, 0.1);
+            color: #6b7280;
+        }
+
+        .industry-cell {
+            max-width: 120px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
         .table-empty-state {
             display: flex;
             flex-direction: column;
@@ -5573,6 +5609,8 @@
                             <th>商机ID</th>
                             <th>客户名称</th>
                             <th>项目摘要</th>
+                            <th>业务模式</th>
+                            <th>行业归属</th>
                             <th>状态</th>
                             <th>评分</th>
                         </tr>
@@ -5589,6 +5627,9 @@
                 const customerName = extractFieldValue(opp.customer_name);
                 const projectSummary = extractFieldValue(opp.project_summary);
                 const opportunityId = extractFieldValue(opp.opportunity_id);
+                const businessMode = extractFieldValue(opp.business_mode) || '待判断';
+                const industry = opp.industry || [];
+                const industryText = Array.isArray(industry) ? industry.join('、') : (industry || '-');
                 
                 // 转义HTML特殊字符，防止XSS
                 const escapeHtml = (str) => {
@@ -5602,11 +5643,18 @@
                 const escapedSummary = escapeHtml(projectSummary || '');
                 const escapedCustomer = escapeHtml(customerName || '');
                 
+                // 业务模式样式
+                const modeClass = businessMode === 'AI原生' ? 'mode-ai-native' : 
+                                  businessMode === '数据变现' ? 'mode-data' : 
+                                  businessMode === 'AI增强' ? 'mode-ai-enhance' : 'mode-pending';
+                
                 html += `
                     <tr class="${isHighlighted ? 'highlighted' : ''}" data-opportunity-id="${opportunityId}">
                         <td class="id-cell" data-tooltip="${opportunityId || ''}">${opportunityId || '-'}</td>
                         <td class="customer-cell" data-tooltip="${escapedCustomer}">${customerName || '-'}</td>
                         <td class="summary-cell" data-tooltip="${escapedSummary}">${projectSummary || '-'}</td>
+                        <td class="mode-cell"><span class="mode-badge ${modeClass}">${businessMode}</span></td>
+                        <td class="industry-cell" data-tooltip="${industryText}">${industryText}</td>
                         <td class="status-cell"><span class="status-badge status-${status}">${status}</span></td>
                         <td class="score-cell"><span class="score-badge ${scoreClass}">${score}分</span></td>
                     </tr>
