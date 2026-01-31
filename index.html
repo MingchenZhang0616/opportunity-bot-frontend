@@ -3991,15 +3991,15 @@
 
         <!-- 三卡片区 -->
         <section class="twin-cards">
-            <!-- 左卡片：录入生态资源 -->
+            <!-- 左卡片：生态资源管理 -->
             <div class="feature-card resource-collector" data-target="resourceGuide">
-                <div class="card-icon">📝</div>
-                <h2 class="card-main-title">录入资源</h2>
-                <p class="card-subtitle">生态资源录入 Resource Collector</p>
+                <div class="card-icon">📚</div>
+                <h2 class="card-main-title">生态资源库</h2>
+                <p class="card-subtitle">录入 & 检索 Resource Hub</p>
                 <div class="card-slogan">
-                    录入大咖、企业、政府关系等新资源，自动整理到集团生态库
+                    录入新资源到集团生态库，或检索库中已有的大咖、企业、政府关系
                 </div>
-                <button class="card-action">开始录入 →</button>
+                <button class="card-action">进入资源库 →</button>
             </div>
 
             <!-- 中卡片：需求孵化直通车 -->
@@ -4030,18 +4030,17 @@
     <div class="guide-page" id="resourceGuide">
         <div class="guide-header" style="background: linear-gradient(135deg, #10b981 0%, #059669 50%, #047857 100%);">
             <button class="back-button" onclick="goHome()">← 返回首页</button>
-            <h1 class="guide-title">📝 录入生态资源</h1>
-            <p class="guide-subtitle">把新梳理的资源录入集团生态库，共建生态网络</p>
+            <h1 class="guide-title">📚 生态资源库</h1>
+            <p class="guide-subtitle">录入新资源 或 检索已有资源</p>
         </div>
         
         <div class="guide-content">
             <div class="guide-section">
-                <h3 class="guide-section-title">这是什么</h3>
+                <h3 class="guide-section-title">📝 录入资源</h3>
                 <p style="color: var(--text-secondary); margin-bottom: 20px;">
-                    一个帮你快速录入新认识的生态资源（大咖、企业、政府关系等）到飞书表格的工具。
+                    把新认识的生态资源（大咖、企业、政府关系等）快速录入飞书表格。
                 </p>
                 
-                <h4 style="font-size: 18px; font-weight: 600; margin: 24px 0 12px;">能帮你做什么</h4>
                 <ul class="guide-features">
                     <li><strong>AI自动提取：</strong>从自然语言描述中提取6个标准字段</li>
                     <li><strong>智能校验：</strong>自动匹配60+标准组织归属，不匹配归入"其他"</li>
@@ -4050,19 +4049,31 @@
             </div>
 
             <div class="guide-section">
-                <h3 class="guide-section-title">试试这样录入...</h3>
+                <h3 class="guide-section-title">🔍 检索资源</h3>
+                <p style="color: var(--text-secondary); margin-bottom: 20px;">
+                    从生态资源库中查找已有的大咖、企业、政府关系等资源。
+                </p>
+                
+                <ul class="guide-features">
+                    <li><strong>按条件检索：</strong>行业、地区、组织归属等</li>
+                    <li><strong>快速定位：</strong>找到资源对应的拓维对接人</li>
+                </ul>
+            </div>
+
+            <div class="guide-section">
+                <h3 class="guide-section-title">试试这样说...</h3>
                 
                 <div class="preset-bubbles">
                     <div class="bubble" onclick="startChat('resource-record', '录入新资源：今天在省侨联活动上认识了华为的张三，他是云计算部门的总经理，由李四负责对接，聊到了数字化转型的合作意向')">
-                        📝 录入新资源：今天在省侨联活动上认识了华为的张三，他是云计算部门的总经理...
+                        📝 录入：今天在省侨联活动上认识了华为的张三，云计算部门总经理...
                     </div>
                     
-                    <div class="bubble" onclick="startChat('resource-record', '添加资源：湖湘汇会员王五，三一重工副总裁，智能制造领域的专家')">
-                        📝 添加资源：湖湘汇会员王五，三一重工副总裁...
+                    <div class="bubble" onclick="startChat('resource-find', '帮我找10家长沙的制造企业')">
+                        🔍 检索：帮我找10家长沙的制造企业
                     </div>
                     
-                    <div class="bubble" onclick="startChat('resource-find', '帮我找一下AI行业的投资人资源')">
-                        🔍 帮我找一下AI行业的投资人资源
+                    <div class="bubble" onclick="startChat('resource-find', '湖湘汇有哪些做AI的企业家')">
+                        🔍 检索：湖湘汇有哪些做AI的企业家
                     </div>
                 </div>
                 
