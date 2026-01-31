@@ -3439,8 +3439,7 @@
             <div class="navbar-right">
                 <div class="notification-icon" id="notificationIcon">
                     🔔
-                    <!-- 通知功能即将上线，暂时隐藏红点数字 -->
-                    <!-- <span class="notification-badge">3</span> -->
+                    <span class="notification-badge" id="notificationBadge" style="display: none;">0</span>
                 </div>
                 <!-- 通知下拉框 -->
                 <div class="notification-dropdown" id="notificationDropdown">
@@ -4273,7 +4272,7 @@
             return '晚上好';
         }
 
-        // ==================== 硬编码用户数据（基于拓维最新组织架构） ====================
+        // ==================== 硬编码用户数据（基于拓人字[2026] 04号 干部任免通知） ====================
         const HARDCODED_USERS = {
             // 用户组织结构
             groups: [
@@ -4282,67 +4281,56 @@
                     users: [
                         { name: "李新宇", role: "管理员", department: "董事会", position: "董事长", roleType: "超级管理员" },
                         { name: "张鸣宸", role: "管理员", department: "总裁办", position: "董事长助理", roleType: "超级管理员" },
-                        { name: "史学", role: "管理员", department: "总裁办", position: "总裁办", roleType: "超级管理员" },
-                        { name: "邹艳", role: "管理员", department: "湖南营销平台", position: "湖南营销平台", roleType: "超级管理员" }
+                        { name: "史学", role: "管理员", department: "总裁办", position: "总裁办", roleType: "超级管理员" }
                     ]
                 },
                 {
                     name: "集团高管",
                     users: [
-                        { name: "胡晓棣", role: "管理员", department: "集团", position: "高级副总裁、COO", roleType: "VP管理员" },
-                        { name: "廖秋林", role: "管理员", department: "开鸿事业群", position: "副总裁、开鸿总裁", roleType: "VP管理员" },
-                        { name: "杨征", role: "管理员", department: "交通行业部", position: "副总裁", roleType: "VP管理员" },
-                        { name: "柏丙军", role: "管理员", department: "交付服务中心", position: "副总裁", roleType: "VP管理员" },
-                        { name: "李曙光", role: "管理员", department: "中央研究院", position: "副总裁、CTO、院长", roleType: "VP管理员" },
-                        { name: "汪卓", role: "管理员", department: "区域平台", position: "副总裁", roleType: "VP管理员" }
+                        { name: "胡晓棣", role: "管理员", department: "集团", position: "高级副总裁/COO", roleType: "VP管理员" },
+                        { name: "李曙光", role: "管理员", department: "中央研究院", position: "副总裁/CTO/中研院院长", roleType: "VP管理员" },
+                        { name: "廖秋林", role: "管理员", department: "开鸿事业群", position: "副总裁/开鸿事业群总裁", roleType: "VP管理员" },
+                        { name: "柏丙军", role: "管理员", department: "中央研究院", position: "副总裁/中研院副院长", roleType: "VP管理员" },
+                        { name: "杨征", role: "管理员", department: "交通行业部", position: "副总裁/分管交通行业部", roleType: "VP管理员" },
+                        { name: "汪卓", role: "管理员", department: "计算集成事业部", position: "副总裁/分管贵州重庆甘肃", roleType: "VP管理员" }
                     ]
                 },
                 {
-                    name: "中央研究院",
+                    name: "中央研究院/开鸿事业群",
                     users: [
-                        { name: "冯冰凛", role: "技术专家", department: "中研院-开鸿产研", position: "副院长", roleType: "技术专家" },
-                        { name: "蒋真", role: "技术专家", department: "中研院-产品销售", position: "产品销售负责人", roleType: "技术专家" },
-                        { name: "凯铎", role: "技术专家", department: "中研院-AI平台", position: "AI工程师", roleType: "技术专家" }
+                        { name: "冯冰凛", role: "技术专家", department: "开鸿事业群", position: "开鸿副总裁/产研总经理/中研院副院长", roleType: "技术专家" },
+                        { name: "蒋真", role: "技术专家", department: "贵州营销平台", position: "贵州营销平台董事长/中研院产品销售部总经理", roleType: "技术专家" }
                     ]
                 },
                 {
                     name: "行业部",
                     users: [
-                        { name: "欧阳晓强", role: "业务专家", department: "运营商行业部", position: "总经理", roleType: "行业负责人" },
-                        { name: "赵帅", role: "业务专家", department: "工业行业部", position: "总经理", roleType: "行业负责人" },
-                        { name: "曾春江", role: "业务专家", department: "交通行业部", position: "总经理", roleType: "行业负责人" },
-                        { name: "刘斐", role: "业务专家", department: "智能政府行业部", position: "总经理", roleType: "行业负责人" },
-                        { name: "海云天-张总", role: "管理员", department: "教育考试行业部", position: "总经理", roleType: "行业负责人" },
-                        { name: "云创-李总", role: "业务专家", department: "云创行业部", position: "总经理", roleType: "行业负责人" },
-                        { name: "游戏-小强", role: "业务专家", department: "游戏行业部", position: "总经理", roleType: "行业负责人" }
+                        { name: "欧阳晓强", role: "业务专家", department: "运营商行业部", position: "运营商行业部总经理", roleType: "行业负责人" },
+                        { name: "赵帅", role: "业务专家", department: "湖南营销平台", position: "湖南营销平台总经理/工业行业部总经理", roleType: "行业负责人" },
+                        { name: "曾春江", role: "业务专家", department: "交通行业部", position: "交通行业部总经理", roleType: "行业负责人" },
+                        { name: "刘斐", role: "业务专家", department: "智能政府行业部", position: "智能政府行业部总经理", roleType: "行业负责人" }
                     ]
                 },
                 {
-                    name: "产品线",
+                    name: "开鸿事业群",
                     users: [
-                        { name: "梁栋", role: "管理员", department: "开鸿营销中心", position: "总经理", roleType: "平台负责人" },
-                        { name: "王敏", role: "业务专家", department: "计算产品线", position: "副总经理", roleType: "业务专家" }
-                    ]
-                },
-                {
-                    name: "区域平台",
-                    users: [
-                        // 注意：赵帅、杨征、蒋真、汪卓、梁栋 在其他组已有，此处仅作为平台标识
+                        { name: "梁栋", role: "管理员", department: "开鸿事业群", position: "开鸿副总裁/营销中心总经理/深圳营销平台总经理", roleType: "平台负责人" },
+                        { name: "王敏", role: "业务专家", department: "开鸿事业群", position: "军工行业部总监/计算集成事业部副总经理", roleType: "业务专家" }
                     ]
                 },
                 {
                     name: "交付服务中心",
                     users: [
-                        { name: "唐晓东", role: "管理员", department: "交付服务中心", position: "总经理", roleType: "平台负责人" }
+                        { name: "唐晓东", role: "管理员", department: "交付服务中心", position: "交付服务中心总经理", roleType: "平台负责人" }
                     ]
                 },
                 {
                     name: "一线销售",
                     users: [
-                        { name: "王磊", role: "销售", department: "销售一部", position: "客户经理", roleType: "销售" },
-                        { name: "陈晓峰", role: "销售", department: "销售一部", position: "客户经理", roleType: "销售" },
-                        { name: "刘婷", role: "销售", department: "销售二部", position: "客户经理", roleType: "销售" },
-                        { name: "赵阳", role: "销售", department: "销售二部", position: "客户经理", roleType: "销售" }
+                        { name: "王磊", role: "销售", department: "销售部", position: "客户经理", roleType: "销售" },
+                        { name: "陈晓峰", role: "销售", department: "销售部", position: "客户经理", roleType: "销售" },
+                        { name: "刘婷", role: "销售", department: "销售部", position: "客户经理", roleType: "销售" },
+                        { name: "赵阳", role: "销售", department: "销售部", position: "客户经理", roleType: "销售" }
                     ]
                 }
             ],
@@ -4539,8 +4527,8 @@
             // 根据角色更新需求孵化卡片
             updateDemandCard();
             
-            // 加载通知
-            loadNotifications();
+            // 启动通知轮询
+            startNotificationPolling();
         }
         
         // 根据角色更新需求孵化卡片显示
@@ -4561,19 +4549,210 @@
         }
 
         // ==================== 通知和用户菜单 ====================
-        function loadNotifications() {
+        
+        // 通知轮询间隔（毫秒）
+        let notificationPollInterval = null;
+        const NOTIFICATION_POLL_INTERVAL = 30000; // 30秒
+        
+        async function loadNotifications() {
             const notificationList = document.getElementById('notificationList');
+            const notificationBadge = document.getElementById('notificationBadge');
             
-            // 通知功能即将上线
-            notificationList.innerHTML = `
-                <div class="notification-empty" style="text-align: center; padding: 30px 20px;">
-                    <div style="font-size: 32px; margin-bottom: 12px;">🔔</div>
-                    <div style="font-weight: 600; margin-bottom: 8px;">通知功能即将上线</div>
-                    <div style="color: var(--text-tertiary); font-size: 13px;">
-                        商机审批、打回提醒等通知将在此显示
+            if (!state.user || !state.user.name) {
+                notificationList.innerHTML = `
+                    <div class="notification-empty" style="text-align: center; padding: 30px 20px;">
+                        <div style="font-size: 32px; margin-bottom: 12px;">🔔</div>
+                        <div style="font-weight: 600; margin-bottom: 8px;">请先登录</div>
                     </div>
-                </div>
-            `;
+                `;
+                return;
+            }
+            
+            try {
+                const response = await fetch(`${API_BASE_URL}/api/notifications`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        user: { name: state.user.name, limit: 20, offset: 0 }
+                    })
+                });
+                
+                const data = await response.json();
+                
+                if (data.success) {
+                    const { notifications, unread_count } = data;
+                    
+                    // 更新未读数红点
+                    if (notificationBadge) {
+                        if (unread_count > 0) {
+                            notificationBadge.textContent = unread_count > 99 ? '99+' : unread_count;
+                            notificationBadge.style.display = 'flex';
+                        } else {
+                            notificationBadge.style.display = 'none';
+                        }
+                    }
+                    
+                    // 渲染通知列表
+                    if (notifications.length === 0) {
+                        notificationList.innerHTML = `
+                            <div class="notification-empty" style="text-align: center; padding: 30px 20px;">
+                                <div style="font-size: 32px; margin-bottom: 12px;">📭</div>
+                                <div style="font-weight: 600; margin-bottom: 8px;">暂无通知</div>
+                                <div style="color: var(--text-tertiary); font-size: 13px;">
+                                    新的商机通知将在此显示
+                                </div>
+                            </div>
+                        `;
+                    } else {
+                        notificationList.innerHTML = notifications.map(n => `
+                            <div class="notification-item ${n.is_read ? '' : 'unread'}" 
+                                 data-id="${n.id}" 
+                                 onclick="handleNotificationClick('${n.id}', '${n.opportunity?.id || ''}')">
+                                <div class="notification-title">${escapeHtml(n.title || '')}</div>
+                                <div class="notification-text">${escapeHtml((n.content || '').substring(0, 80))}${(n.content || '').length > 80 ? '...' : ''}</div>
+                                <div class="notification-time">${formatNotificationTime(n.created_at)}</div>
+                            </div>
+                        `).join('');
+                        
+                        // 添加"全部标记已读"按钮
+                        if (unread_count > 0) {
+                            notificationList.innerHTML += `
+                                <div style="padding: 12px 20px; border-top: 1px solid var(--border-color); text-align: center;">
+                                    <button onclick="markAllNotificationsRead()" style="
+                                        background: none; border: none; color: var(--primary-blue); 
+                                        cursor: pointer; font-size: 13px; font-weight: 500;">
+                                        全部标记为已读
+                                    </button>
+                                </div>
+                            `;
+                        }
+                    }
+                } else {
+                    throw new Error(data.error || '获取通知失败');
+                }
+            } catch (error) {
+                console.error('[通知] 加载失败:', error);
+                notificationList.innerHTML = `
+                    <div class="notification-empty" style="text-align: center; padding: 30px 20px;">
+                        <div style="font-size: 32px; margin-bottom: 12px;">⚠️</div>
+                        <div style="font-weight: 600; margin-bottom: 8px;">加载失败</div>
+                        <div style="color: var(--text-tertiary); font-size: 13px;">
+                            ${error.message}
+                        </div>
+                    </div>
+                `;
+            }
+        }
+        
+        // 格式化通知时间
+        function formatNotificationTime(isoTime) {
+            if (!isoTime) return '';
+            const date = new Date(isoTime);
+            const now = new Date();
+            const diffMs = now - date;
+            const diffMins = Math.floor(diffMs / 60000);
+            const diffHours = Math.floor(diffMs / 3600000);
+            const diffDays = Math.floor(diffMs / 86400000);
+            
+            if (diffMins < 1) return '刚刚';
+            if (diffMins < 60) return `${diffMins}分钟前`;
+            if (diffHours < 24) return `${diffHours}小时前`;
+            if (diffDays < 7) return `${diffDays}天前`;
+            return date.toLocaleDateString('zh-CN');
+        }
+        
+        // 转义HTML
+        function escapeHtml(str) {
+            if (!str) return '';
+            return str.replace(/&/g, '&amp;')
+                      .replace(/</g, '&lt;')
+                      .replace(/>/g, '&gt;')
+                      .replace(/"/g, '&quot;')
+                      .replace(/'/g, '&#039;');
+        }
+        
+        // 点击通知
+        async function handleNotificationClick(notificationId, opportunityId) {
+            // 标记已读
+            try {
+                await fetch(`${API_BASE_URL}/api/notifications/read`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        user: { name: state.user.name },
+                        notification_ids: [notificationId]
+                    })
+                });
+            } catch (e) {
+                console.error('[通知] 标记已读失败:', e);
+            }
+            
+            // 关闭下拉菜单
+            document.getElementById('notificationDropdown').classList.remove('active');
+            
+            // 如果有关联商机，跳转到商机模块
+            if (opportunityId) {
+                showToast({
+                    type: 'info',
+                    title: '查看商机',
+                    message: `商机ID: ${opportunityId}`
+                });
+                // 可以在这里添加跳转到商机详情的逻辑
+            }
+            
+            // 重新加载通知
+            loadNotifications();
+        }
+        
+        // 全部标记已读
+        async function markAllNotificationsRead() {
+            try {
+                const response = await fetch(`${API_BASE_URL}/api/notifications/read-all`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        user: { name: state.user.name }
+                    })
+                });
+                
+                const data = await response.json();
+                if (data.success) {
+                    showToast({
+                        type: 'success',
+                        title: '已全部标记为已读',
+                        message: `共${data.marked_count}条通知`
+                    });
+                    loadNotifications();
+                }
+            } catch (e) {
+                console.error('[通知] 标记全部已读失败:', e);
+            }
+        }
+        
+        // 启动通知轮询
+        function startNotificationPolling() {
+            // 先加载一次
+            loadNotifications();
+            
+            // 清除旧的轮询
+            if (notificationPollInterval) {
+                clearInterval(notificationPollInterval);
+            }
+            
+            // 启动定期轮询
+            notificationPollInterval = setInterval(() => {
+                if (state.user && state.user.name) {
+                    loadNotifications();
+                }
+            }, NOTIFICATION_POLL_INTERVAL);
+        }
+        
+        // 停止通知轮询
+        function stopNotificationPolling() {
+            if (notificationPollInterval) {
+                clearInterval(notificationPollInterval);
+                notificationPollInterval = null;
+            }
         }
 
         // 通知图标点击事件
@@ -4616,6 +4795,9 @@
                 icon: '🚪',
                 type: 'warning',
                 onConfirm: () => {
+                    // 停止通知轮询
+                    stopNotificationPolling();
+                    
                     localStorage.removeItem('user');
                     state.user = null;
                     state.conversationHistory = [];
@@ -4626,6 +4808,10 @@
                     document.getElementById('ecoGuide').classList.remove('active');
                     document.getElementById('demandGuide').classList.remove('active');
                     document.getElementById('chatPage').classList.remove('active');
+                    
+                    // 隐藏通知红点
+                    const badge = document.getElementById('notificationBadge');
+                    if (badge) badge.style.display = 'none';
                     
                     // 显示登录页面
                     document.getElementById('loginPage').classList.remove('hidden');
