@@ -4053,23 +4053,30 @@
                 <h3 class="guide-section-title">试试这样录入...</h3>
                 
                 <div class="preset-bubbles">
-                    <div class="bubble" onclick="startChat('resource', '录入新资源：今天在省侨联活动上认识了华为的张三，他是云计算部门的总经理，由李四负责对接，聊到了数字化转型的合作意向')">
-                        录入新资源：今天在省侨联活动上认识了华为的张三，他是云计算部门的总经理...
+                    <div class="bubble" onclick="startChat('resource-record', '录入新资源：今天在省侨联活动上认识了华为的张三，他是云计算部门的总经理，由李四负责对接，聊到了数字化转型的合作意向')">
+                        📝 录入新资源：今天在省侨联活动上认识了华为的张三，他是云计算部门的总经理...
                     </div>
                     
-                    <div class="bubble" onclick="startChat('resource', '添加资源：湖湘汇会员王五，三一重工副总裁，智能制造领域的专家')">
-                        添加资源：湖湘汇会员王五，三一重工副总裁...
+                    <div class="bubble" onclick="startChat('resource-record', '添加资源：湖湘汇会员王五，三一重工副总裁，智能制造领域的专家')">
+                        📝 添加资源：湖湘汇会员王五，三一重工副总裁...
                     </div>
                     
-                    <div class="bubble" onclick="startChat('resource', '记录一下：在520司庆活动上遇到了投资部的赵六，专注于AI领域的投资')">
-                        记录一下：在520司庆活动上遇到了投资部的赵六...
+                    <div class="bubble" onclick="startChat('resource-find', '帮我找一下AI行业的投资人资源')">
+                        🔍 帮我找一下AI行业的投资人资源
                     </div>
                 </div>
                 
-                <button class="start-button" style="background: linear-gradient(135deg, #10b981 0%, #059669 50%, #047857 100%);" onclick="startChat('resource', '')">
-                    <span>开始录入资源</span>
-                    <span>→</span>
-                </button>
+                <!-- 双按钮：录入资源 / 检索资源 -->
+                <div style="display: flex; gap: 16px; margin-top: 32px;">
+                    <button class="start-button" style="flex: 1; background: linear-gradient(135deg, #10b981 0%, #059669 50%, #047857 100%);" onclick="startChat('resource-record', '')">
+                        <span>📝 录入资源</span>
+                        <span>→</span>
+                    </button>
+                    <button class="start-button" style="flex: 1; background: linear-gradient(135deg, #3b82f6 0%, #2563eb 50%, #1d4ed8 100%);" onclick="startChat('resource-find', '')">
+                        <span>🔍 检索资源</span>
+                        <span>→</span>
+                    </button>
+                </div>
             </div>
 
             <div class="guide-section">
@@ -4101,12 +4108,12 @@
                 </ul>
                 
                 <div class="preset-bubbles">
-                    <div class="bubble" onclick="startChat('resource', '批量录入：\n1. 省侨联活动认识华为张三，云计算总经理，李四对接\n2. 湖湘汇会员王五，三一重工副总裁\n3. 520司庆遇到投资部赵六，专注AI投资')">
-                        批量录入3条：序号分隔格式...
+                    <div class="bubble" onclick="startChat('resource-record', '批量录入：\n1. 省侨联活动认识华为张三，云计算总经理，李四对接\n2. 湖湘汇会员王五，三一重工副总裁\n3. 520司庆遇到投资部赵六，专注AI投资')">
+                        📝 批量录入3条：序号分隔格式...
                     </div>
                     
-                    <div class="bubble" onclick="startChat('resource', '录入多条资源：\n今天在省侨联活动上认识了华为的张三，云计算部门总经理，由李四负责对接；\n还遇到了湖湘汇的王五，他是三一重工副总裁；\n另外投资部的赵六也在场，专注于AI领域的投资。')">
-                        批量录入3条：分号分隔格式...
+                    <div class="bubble" onclick="startChat('resource-record', '录入多条资源：\n今天在省侨联活动上认识了华为的张三，云计算部门总经理，由李四负责对接；\n还遇到了湖湘汇的王五，他是三一重工副总裁；\n另外投资部的赵六也在场，专注于AI领域的投资。')">
+                        📝 批量录入3条：分号分隔格式...
                     </div>
                 </div>
             </div>
@@ -5588,8 +5595,11 @@
             if (module === 'ecosystem') {
                 modeBadge.innerHTML = '<span>💎</span><span>当前模式：生态资源挖掘</span>';
                 modeBadge.classList.remove('purple');
-            } else if (module === 'resource') {
+            } else if (module === 'resource' || module === 'resource-record') {
                 modeBadge.innerHTML = '<span>📝</span><span>当前模式：录入生态资源</span>';
+                modeBadge.classList.remove('purple');
+            } else if (module === 'resource-find') {
+                modeBadge.innerHTML = '<span>🔍</span><span>当前模式：检索生态资源</span>';
                 modeBadge.classList.remove('purple');
             } else {
                 modeBadge.innerHTML = '<span>🚀</span><span>当前模式：需求孵化直通车</span>';
@@ -5604,10 +5614,20 @@
             const openingMessages = {
                 ecosystem: '👋 嗨！我是你的资源军师。请告诉我客户的名字或者你想找哪类资源（比如：资金、招聘、政府关系）？我来帮你盘盘家底。',
                 opportunity: '📝 收到！我是需求记录员。请直接告诉我客户是谁、想要什么、预算多少？我会帮你整理并打分。',
-                resource: '📝 你好！我是资源录入助手。请描述你要录入的资源信息，包括：姓名、单位、职位、组织归属、对接人、交流内容等。我会自动提取并录入系统。'
+                resource: '📝 你好！我是资源录入助手。请描述你要录入的资源信息，包括：姓名、单位、职位、组织归属、对接人、交流内容等。我会自动提取并录入系统。',
+                'resource-record': '📝 你好！我是资源录入助手。请描述你要录入的资源信息，包括：姓名、单位、职位、组织归属、对接人、交流内容等。我会自动提取并录入系统。',
+                'resource-find': '🔍 你好！我是生态资源检索助手。请告诉我你想找什么类型的资源？比如：\n• 某个行业的大咖\n• 某个领域的投资人\n• 某个地区的政府关系\n• 某个组织的会员信息\n\n我会从湖湘汇、长江商学院、软促会等生态知识库中为你匹配。'
             };
             
-            addAIMessage(openingMessages[module], module === 'resource' ? '准备录入...' : '正在检索资源库...');
+            // 根据不同模块显示不同的加载提示
+            let loadingText = '正在检索资源库...';
+            if (module === 'resource' || module === 'resource-record') {
+                loadingText = '准备录入...';
+            } else if (module === 'resource-find') {
+                loadingText = '准备检索...';
+            }
+            
+            addAIMessage(openingMessages[module], loadingText);
             
             // 如果有预设消息，直接发送
             if (presetMessage) {
