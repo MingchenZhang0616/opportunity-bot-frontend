@@ -4569,7 +4569,7 @@
             }
             
             try {
-                const response = await fetch(`${API_BASE_URL}/api/notifications`, {
+                const response = await fetch(`${CONFIG.API_BASE_URL}/api/notifications`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
@@ -4675,7 +4675,7 @@
         async function handleNotificationClick(notificationId, opportunityId) {
             // 标记已读
             try {
-                await fetch(`${API_BASE_URL}/api/notifications/read`, {
+                await fetch(`${CONFIG.API_BASE_URL}/api/notifications/read`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
@@ -4707,7 +4707,7 @@
         // 全部标记已读
         async function markAllNotificationsRead() {
             try {
-                const response = await fetch(`${API_BASE_URL}/api/notifications/read-all`, {
+                const response = await fetch(`${CONFIG.API_BASE_URL}/api/notifications/read-all`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
