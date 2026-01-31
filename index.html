@@ -4035,6 +4035,37 @@
         </div>
         
         <div class="guide-content">
+            <!-- 顶部横跨两列：试试这样说 + 双按钮 -->
+            <div class="guide-section" style="grid-column: 1 / -1;">
+                <h3 class="guide-section-title">试试这样说...</h3>
+                
+                <div class="preset-bubbles" style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px;">
+                    <div class="bubble" onclick="startChat('resource-record', '录入新资源：今天在省侨联活动上认识了华为的张三，他是云计算部门的总经理，由李四负责对接，聊到了数字化转型的合作意向')">
+                        📝 录入：今天在省侨联活动上认识了华为的张三，云计算部门总经理...
+                    </div>
+                    
+                    <div class="bubble" onclick="startChat('resource-find', '帮我找10家长沙的制造企业')">
+                        🔍 检索：帮我找10家长沙的制造企业
+                    </div>
+                    
+                    <div class="bubble" onclick="startChat('resource-find', '湖湘汇有哪些做AI的企业家')">
+                        🔍 检索：湖湘汇有哪些做AI的企业家
+                    </div>
+                </div>
+                
+                <!-- 双按钮：录入资源 / 检索资源 -->
+                <div style="display: flex; gap: 16px; margin-top: 24px;">
+                    <button class="start-button" style="flex: 1; background: linear-gradient(135deg, #10b981 0%, #059669 50%, #047857 100%);" onclick="startChat('resource-record', '')">
+                        <span>📝 录入资源</span>
+                        <span>→</span>
+                    </button>
+                    <button class="start-button" style="flex: 1; background: linear-gradient(135deg, #3b82f6 0%, #2563eb 50%, #1d4ed8 100%);" onclick="startChat('resource-find', '')">
+                        <span>🔍 检索资源</span>
+                        <span>→</span>
+                    </button>
+                </div>
+            </div>
+
             <div class="guide-section">
                 <h3 class="guide-section-title">📝 录入资源</h3>
                 <p style="color: var(--text-secondary); margin-bottom: 20px;">
@@ -4058,36 +4089,6 @@
                     <li><strong>按条件检索：</strong>行业、地区、组织归属等</li>
                     <li><strong>快速定位：</strong>找到资源对应的拓维对接人</li>
                 </ul>
-            </div>
-
-            <div class="guide-section">
-                <h3 class="guide-section-title">试试这样说...</h3>
-                
-                <div class="preset-bubbles">
-                    <div class="bubble" onclick="startChat('resource-record', '录入新资源：今天在省侨联活动上认识了华为的张三，他是云计算部门的总经理，由李四负责对接，聊到了数字化转型的合作意向')">
-                        📝 录入：今天在省侨联活动上认识了华为的张三，云计算部门总经理...
-                    </div>
-                    
-                    <div class="bubble" onclick="startChat('resource-find', '帮我找10家长沙的制造企业')">
-                        🔍 检索：帮我找10家长沙的制造企业
-                    </div>
-                    
-                    <div class="bubble" onclick="startChat('resource-find', '湖湘汇有哪些做AI的企业家')">
-                        🔍 检索：湖湘汇有哪些做AI的企业家
-                    </div>
-                </div>
-                
-                <!-- 双按钮：录入资源 / 检索资源 -->
-                <div style="display: flex; gap: 16px; margin-top: 32px;">
-                    <button class="start-button" style="flex: 1; background: linear-gradient(135deg, #10b981 0%, #059669 50%, #047857 100%);" onclick="startChat('resource-record', '')">
-                        <span>📝 录入资源</span>
-                        <span>→</span>
-                    </button>
-                    <button class="start-button" style="flex: 1; background: linear-gradient(135deg, #3b82f6 0%, #2563eb 50%, #1d4ed8 100%);" onclick="startChat('resource-find', '')">
-                        <span>🔍 检索资源</span>
-                        <span>→</span>
-                    </button>
-                </div>
             </div>
 
             <div class="guide-section">
