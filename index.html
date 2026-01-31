@@ -2048,6 +2048,15 @@
             font-weight: 500;
         }
 
+        .opportunity-table tr.highlight-flash {
+            animation: highlight-flash-anim 0.5s ease-in-out 4;
+        }
+
+        @keyframes highlight-flash-anim {
+            0%, 100% { background: rgba(37, 99, 235, 0.12); }
+            50% { background: rgba(245, 158, 11, 0.3); }
+        }
+
         .status-badge {
             display: inline-block;
             padding: 2px 8px;
@@ -2777,6 +2786,17 @@
             background: var(--bg-white);
             border-color: var(--primary-blue);
             box-shadow: var(--shadow-md);
+        }
+
+        .pending-item.highlighted {
+            background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+            border-color: #f59e0b;
+            animation: pending-highlight-pulse 1.5s ease-in-out 3;
+        }
+
+        @keyframes pending-highlight-pulse {
+            0%, 100% { box-shadow: 0 0 0 0 rgba(245, 158, 11, 0.4); }
+            50% { box-shadow: 0 0 0 8px rgba(245, 158, 11, 0); }
         }
 
         .pending-item-header {
@@ -4690,18 +4710,116 @@
             // 关闭下拉菜单
             document.getElementById('notificationDropdown').classList.remove('active');
             
-            // 如果有关联商机，跳转到商机模块
+            // 如果有关联商机，跳转到对应页面并高亮
             if (opportunityId) {
-                showToast({
-                    type: 'info',
-                    title: '查看商机',
-                    message: `商机ID: ${opportunityId}`
-                });
-                // 可以在这里添加跳转到商机详情的逻辑
+                // 保存需要高亮的商机ID
+                state.highlightedOpportunityIds = [opportunityId];
+                
+                const roleType = state.user.roleType || state.user.role || '销售';
+                const isManager = isManagerRole(roleType);
+                
+                if (isManager) {
+                    // 管理员 → 跳转到需求孵化直通车的管理看板
+                    navigateToOpportunityWithHighlight(opportunityId, true);
+                } else {
+                    // 普通销售 → 跳转到需求孵化直通车（对话框+商机表格）
+                    navigateToOpportunityWithHighlight(opportunityId, false);
+                }
             }
             
             // 重新加载通知
             loadNotifications();
+        }
+        
+        // 跳转到商机页面并高亮指定商机
+        async function navigateToOpportunityWithHighlight(opportunityId, isAdminView) {
+            // 隐藏首页和引导页
+            document.getElementById('homeDashboard').classList.add('hidden');
+            document.getElementById('ecoGuide').classList.remove('active');
+            document.getElementById('demandGuide').classList.remove('active');
+            document.getElementById('resourceGuide').classList.remove('active');
+            
+            state.currentModule = 'opportunity';
+            
+            if (isAdminView) {
+                // 管理员视图：显示管理看板
+                state.isAdminView = true;
+                document.getElementById('chatPage').classList.remove('active');
+                document.getElementById('adminDashboard').classList.add('active');
+                
+                // 更新管理仪表盘用户信息
+                const firstName = state.user.name.charAt(0);
+                document.getElementById('adminUserAvatar').textContent = firstName;
+                document.getElementById('adminUserName').textContent = state.user.name;
+                
+                // 加载仪表盘数据，然后高亮商机
+                await loadDashboardData();
+                
+                // 高亮待审批列表中的商机
+                setTimeout(() => {
+                    highlightPendingItem(opportunityId);
+                }, 300);
+            } else {
+                // 销售视图：显示对话框+商机表格
+                state.isAdminView = false;
+                document.getElementById('adminDashboard').classList.remove('active');
+                document.getElementById('chatPage').classList.add('active');
+                
+                // 显示商机表格
+                const tableSection = document.getElementById('opportunityTableSection');
+                const resizer = document.getElementById('resizer');
+                tableSection.classList.add('visible');
+                resizer.classList.add('visible');
+                
+                // 更新侧边栏用户信息
+                const firstName = state.user.name.charAt(0);
+                document.getElementById('sidebarAvatar').textContent = firstName;
+                document.getElementById('sidebarName').textContent = state.user.name;
+                document.getElementById('sidebarRole').textContent = state.user.department || '销售部';
+                
+                // 更新模式标识
+                const modeBadge = document.getElementById('modeBadge');
+                modeBadge.innerHTML = '<span>🚀</span><span>当前模式：需求孵化直通车</span>';
+                modeBadge.classList.add('purple');
+                
+                // 加载商机列表并高亮
+                await loadUserOpportunities();
+                
+                // 渲染表格时会自动应用高亮（state.highlightedOpportunityIds）
+                setTimeout(() => {
+                    scrollToHighlightedOpportunity(opportunityId);
+                }, 300);
+            }
+            
+            showToast({
+                type: 'info',
+                title: '已定位商机',
+                message: `商机ID: ${opportunityId}`
+            });
+        }
+        
+        // 高亮管理看板中的待审批项
+        function highlightPendingItem(opportunityId) {
+            const pendingItems = document.querySelectorAll('.pending-item');
+            pendingItems.forEach(item => {
+                item.classList.remove('highlighted');
+                const itemId = item.querySelector('.pending-item-id')?.textContent;
+                if (itemId === opportunityId) {
+                    item.classList.add('highlighted', 'expanded');
+                    item.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                }
+            });
+        }
+        
+        // 滚动到高亮的商机行
+        function scrollToHighlightedOpportunity(opportunityId) {
+            const row = document.querySelector(`tr[data-opportunity-id="${opportunityId}"]`);
+            if (row) {
+                row.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                // 添加闪烁效果
+                row.classList.add('highlight-flash');
+                setTimeout(() => row.classList.remove('highlight-flash'), 2000);
+            }
         }
         
         // 全部标记已读
