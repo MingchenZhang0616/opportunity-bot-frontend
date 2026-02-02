@@ -571,12 +571,10 @@
             gap: 24px;
         }
         
-        /* 第三行：生态资源库单独一行 */
+        /* 第三行：生态资源库单独一行，宽度与第二行两卡片总宽度相当 */
         .cards-row-3 {
             display: grid;
             grid-template-columns: 1fr;
-            max-width: 600px;
-            margin: 0 auto;
         }
         
         /* 响应式：小屏幕单列布局 */
@@ -585,9 +583,6 @@
             .cards-row-2,
             .cards-row-3 {
                 grid-template-columns: 1fr;
-            }
-            .cards-row-3 {
-                max-width: 100%;
             }
         }
 
