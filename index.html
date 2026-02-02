@@ -548,20 +548,49 @@
             margin: 0 auto;
         }
 
-        /* 四卡片区域 */
+        /* 四卡片区域 - 三行布局 */
         .twin-cards {
-            max-width: 1800px;
+            max-width: 1400px;
             margin: 0 auto;
             padding: 40px 32px;
             display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 20px;
+            grid-template-columns: 1fr;
+            gap: 24px;
         }
         
-        /* 响应式：小屏幕2x2布局 */
-        @media (max-width: 1400px) {
-            .twin-cards {
-                grid-template-columns: repeat(2, 1fr);
+        /* 第一行：商机管理单独一行 */
+        .cards-row-1 {
+            display: grid;
+            grid-template-columns: 1fr;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        
+        /* 第二行：生态资源分析 + 掌上战略 */
+        .cards-row-2 {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 24px;
+        }
+        
+        /* 第三行：生态资源库单独一行 */
+        .cards-row-3 {
+            display: grid;
+            grid-template-columns: 1fr;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        
+        /* 响应式：小屏幕单列布局 */
+        @media (max-width: 900px) {
+            .cards-row-1,
+            .cards-row-2,
+            .cards-row-3 {
+                grid-template-columns: 1fr;
+            }
+            .cards-row-1,
+            .cards-row-3 {
+                max-width: 100%;
             }
         }
 
@@ -675,6 +704,8 @@
             background: radial-gradient(circle at 30% 30%, rgba(249, 115, 22, 0.05) 0%, transparent 50%);
         }
 
+
+
         /* 🎨 卡片图标 - 3D浮动效果 */
         .card-icon {
             width: 84px;
@@ -711,6 +742,8 @@
             box-shadow: 0 8px 28px rgba(249, 115, 22, 0.25), inset 0 2px 4px rgba(255, 255, 255, 0.5);
         }
 
+
+
         .feature-card:hover .card-icon {
             transform: translateY(-4px) scale(1.12) rotate(8deg);
             box-shadow: 0 16px 40px rgba(59, 130, 246, 0.35), inset 0 2px 4px rgba(255, 255, 255, 0.6);
@@ -727,6 +760,8 @@
         .feature-card.house-strategy:hover .card-icon {
             box-shadow: 0 16px 40px rgba(249, 115, 22, 0.35), inset 0 2px 4px rgba(255, 255, 255, 0.6);
         }
+
+
 
         .card-main-title {
             font-size: 28px;
@@ -791,6 +826,8 @@
         .feature-card.house-strategy:hover .card-slogan {
             background: linear-gradient(135deg, #fff7ed 0%, #ffedd5 100%);
         }
+
+
 
         /* 🔘 卡片按钮 - 磁吸悬停效果 */
         .card-action {
@@ -884,6 +921,8 @@
         .feature-card.house-strategy .card-action:hover {
             box-shadow: 0 8px 28px rgba(249, 115, 22, 0.45), 0 4px 12px rgba(249, 115, 22, 0.25);
         }
+
+
 
         /* =========================
            第二层：功能引导页 
@@ -4036,50 +4075,55 @@
             <p class="hero-subtitle">基于AI +高质量数据集的集团级生态链接与销售赋能智能体</p>
         </section>
 
-        <!-- 三卡片区 -->
+        <!-- 四卡片区 - 三行布局 -->
         <section class="twin-cards">
-            <!-- 左卡片：生态资源管理 -->
-            <div class="feature-card resource-collector" data-target="resourceGuide">
-                <div class="card-icon">📚</div>
-                <h2 class="card-main-title">生态资源库</h2>
-                <p class="card-subtitle" style="font-size: 18px;">录入 & 检索 Resource Hub</p>
-                <div class="card-slogan">
-                    录入新资源到集团生态库，或检索库中已有的大咖、企业、政府关系
+            <!-- 第一行：商机管理（需求孵化）单独一行 -->
+            <div class="cards-row-1">
+                <div class="feature-card demand-funnel" data-target="demandGuide">
+                    <div class="card-icon">🚀</div>
+                    <h2 class="card-main-title">提需求 / 查看商机</h2>
+                    <p class="card-subtitle">市场-产研双向直通车 Demand Funnel</p>
+                    <div class="card-slogan" id="demandCardSlogan">
+                        拒绝繁琐，语音'吐槽'一线炮火，AI 自动评分直达研发中枢
+                    </div>
+                    <button class="card-action" id="demandCardAction">开始提报 →</button>
                 </div>
-                <button class="card-action">进入资源库 →</button>
             </div>
 
-            <!-- 中卡片：需求孵化直通车 -->
-            <div class="feature-card demand-funnel" data-target="demandGuide">
-                <div class="card-icon">🚀</div>
-                <h2 class="card-main-title">提需求 / 查看商机</h2>
-                <p class="card-subtitle">市场-产研双向直通车 Demand Funnel</p>
-                <div class="card-slogan" id="demandCardSlogan">
-                    拒绝繁琐，语音'吐槽'一线炮火，AI 自动评分直达研发中枢
+            <!-- 第二行：生态价值挖掘 + 掌上战略 -->
+            <div class="cards-row-2">
+                <div class="feature-card eco-bluff" data-target="ecoGuide">
+                    <div class="card-icon">💎</div>
+                    <h2 class="card-main-title">找筹码 / 组局</h2>
+                    <p class="card-subtitle">生态价值网挖掘 Eco-Bluff</p>
+                    <div class="card-slogan">
+                        "不卷价格。帮客户找资金、找人才、找资源，用'利他'降维成交。"
+                    </div>
+                    <button class="card-action">进入挖掘 →</button>
                 </div>
-                <button class="card-action" id="demandCardAction">开始提报 →</button>
+
+                <div class="feature-card house-strategy" data-target="houseStrategyGuide">
+                    <div class="card-icon">🏠</div>
+                    <h2 class="card-main-title">掌上战略</h2>
+                    <p class="card-subtitle" style="font-size: 18px;">拓维战略 + Talkweb House 知识库</p>
+                    <div class="card-slogan">
+                        Talkweb House是什么？老板最新战略？有什么活动？怎么用TH打单？一问就知！
+                    </div>
+                    <button class="card-action">开始提问 →</button>
+                </div>
             </div>
 
-            <!-- 第3张卡片：生态价值挖掘 -->
-            <div class="feature-card eco-bluff" data-target="ecoGuide">
-                <div class="card-icon">💎</div>
-                <h2 class="card-main-title">找筹码 / 组局</h2>
-                <p class="card-subtitle">生态价值网挖掘 Eco-Bluff</p>
-                <div class="card-slogan">
-                    "不卷价格。帮客户找资金、找人才、找资源，用'利他'降维成交。"
+            <!-- 第三行：生态资源库（录入 & 检索）单独一行 -->
+            <div class="cards-row-3">
+                <div class="feature-card resource-collector" data-target="resourceGuide">
+                    <div class="card-icon">📚</div>
+                    <h2 class="card-main-title">生态资源库</h2>
+                    <p class="card-subtitle" style="font-size: 18px;">录入 & 检索 Resource Hub</p>
+                    <div class="card-slogan">
+                        录入新资源到集团生态库，或检索库中已有的大咖、企业、政府关系
+                    </div>
+                    <button class="card-action">进入资源库 →</button>
                 </div>
-                <button class="card-action">进入挖掘 →</button>
-            </div>
-
-            <!-- 第4张卡片：掌上战略知识库 -->
-            <div class="feature-card house-strategy" data-target="houseStrategyGuide">
-                <div class="card-icon">🏠</div>
-                <h2 class="card-main-title">掌上战略</h2>
-                <p class="card-subtitle" style="font-size: 18px;">拓维战略 + Talkweb House 知识库</p>
-                <div class="card-slogan">
-                    Talkweb House是什么？老板最新战略？有什么活动？怎么用TH打单？一问就知！
-                </div>
-                <button class="card-action">开始提问 →</button>
             </div>
         </section>
     </div>
