@@ -548,14 +548,21 @@
             margin: 0 auto;
         }
 
-        /* 三卡片区域 */
+        /* 四卡片区域 */
         .twin-cards {
             max-width: 1600px;
             margin: 0 auto;
             padding: 40px 48px;
             display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 32px;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 24px;
+        }
+        
+        /* 响应式：小屏幕2x2布局 */
+        @media (max-width: 1200px) {
+            .twin-cards {
+                grid-template-columns: repeat(2, 1fr);
+            }
         }
 
         /* 🎴 功能卡片 - 玻璃拟态设计 */
@@ -654,6 +661,20 @@
             background: radial-gradient(circle at 30% 30%, rgba(16, 185, 129, 0.05) 0%, transparent 50%);
         }
 
+        /* 掌上战略卡片样式（橙色主题） */
+        .feature-card.house-strategy {
+            border-color: var(--glass-border);
+        }
+
+        .feature-card.house-strategy:hover {
+            border-color: rgba(249, 115, 22, 0.4);
+            box-shadow: var(--shadow-xl), 0 0 40px rgba(249, 115, 22, 0.15);
+        }
+
+        .feature-card.house-strategy::after {
+            background: radial-gradient(circle at 30% 30%, rgba(249, 115, 22, 0.05) 0%, transparent 50%);
+        }
+
         /* 🎨 卡片图标 - 3D浮动效果 */
         .card-icon {
             width: 84px;
@@ -685,6 +706,11 @@
             box-shadow: 0 8px 28px rgba(16, 185, 129, 0.25), inset 0 2px 4px rgba(255, 255, 255, 0.5);
         }
 
+        .feature-card.house-strategy .card-icon {
+            background: linear-gradient(135deg, #ffedd5 0%, #fed7aa 50%, #fdba74 100%);
+            box-shadow: 0 8px 28px rgba(249, 115, 22, 0.25), inset 0 2px 4px rgba(255, 255, 255, 0.5);
+        }
+
         .feature-card:hover .card-icon {
             transform: translateY(-4px) scale(1.12) rotate(8deg);
             box-shadow: 0 16px 40px rgba(59, 130, 246, 0.35), inset 0 2px 4px rgba(255, 255, 255, 0.6);
@@ -696,6 +722,10 @@
 
         .feature-card.resource-collector:hover .card-icon {
             box-shadow: 0 16px 40px rgba(16, 185, 129, 0.35), inset 0 2px 4px rgba(255, 255, 255, 0.6);
+        }
+
+        .feature-card.house-strategy:hover .card-icon {
+            box-shadow: 0 16px 40px rgba(249, 115, 22, 0.35), inset 0 2px 4px rgba(255, 255, 255, 0.6);
         }
 
         .card-main-title {
@@ -752,6 +782,14 @@
 
         .feature-card.resource-collector:hover .card-slogan {
             background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%);
+        }
+
+        .feature-card.house-strategy .card-slogan {
+            border-left-color: #f97316;
+        }
+
+        .feature-card.house-strategy:hover .card-slogan {
+            background: linear-gradient(135deg, #fff7ed 0%, #ffedd5 100%);
         }
 
         /* 🔘 卡片按钮 - 磁吸悬停效果 */
@@ -836,6 +874,15 @@
 
         .feature-card.resource-collector .card-action:hover {
             box-shadow: 0 8px 28px rgba(16, 185, 129, 0.45), 0 4px 12px rgba(16, 185, 129, 0.25);
+        }
+
+        .feature-card.house-strategy .card-action {
+            background: linear-gradient(135deg, #f97316 0%, #ea580c 50%, #c2410c 100%);
+            box-shadow: 0 4px 16px rgba(249, 115, 22, 0.35), 0 2px 8px rgba(249, 115, 22, 0.2);
+        }
+
+        .feature-card.house-strategy .card-action:hover {
+            box-shadow: 0 8px 28px rgba(249, 115, 22, 0.45), 0 4px 12px rgba(249, 115, 22, 0.25);
         }
 
         /* =========================
@@ -4013,7 +4060,7 @@
                 <button class="card-action" id="demandCardAction">开始提报 →</button>
             </div>
 
-            <!-- 右卡片：生态价值挖掘 -->
+            <!-- 第3张卡片：生态价值挖掘 -->
             <div class="feature-card eco-bluff" data-target="ecoGuide">
                 <div class="card-icon">💎</div>
                 <h2 class="card-main-title">找筹码 / 组局</h2>
@@ -4022,6 +4069,17 @@
                     "不卷价格。帮客户找资金、找人才、找资源，用'利他'降维成交。"
                 </div>
                 <button class="card-action">进入挖掘 →</button>
+            </div>
+
+            <!-- 第4张卡片：掌上战略知识库 -->
+            <div class="feature-card house-strategy" data-target="houseStrategyGuide">
+                <div class="card-icon">🏠</div>
+                <h2 class="card-main-title">掌上战略</h2>
+                <p class="card-subtitle">TH知识库 House Strategy</p>
+                <div class="card-slogan">
+                    "TH是什么？老板最新战略？有什么活动？怎么用TH打单？一问就知！"
+                </div>
+                <button class="card-action">开始提问 →</button>
             </div>
         </section>
     </div>
@@ -4174,6 +4232,67 @@
                 
                 <button class="start-button" onclick="startChat('ecosystem', '')">
                     <span>开始挖掘资源</span>
+                    <span>→</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 第二层：掌上战略知识库引导页 -->
+    <div class="guide-page" id="houseStrategyGuide">
+        <div class="guide-header" style="background: linear-gradient(135deg, #f97316 0%, #ea580c 50%, #c2410c 100%);">
+            <button class="back-button" onclick="goHome()">← 返回首页</button>
+            <h1 class="guide-title">🏠 掌上战略知识库</h1>
+            <p class="guide-subtitle">Talkweb House 是什么？公司战略？TH活动？打法案例？一问就知！</p>
+        </div>
+        
+        <div class="guide-content">
+            <div class="guide-section">
+                <h3 class="guide-section-title">我能回答4类问题</h3>
+                
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 16px;">
+                    <div style="background: #fff7ed; border-radius: 12px; padding: 16px; border-left: 4px solid #f97316;">
+                        <h4 style="font-size: 16px; font-weight: 600; margin-bottom: 8px;">1️⃣ TH是什么</h4>
+                        <p style="color: var(--text-secondary); font-size: 14px;">定义、理念、价值、董事长怎么讲</p>
+                    </div>
+                    <div style="background: #fef3c7; border-radius: 12px; padding: 16px; border-left: 4px solid #f59e0b;">
+                        <h4 style="font-size: 16px; font-weight: 600; margin-bottom: 8px;">2️⃣ 公司最新战略</h4>
+                        <p style="color: var(--text-secondary); font-size: 14px;">拓维方向、重点、董事长最新观点</p>
+                    </div>
+                    <div style="background: #dbeafe; border-radius: 12px; padding: 16px; border-left: 4px solid #3b82f6;">
+                        <h4 style="font-size: 16px; font-weight: 600; margin-bottom: 8px;">3️⃣ TH活动</h4>
+                        <p style="color: var(--text-secondary); font-size: 14px;">有哪些活动、时间、怎么参加</p>
+                    </div>
+                    <div style="background: #d1fae5; border-radius: 12px; padding: 16px; border-left: 4px solid #10b981;">
+                        <h4 style="font-size: 16px; font-weight: 600; margin-bottom: 8px;">4️⃣ 打法和案例</h4>
+                        <p style="color: var(--text-secondary); font-size: 14px;">平台3.0怎么用、TH怎么帮销售、成功案例</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="guide-section">
+                <h3 class="guide-section-title">试试这样问我...</h3>
+                
+                <div class="preset-bubbles">
+                    <div class="bubble" onclick="startChat('house-strategy-explain', 'TH是啥？用大白话怎么给客户解释？')">
+                        🏠 TH是啥？用大白话怎么给客户解释？
+                    </div>
+                    
+                    <div class="bubble" onclick="startChat('house-strategy-explain', '老板最近讲了什么战略方向？')">
+                        📢 老板最近讲了什么战略方向？
+                    </div>
+                    
+                    <div class="bubble" onclick="startChat('house-strategy-explain', '最近有什么活动可以邀请客户参加？')">
+                        📅 最近有什么活动可以邀请客户参加？
+                    </div>
+                    
+                    <div class="bubble" onclick="startChat('house-strategy-explain', '怎么用TH打单？有成功案例吗？')">
+                        💼 怎么用TH打单？有成功案例吗？
+                    </div>
+                </div>
+                
+                <button class="start-button" style="background: linear-gradient(135deg, #f97316 0%, #ea580c 50%, #c2410c 100%);" onclick="startChat('house-strategy-explain', '')">
+                    <span>开始提问</span>
                     <span>→</span>
                 </button>
             </div>
@@ -5459,6 +5578,7 @@
             document.getElementById('ecoGuide').classList.remove('active');
             document.getElementById('demandGuide').classList.remove('active');
             document.getElementById('resourceGuide').classList.remove('active');
+            document.getElementById('houseStrategyGuide').classList.remove('active');
             document.getElementById('chatPage').classList.remove('active');
             document.getElementById('adminDashboard').classList.remove('active');
             
@@ -5556,6 +5676,7 @@
             document.getElementById('ecoGuide').classList.remove('active');
             document.getElementById('demandGuide').classList.remove('active');
             document.getElementById('resourceGuide').classList.remove('active');
+            document.getElementById('houseStrategyGuide').classList.remove('active');
             document.getElementById('homeDashboard').classList.add('hidden');
             
             // 判断是否显示管理视图（仅商机管理模块 + 管理者角色）
@@ -5613,6 +5734,9 @@
             } else if (module === 'resource-find') {
                 modeBadge.innerHTML = '<span>🔍</span><span>当前模式：检索生态资源</span>';
                 modeBadge.classList.remove('purple');
+            } else if (module === 'house-strategy-explain') {
+                modeBadge.innerHTML = '<span>🏠</span><span>当前模式：掌上战略知识库</span>';
+                modeBadge.classList.remove('purple');
             } else {
                 modeBadge.innerHTML = '<span>🚀</span><span>当前模式：需求孵化直通车</span>';
                 modeBadge.classList.add('purple');
@@ -5628,7 +5752,8 @@
                 opportunity: '📝 收到！我是需求记录员。请直接告诉我客户是谁、想要什么、预算多少？我会帮你整理并打分。',
                 resource: '📝 你好！我是资源录入助手。请描述你要录入的资源信息，包括：姓名、单位、职位、组织归属、对接人、交流内容等。我会自动提取并录入系统。',
                 'resource-record': '📝 你好！我是资源录入助手。请描述你要录入的资源信息，包括：姓名、单位、职位、组织归属、对接人、交流内容等。我会自动提取并录入系统。',
-                'resource-find': '🔍 你好！我是生态资源检索助手。请告诉我你想找什么类型的资源？比如：\n• 某个行业的大咖\n• 某个领域的投资人\n• 某个地区的政府关系\n• 某个组织的会员信息\n\n我会从湖湘汇、长江商学院、软促会等生态知识库中为你匹配。'
+                'resource-find': '🔍 你好！我是生态资源检索助手。请告诉我你想找什么类型的资源？比如：\n• 某个行业的大咖\n• 某个领域的投资人\n• 某个地区的政府关系\n• 某个组织的会员信息\n\n我会从湖湘汇、长江商学院、软促会等生态知识库中为你匹配。',
+                'house-strategy-explain': '🏠 你好！我是掌上战略知识助手。关于 Talkweb House 和公司战略，我能回答4类问题：\n\n1️⃣ **TH是什么** - 定义、理念、董事长怎么讲\n2️⃣ **公司战略** - 拓维方向、最新观点\n3️⃣ **TH活动** - 有哪些活动、怎么参加\n4️⃣ **打法案例** - 平台3.0怎么用、成功案例\n\n直接问我吧！'
             };
             
             // 根据不同模块显示不同的加载提示
@@ -5637,6 +5762,8 @@
                 loadingText = '准备录入...';
             } else if (module === 'resource-find') {
                 loadingText = '准备检索...';
+            } else if (module === 'house-strategy-explain') {
+                loadingText = '准备回答...';
             }
             
             addAIMessage(openingMessages[module], loadingText);
