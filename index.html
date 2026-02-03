@@ -6055,7 +6055,14 @@
                     }
                 } else {
                     console.error('[sendMessage] 发送消息失败:', error);
-                    updateAIMessage('抱歉，发送消息失败，请稍后重试。', false);
+                    // 显示更详细的错误信息，方便调试
+                    let errorDetail = error.message || error.toString();
+                    if (error.name === 'TypeError' && errorDetail.includes('network')) {
+                        errorDetail = '网络连接失败，请检查网络后重试';
+                    } else if (errorDetail.includes('timeout') || errorDetail.includes('Timeout')) {
+                        errorDetail = '请求超时，服务器响应时间过长';
+                    }
+                    updateAIMessage(`抱歉，发送消息失败：${errorDetail}`, false);
                 }
             } finally {
                 // 确保消息已完成
